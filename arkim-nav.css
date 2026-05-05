@@ -1,0 +1,175 @@
+/**
+ * Full-width site header (edge-to-edge shell, centered inner row).
+ * Frosted scroll state inspired by premium fund sites — not a floating pill.
+ */
+:root {
+  --arkim-nav-height: 72px;
+  --arkim-nav-blur: 28px;
+  --arkim-nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --arkim-nav-duration: 0.5s;
+}
+
+.arkim-site-nav {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 200;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  transition:
+    background-color var(--arkim-nav-duration) var(--arkim-nav-ease),
+    border-color var(--arkim-nav-duration) var(--arkim-nav-ease),
+    box-shadow var(--arkim-nav-duration) var(--arkim-nav-ease),
+    -webkit-backdrop-filter var(--arkim-nav-duration) var(--arkim-nav-ease),
+    backdrop-filter var(--arkim-nav-duration) var(--arkim-nav-ease);
+}
+
+.arkim-site-nav[data-scrolled='true'],
+.arkim-site-nav[data-menu-open='true'] {
+  background: var(--nav-scrim);
+  border-bottom-color: var(--border);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  -webkit-backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
+  backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
+}
+
+html[data-theme='light'] .arkim-site-nav[data-scrolled='true'],
+html[data-theme='light'] .arkim-site-nav[data-menu-open='true'] {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arkim-site-nav {
+    transition: none;
+  }
+}
+
+.arkim-site-nav__inner {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--arkim-nav-height);
+  padding: 0 clamp(16px, 4vw, 48px);
+}
+
+.arkim-site-nav__link {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.28em;
+  transition: color 0.28s ease, text-decoration-color 0.28s ease;
+}
+
+.arkim-site-nav__link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.arkim-site-nav__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.arkim-site-nav__rule {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.arkim-site-nav__email {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.arkim-site-nav__cta {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 10px 22px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: opacity 0.25s ease, transform 0.2s ease;
+}
+
+.arkim-site-nav__cta:hover {
+  opacity: 0.9;
+}
+
+.arkim-site-nav__cta:active {
+  transform: translateY(1px);
+}
+
+.arkim-site-nav__drawer-link {
+  font-family: var(--sans);
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s ease;
+}
+
+.arkim-site-nav__drawer-cta {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 14px 18px;
+  border-radius: 4px;
+  text-decoration: none;
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 8px;
+  min-height: 44px;
+  align-items: center;
+}
+
+.arkim-site-nav__menu-btn {
+  border-radius: 4px;
+}
+
+.arkim-site-nav__theme {
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.arkim-site-nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.arkim-site-nav__tools {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.arkim-site-nav__drawer {
+  border-top: 1px solid var(--border);
+  background: var(--nav-scrim);
+  -webkit-backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
+  backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
+  padding: 8px clamp(16px, 4vw, 48px) 20px;
+}

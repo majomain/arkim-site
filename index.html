@@ -224,6 +224,7 @@ button:focus-visible { border-radius: 4px; }
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/nvidia-inception.png" data-resource-id="nvidiaLogo" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/databricks-logo.svg" data-resource-id="databricksLogo" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/aws-activate.svg" data-resource-id="awsLogo" />
+<link rel="stylesheet" href="arkim-nav.css" />
 </head>
 <template id="__bundler_thumbnail" data-bg-color="#0A0A0A">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -241,6 +242,8 @@ button:focus-visible { border-radius: 4px; }
 <body>
 <div id="root"></div>
 
+<script type="text/babel" src="arkim-nav.jsx"></script>
+
 <!-- Section components (inlined) -->
 <script type="text/babel">
 
@@ -249,6 +252,8 @@ button:focus-visible { border-radius: 4px; }
 // Typography: Avenir Next (headings/body) + Cormorant Garamond Italic (accent words) + accent #4A8ABF
 
 const { useState, useEffect, useRef } = React;
+const useViewport = window.useViewport;
+const usePrefersReducedMotion = window.usePrefersReducedMotion;
 
 // ─── UTILS ──────────────────────────────────────────────────────────────────
 
@@ -264,41 +269,6 @@ function useFadeIn(threshold = 0.12) {
     return () => obs.disconnect();
   }, []);
   return [ref, vis];
-}
-
-function useViewport() {
-  const getWidth = () => (typeof window !== 'undefined' ? window.innerWidth : 1440);
-  const [width, setWidth] = useState(getWidth);
-
-  useEffect(() => {
-    const onResize = () => setWidth(getWidth());
-    window.addEventListener('resize', onResize, { passive: true });
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-
-  return {
-    width,
-    isMobile: width <= 768,
-    isTablet: width <= 1024,
-    /** Sticky layers + floating pill cloud only work well above this width */
-    isNarrowLayout: width <= 900,
-  };
-}
-
-function usePrefersReducedMotion() {
-  const getInitial = () =>
-    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const [reduced, setReduced] = useState(getInitial);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const onChange = () => setReduced(mq.matches);
-    onChange();
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
-
-  return reduced;
 }
 
 function FadeIn({ children, delay = 0, y = 28, style = {} }) {
@@ -354,219 +324,6 @@ function ImgPlaceholder({ label, aspectRatio = '4/3', style = {} }) {
       <div style={{ fontSize: 28, opacity: 0.3 }}>◻</div>
       <div>{label}</div>
     </div>
-  );
-}
-
-// ─── THEME ───────────────────────────────────────────────────────────────────
-
-function ThemeToggle({ mobile = false, lightOnDarkHero = false }) {
-  const [theme, setTheme] = useState(() =>
-    document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'
-  );
-  const toggle = () => {
-    const next = theme === 'dark' ? 'light' : 'dark';
-    setTheme(next);
-    if (typeof window.__applyArkimTheme === 'function') {
-      window.__applyArkimTheme(next);
-    }
-  };
-  return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-pressed={theme === 'light'}
-      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-      style={{
-        background: 'transparent',
-        color: lightOnDarkHero ? 'rgba(245, 242, 237, 0.78)' : 'var(--fg-muted)',
-        border: lightOnDarkHero ? '1px solid rgba(245, 242, 237, 0.35)' : '1px solid var(--border)',
-        borderRadius: 8,
-        padding: mobile ? '10px 12px' : '8px 12px',
-        minWidth: mobile ? 44 : undefined,
-        minHeight: 44,
-        fontFamily: 'var(--sans)',
-        fontSize: 12,
-        fontWeight: 500,
-        letterSpacing: '0.06em',
-        cursor: 'pointer',
-        flexShrink: 0,
-      }}
-    >
-      {theme === 'dark' ? 'Light' : 'Dark'}
-    </button>
-  );
-}
-
-// ─── NAV ────────────────────────────────────────────────────────────────────
-
-function Nav() {
-  const { isMobile, isTablet } = useViewport();
-  const reducedMotion = usePrefersReducedMotion();
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [lightOnDarkHero, setLightOnDarkHero] = useState(false);
-  const links = [
-    { label: 'Product', href: 'Arkim Product.html' },
-    { label: 'About Us', href: 'Arkim About.html' },
-    { label: 'Resources', href: 'Arkim Resources.html' },
-    { label: 'Contact Us', href: 'Arkim Contact.html' },
-  ];
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
-  }, []);
-
-  useEffect(() => {
-    const sync = () => {
-      const light = document.documentElement.getAttribute('data-theme') === 'light';
-      const vh = window.innerHeight || 800;
-      const overHero = window.scrollY < vh * 0.92;
-      const transparentBar = window.scrollY <= 60 && !menuOpen;
-      setLightOnDarkHero(light && overHero && transparentBar);
-    };
-    sync();
-    const onScroll = () => sync();
-    const onTheme = () => sync();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    window.addEventListener('arkim-theme', onTheme);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      window.removeEventListener('arkim-theme', onTheme);
-    };
-  }, [menuOpen]);
-
-  useEffect(() => {
-    if (!isMobile) setMenuOpen(false);
-  }, [isMobile]);
-
-  const horizontalPadding = isMobile ? 16 : isTablet ? 24 : 48;
-  return (
-    <nav style={{
-      background: scrolled || menuOpen ? 'var(--nav-scrim)' : 'transparent',
-      backdropFilter: scrolled || menuOpen ? 'blur(20px)' : 'none',
-      borderBottom: scrolled || menuOpen ? '1px solid var(--border)' : '1px solid transparent',
-      transition: reducedMotion ? 'none' : 'all 0.4s ease',
-      zIndex: 200,
-    }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: `0 ${horizontalPadding}px`, height: '68px',
-      }}>
-      <a href="#" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', minHeight: 44 }}>
-        <img src={window.__resources && window.__resources.logoMark || 'https://www.arkim.ai/logo-arkim.png'} alt="Arkim" style={{ height: 28, filter: lightOnDarkHero ? 'brightness(0) invert(1)' : 'none' }} />
-        <img src={window.__resources && window.__resources.logoText || 'https://www.arkim.ai/arkim-text-logo.png'} alt="Arkim" style={{ height: 17, opacity: 0.9, filter: lightOnDarkHero ? 'brightness(0) invert(1)' : 'none' }} />
-      </a>
-
-      {!isMobile && (
-      <div style={{ display: 'flex', gap: isTablet ? 22 : 36 }}>
-        {links.map(({ label: l, href }) => {
-          const isExternal = /^https?:\/\//.test(href);
-          return (
-          <a key={l} href={href} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener noreferrer" : undefined} style={{
-            fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 400,
-            color: lightOnDarkHero ? 'rgba(245, 242, 237, 0.78)' : 'var(--fg-muted)', textDecoration: 'none',
-            transition: 'color 0.2s',
-          }}
-          onMouseEnter={e => { e.target.style.color = lightOnDarkHero ? '#f5f2ed' : 'var(--fg)'; }}
-          onMouseLeave={e => { e.target.style.color = lightOnDarkHero ? 'rgba(245, 242, 237, 0.78)' : 'var(--fg-muted)'; }}
-          >{l}</a>
-        )})}
-      </div>
-      )}
-
-      {!isMobile ? (
-      <div style={{ display: 'flex', alignItems: 'center', gap: isTablet ? 14 : 20 }}>
-        <ThemeToggle lightOnDarkHero={lightOnDarkHero} />
-        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: lightOnDarkHero ? 'rgba(245, 242, 237, 0.72)' : 'var(--fg-muted)' }}>info@arkim.ai</span>
-        <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener noreferrer" style={{
-          fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 600,
-          background: 'var(--accent)', color: lightOnDarkHero ? '#000' : 'var(--btn-fg)',
-          padding: '9px 20px', borderRadius: '6px', textDecoration: 'none',
-          transition: 'opacity 0.2s',
-        }}
-        onMouseEnter={e => e.target.style.opacity = '0.85'}
-        onMouseLeave={e => e.target.style.opacity = '1'}
-        >Request Demo</a>
-      </div>
-      ) : (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <ThemeToggle mobile lightOnDarkHero={lightOnDarkHero} />
-          <button
-            aria-label="Toggle navigation"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen(v => !v)}
-            style={{
-              background: 'transparent',
-              color: lightOnDarkHero ? '#f5f2ed' : 'var(--fg)',
-              border: lightOnDarkHero ? '1px solid rgba(245, 242, 237, 0.35)' : '1px solid var(--border)',
-              borderRadius: 8,
-              padding: '10px 12px',
-              minWidth: 44,
-              minHeight: 44,
-              fontFamily: 'var(--sans)',
-              fontSize: 12,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-            }}
-          >
-            {menuOpen ? 'Close' : 'Menu'}
-          </button>
-        </div>
-      )}
-      </div>
-
-      {isMobile && menuOpen && (
-        <div style={{
-          padding: `8px ${horizontalPadding}px 18px`,
-          borderTop: '1px solid var(--border)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 6,
-        }}>
-          {links.map(({ label, href }) => {
-            const isExternal = /^https?:\/\//.test(href);
-            return (
-              <a
-                key={label}
-                href={href}
-                target={isExternal ? "_blank" : undefined}
-                rel={isExternal ? "noopener noreferrer" : undefined}
-                style={{
-                  fontFamily: 'var(--sans)',
-                  fontSize: '16px',
-                  color: 'var(--fg)',
-                  textDecoration: 'none',
-                  padding: '12px 0',
-                  borderBottom: '1px solid var(--border)',
-                }}
-              >
-                {label}
-              </a>
-            );
-          })}
-          <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener noreferrer" style={{
-            fontFamily: 'var(--sans)',
-            fontSize: '15px',
-            fontWeight: 600,
-            background: 'var(--accent)',
-            color: 'var(--btn-fg)',
-            padding: '14px 18px',
-            borderRadius: '8px',
-            textDecoration: 'none',
-            display: 'inline-flex',
-            justifyContent: 'center',
-            marginTop: 8,
-            minHeight: 44,
-            alignItems: 'center',
-          }}>Request Demo</a>
-        </div>
-      )}
-    </nav>
   );
 }
 
@@ -1416,9 +1173,6 @@ function ProductVideo() {
 // ─── EXPORT ──────────────────────────────────────────────────────────────────
 
 Object.assign(window, {
-  useViewport,
-  usePrefersReducedMotion,
-  ArkimNav: Nav,
   ArkimHero: Hero,
   ArkimIndustriesStrip: IndustriesStrip,
   ArkimTheLever: TheLever,
@@ -1438,6 +1192,7 @@ Object.assign(window, {
 <!-- App -->
 <script type="text/babel">
 const { useState, useEffect, useRef } = React;
+const { useViewport, ArkimNav } = window;
 
 function AnnouncementBar({ onDismiss }) {
   const { isMobile } = useViewport();
@@ -1493,7 +1248,7 @@ function App() {
       {/* Fixed header: announcement bar + nav together so they never overlap */}
       <div ref={headerRef} style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
         {announceVisible && <AnnouncementBar onDismiss={() => setAnnounceVisible(false)} />}
-        <ArkimNav />
+        <ArkimNav variant="home" />
       </div>
       {/* Spacer so content starts below fixed header */}
       <div style={{ height: headerHeight }} />

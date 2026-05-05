@@ -3,6 +3,34 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0A0A0A" />
+<script>
+(function () {
+  try {
+    if (localStorage.getItem('arkim-theme') === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', '#F5F2EB');
+    }
+  } catch (e) {}
+  window.__applyArkimTheme = function (mode) {
+    var html = document.documentElement;
+    if (mode === 'light') {
+      html.setAttribute('data-theme', 'light');
+    } else {
+      html.removeAttribute('data-theme');
+    }
+    try {
+      localStorage.setItem('arkim-theme', mode === 'light' ? 'light' : 'dark');
+    } catch (err) {}
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', mode === 'light' ? '#F5F2EB' : '#0A0A0A');
+    try {
+      window.dispatchEvent(new Event('arkim-theme'));
+    } catch (err) {}
+  };
+})();
+</script>
 <title>Arkim AI — Industrial Maintenance, Re-leveraged.</title>
 <style>
 @font-face {
@@ -28,17 +56,125 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  color-scheme: dark;
   --bg: #0A0A0A;
   --bg-card: #141414;
   --border: #2A2A2A;
   --fg: #F5F2ED;
   --fg-muted: #8A857C;
   --accent: #4A8ABF;
+  --btn-fg: #000000;
+  --nav-scrim: rgba(10, 10, 10, 0.94);
+  --hero-bg: #000000;
+  --hero-title: #ffffff;
+  --fg-faint: rgba(245, 242, 237, 0.25);
+  --fg-ghost: rgba(245, 242, 237, 0.3);
+  --fg-dimmer: rgba(245, 242, 237, 0.35);
+  --outline: rgba(245, 242, 237, 0.2);
+  --outline-hover: rgba(245, 242, 237, 0.4);
+  --outline-fill: rgba(245, 242, 237, 0.04);
+  --card-hover: #1a1a1a;
+  --placeholder-a: #141414;
+  --placeholder-b: #111111;
+  --placeholder-label: rgba(245, 242, 237, 0.18);
+  --layer-footer-bg: rgba(0, 0, 0, 0.2);
+  --accent-soft: rgba(74, 138, 191, 0.06);
+  --accent-border: rgba(74, 138, 191, 0.3);
+  --announce-bg: #07101a;
+  --announce-border: rgba(74, 138, 191, 0.2);
+  --media-bg: #000000;
+  --media-shadow: rgba(0, 0, 0, 0.6);
+  --final-cta-1: #0a0a0a;
+  --final-cta-2: #0f0d0b;
+  --radial-accent: rgba(74, 138, 191, 0.08);
+  --status-dot: #3b82f6;
+  --partner-logo-opacity: 0.25;
+  --partner-logo-hover-opacity: 0.55;
+  --partner-logo-filter: brightness(10);
+  --selection: rgba(74, 138, 191, 0.25);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: 'Avenir Next', 'Avenir', Helvetica, sans-serif;
+  --hero-h1-size: clamp(32px, 4.5vw, 60px);
+  --hero-h1-line-height: 1.04;
+  --hero-h1-letter-spacing: 0.01em;
+  --hero-h1-accent-scale: 1.2;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f5f2eb;
+  --bg-card: #ffffff;
+  --border: #e3dfd5;
+  --fg: #1c1915;
+  --fg-muted: #5e5850;
+  --accent: #3a7aaf;
+  --btn-fg: #ffffff;
+  --nav-scrim: rgba(245, 242, 235, 0.94);
+  --hero-bg: #eae6dd;
+  --hero-title: #1c1915;
+  --fg-faint: rgba(28, 25, 21, 0.38);
+  --fg-ghost: rgba(28, 25, 21, 0.45);
+  --fg-dimmer: rgba(28, 25, 21, 0.42);
+  --outline: rgba(28, 25, 21, 0.14);
+  --outline-hover: rgba(28, 25, 21, 0.28);
+  --outline-fill: rgba(28, 25, 21, 0.05);
+  --card-hover: #efebe3;
+  --placeholder-a: #e8e4dc;
+  --placeholder-b: #ddd8ce;
+  --placeholder-label: rgba(28, 25, 21, 0.35);
+  --layer-footer-bg: rgba(0, 0, 0, 0.04);
+  --accent-soft: rgba(58, 122, 175, 0.09);
+  --accent-border: rgba(58, 122, 175, 0.35);
+  --announce-bg: #e8f1f8;
+  --announce-border: rgba(58, 122, 175, 0.25);
+  --media-bg: #0a0a0a;
+  --media-shadow: rgba(0, 0, 0, 0.22);
+  --final-cta-1: #f0ebe3;
+  --final-cta-2: #e5dfd4;
+  --radial-accent: rgba(58, 122, 175, 0.12);
+  --status-dot: var(--accent);
+  --partner-logo-opacity: 0.42;
+  --partner-logo-hover-opacity: 0.72;
+  --partner-logo-filter: none;
+  --selection: rgba(58, 122, 175, 0.22);
+}
+
+/* Light theme: keep first screen cinematic (dark hero, light copy) */
+html[data-theme="light"] .hero-cinematic {
+  --hero-bg: #000000;
+  --hero-title: #ffffff;
+  --fg: #f5f2ed;
+  --fg-muted: #8a857c;
+  --accent: #4a8abf;
+  --btn-fg: #000000;
+  --outline: rgba(245, 242, 237, 0.2);
+  --outline-hover: rgba(245, 242, 237, 0.4);
+  --outline-fill: rgba(245, 242, 237, 0.04);
+  --fg-ghost: rgba(245, 242, 237, 0.3);
+}
+
+.hero-h1 {
+  font-family: var(--sans);
+  font-size: var(--hero-h1-size);
+  font-weight: 800;
+  line-height: var(--hero-h1-line-height);
+  letter-spacing: var(--hero-h1-letter-spacing);
+  text-wrap: balance;
+  margin: 0 0 32px;
+}
+.hero-h1-accent {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  color: var(--accent);
+  font-size: calc(1em * var(--hero-h1-accent-scale));
 }
 
 html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 
 body {
   background: var(--bg);
@@ -60,12 +196,6 @@ body {
   to   { transform: scale(1) translate(1%, 1%); }
 }
 
-/* ── Floating pills ── */
-@keyframes float0 { from { transform: translateY(0px);  } to { transform: translateY(-12px); } }
-@keyframes float1 { from { transform: translateY(-6px); } to { transform: translateY(8px);  } }
-@keyframes float2 { from { transform: translateY(4px);  } to { transform: translateY(-10px);} }
-@keyframes float3 { from { transform: translateY(-8px); } to { transform: translateY(6px);  } }
-
 /* ── Trust progress bar ── */
 @keyframes trustProgress {
   from { width: 0%; }
@@ -73,12 +203,20 @@ body {
 }
 
 /* ── Global selection ── */
-::selection { background: rgba(74,138,191,0.25); }
+::selection { background: var(--selection); }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Keyboard / accessibility: clear focus without hurting mouse users */
+:focus:not(:focus-visible) { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+button:focus-visible { border-radius: 4px; }
 </style>
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/logo-arkim.png" data-resource-id="logoMark" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/arkim-text-logo.png" data-resource-id="logoText" />
@@ -110,7 +248,7 @@ body {
 // Exports all sections to window for use in main HTML file
 // Typography: Avenir Next (headings/body) + Cormorant Garamond Italic (accent words) + accent #4A8ABF
 
-const { useState, useEffect, useRef, useCallback } = React;
+const { useState, useEffect, useRef } = React;
 
 // ─── UTILS ──────────────────────────────────────────────────────────────────
 
@@ -128,13 +266,52 @@ function useFadeIn(threshold = 0.12) {
   return [ref, vis];
 }
 
+function useViewport() {
+  const getWidth = () => (typeof window !== 'undefined' ? window.innerWidth : 1440);
+  const [width, setWidth] = useState(getWidth);
+
+  useEffect(() => {
+    const onResize = () => setWidth(getWidth());
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  return {
+    width,
+    isMobile: width <= 768,
+    isTablet: width <= 1024,
+    /** Sticky layers + floating pill cloud only work well above this width */
+    isNarrowLayout: width <= 900,
+  };
+}
+
+function usePrefersReducedMotion() {
+  const getInitial = () =>
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const [reduced, setReduced] = useState(getInitial);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onChange = () => setReduced(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  return reduced;
+}
+
 function FadeIn({ children, delay = 0, y = 28, style = {} }) {
   const [ref, vis] = useFadeIn();
+  const reducedMotion = usePrefersReducedMotion();
+  const effectiveDelay = reducedMotion ? 0 : delay;
   return (
     <div ref={ref} style={{
       opacity: vis ? 1 : 0,
-      transform: vis ? 'none' : `translateY(${y}px)`,
-      transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+      transform: reducedMotion ? 'none' : (vis ? 'none' : `translateY(${y}px)`),
+      transition: reducedMotion
+        ? 'none'
+        : `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${effectiveDelay}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${effectiveDelay}s`,
       ...style
     }}>{children}</div>
   );
@@ -159,7 +336,7 @@ function ImgPlaceholder({ label, aspectRatio = '4/3', style = {} }) {
   return (
     <div style={{
       aspectRatio,
-      background: 'repeating-linear-gradient(45deg, #141414 0, #141414 12px, #111 12px, #111 24px)',
+      background: 'repeating-linear-gradient(45deg, var(--placeholder-a) 0, var(--placeholder-a) 12px, var(--placeholder-b) 12px, var(--placeholder-b) 24px)',
       border: '1px solid var(--border)',
       borderRadius: '12px',
       display: 'flex',
@@ -167,7 +344,7 @@ function ImgPlaceholder({ label, aspectRatio = '4/3', style = {} }) {
       justifyContent: 'center',
       flexDirection: 'column',
       gap: 8,
-      color: 'rgba(245,242,237,0.18)',
+      color: 'var(--placeholder-label)',
       fontFamily: 'monospace',
       fontSize: '12px',
       textAlign: 'center',
@@ -180,53 +357,134 @@ function ImgPlaceholder({ label, aspectRatio = '4/3', style = {} }) {
   );
 }
 
+// ─── THEME ───────────────────────────────────────────────────────────────────
+
+function ThemeToggle({ mobile = false, lightOnDarkHero = false }) {
+  const [theme, setTheme] = useState(() =>
+    document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'
+  );
+  const toggle = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    if (typeof window.__applyArkimTheme === 'function') {
+      window.__applyArkimTheme(next);
+    }
+  };
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-pressed={theme === 'light'}
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      style={{
+        background: 'transparent',
+        color: lightOnDarkHero ? 'rgba(245, 242, 237, 0.78)' : 'var(--fg-muted)',
+        border: lightOnDarkHero ? '1px solid rgba(245, 242, 237, 0.35)' : '1px solid var(--border)',
+        borderRadius: 8,
+        padding: mobile ? '10px 12px' : '8px 12px',
+        minWidth: mobile ? 44 : undefined,
+        minHeight: 44,
+        fontFamily: 'var(--sans)',
+        fontSize: 12,
+        fontWeight: 500,
+        letterSpacing: '0.06em',
+        cursor: 'pointer',
+        flexShrink: 0,
+      }}
+    >
+      {theme === 'dark' ? 'Light' : 'Dark'}
+    </button>
+  );
+}
+
 // ─── NAV ────────────────────────────────────────────────────────────────────
 
 function Nav() {
+  const { isMobile, isTablet } = useViewport();
+  const reducedMotion = usePrefersReducedMotion();
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [lightOnDarkHero, setLightOnDarkHero] = useState(false);
+  const links = [
+    { label: 'Product', href: 'Arkim Product.html' },
+    { label: 'About Us', href: 'Arkim About.html' },
+    { label: 'Resources', href: 'Arkim Resources.html' },
+    { label: 'Contact Us', href: 'Arkim Contact.html' },
+  ];
+
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
     window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
+
+  useEffect(() => {
+    const sync = () => {
+      const light = document.documentElement.getAttribute('data-theme') === 'light';
+      const vh = window.innerHeight || 800;
+      const overHero = window.scrollY < vh * 0.92;
+      const transparentBar = window.scrollY <= 60 && !menuOpen;
+      setLightOnDarkHero(light && overHero && transparentBar);
+    };
+    sync();
+    const onScroll = () => sync();
+    const onTheme = () => sync();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener('arkim-theme', onTheme);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('arkim-theme', onTheme);
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!isMobile) setMenuOpen(false);
+  }, [isMobile]);
+
+  const horizontalPadding = isMobile ? 16 : isTablet ? 24 : 48;
   return (
     <nav style={{
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      padding: '0 48px', height: '68px',
-      background: scrolled ? 'rgba(10,10,10,0.88)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(20px)' : 'none',
-      borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
-      transition: 'all 0.4s ease',
+      background: scrolled || menuOpen ? 'var(--nav-scrim)' : 'transparent',
+      backdropFilter: scrolled || menuOpen ? 'blur(20px)' : 'none',
+      borderBottom: scrolled || menuOpen ? '1px solid var(--border)' : '1px solid transparent',
+      transition: reducedMotion ? 'none' : 'all 0.4s ease',
       zIndex: 200,
     }}>
-      <a href="#" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-        <img src={window.__resources && window.__resources.logoMark || 'https://www.arkim.ai/logo-arkim.png'} alt="Arkim" style={{ height: 28 }} />
-        <img src={window.__resources && window.__resources.logoText || 'https://www.arkim.ai/arkim-text-logo.png'} alt="Arkim" style={{ height: 17, opacity: 0.9 }} />
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: `0 ${horizontalPadding}px`, height: '68px',
+      }}>
+      <a href="#" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', minHeight: 44 }}>
+        <img src={window.__resources && window.__resources.logoMark || 'https://www.arkim.ai/logo-arkim.png'} alt="Arkim" style={{ height: 28, filter: lightOnDarkHero ? 'brightness(0) invert(1)' : 'none' }} />
+        <img src={window.__resources && window.__resources.logoText || 'https://www.arkim.ai/arkim-text-logo.png'} alt="Arkim" style={{ height: 17, opacity: 0.9, filter: lightOnDarkHero ? 'brightness(0) invert(1)' : 'none' }} />
       </a>
-      <div style={{ display: 'flex', gap: 36 }}>
-        {[
-          { label: 'Product', href: 'Arkim Product.html' },
-          { label: 'About Us', href: 'Arkim About.html' },
-          { label: 'Resources', href: 'https://www.arkim.ai/resources/blog' },
-          { label: 'Contact Us', href: 'Arkim Contact.html' },
-        ].map(({ label: l, href }) => {
+
+      {!isMobile && (
+      <div style={{ display: 'flex', gap: isTablet ? 22 : 36 }}>
+        {links.map(({ label: l, href }) => {
           const isExternal = /^https?:\/\//.test(href);
           return (
           <a key={l} href={href} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener noreferrer" : undefined} style={{
             fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 400,
-            color: 'var(--fg-muted)', textDecoration: 'none',
+            color: lightOnDarkHero ? 'rgba(245, 242, 237, 0.78)' : 'var(--fg-muted)', textDecoration: 'none',
             transition: 'color 0.2s',
           }}
-          onMouseEnter={e => e.target.style.color = 'var(--fg)'}
-          onMouseLeave={e => e.target.style.color = 'var(--fg-muted)'}
+          onMouseEnter={e => { e.target.style.color = lightOnDarkHero ? '#f5f2ed' : 'var(--fg)'; }}
+          onMouseLeave={e => { e.target.style.color = lightOnDarkHero ? 'rgba(245, 242, 237, 0.78)' : 'var(--fg-muted)'; }}
           >{l}</a>
         )})}
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)' }}>info@arkim.ai</span>
+      )}
+
+      {!isMobile ? (
+      <div style={{ display: 'flex', alignItems: 'center', gap: isTablet ? 14 : 20 }}>
+        <ThemeToggle lightOnDarkHero={lightOnDarkHero} />
+        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: lightOnDarkHero ? 'rgba(245, 242, 237, 0.72)' : 'var(--fg-muted)' }}>info@arkim.ai</span>
         <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener noreferrer" style={{
           fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 600,
-          background: 'var(--accent)', color: '#000',
+          background: 'var(--accent)', color: lightOnDarkHero ? '#000' : 'var(--btn-fg)',
           padding: '9px 20px', borderRadius: '6px', textDecoration: 'none',
           transition: 'opacity 0.2s',
         }}
@@ -234,6 +492,80 @@ function Nav() {
         onMouseLeave={e => e.target.style.opacity = '1'}
         >Request Demo</a>
       </div>
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <ThemeToggle mobile lightOnDarkHero={lightOnDarkHero} />
+          <button
+            aria-label="Toggle navigation"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(v => !v)}
+            style={{
+              background: 'transparent',
+              color: lightOnDarkHero ? '#f5f2ed' : 'var(--fg)',
+              border: lightOnDarkHero ? '1px solid rgba(245, 242, 237, 0.35)' : '1px solid var(--border)',
+              borderRadius: 8,
+              padding: '10px 12px',
+              minWidth: 44,
+              minHeight: 44,
+              fontFamily: 'var(--sans)',
+              fontSize: 12,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+            }}
+          >
+            {menuOpen ? 'Close' : 'Menu'}
+          </button>
+        </div>
+      )}
+      </div>
+
+      {isMobile && menuOpen && (
+        <div style={{
+          padding: `8px ${horizontalPadding}px 18px`,
+          borderTop: '1px solid var(--border)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 6,
+        }}>
+          {links.map(({ label, href }) => {
+            const isExternal = /^https?:\/\//.test(href);
+            return (
+              <a
+                key={label}
+                href={href}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                style={{
+                  fontFamily: 'var(--sans)',
+                  fontSize: '16px',
+                  color: 'var(--fg)',
+                  textDecoration: 'none',
+                  padding: '12px 0',
+                  borderBottom: '1px solid var(--border)',
+                }}
+              >
+                {label}
+              </a>
+            );
+          })}
+          <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener noreferrer" style={{
+            fontFamily: 'var(--sans)',
+            fontSize: '15px',
+            fontWeight: 600,
+            background: 'var(--accent)',
+            color: 'var(--btn-fg)',
+            padding: '14px 18px',
+            borderRadius: '8px',
+            textDecoration: 'none',
+            display: 'inline-flex',
+            justifyContent: 'center',
+            marginTop: 8,
+            minHeight: 44,
+            alignItems: 'center',
+          }}>Request Demo</a>
+        </div>
+      )}
     </nav>
   );
 }
@@ -242,51 +574,36 @@ function Nav() {
 
 function Hero() {
   return (
-    <div style={{
+    <div className="hero-cinematic" style={{
       position: 'relative', minHeight: '100vh',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
       textAlign: 'center', padding: '140px 48px 100px',
       overflow: 'hidden',
     }}>
-      {/* Solid black background */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: '#000' }} />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: 'var(--hero-bg)' }} />
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', textAlign: 'center' }}>
         <FadeIn delay={0.1}>
-          <div style={{
-            fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 500,
-            letterSpacing: '0.18em', textTransform: 'uppercase',
-            color: 'var(--accent)', marginBottom: '32px',
-          }}>The Unified Industrial Nervous System</div>
-        </FadeIn>
-        <FadeIn delay={0.25}>
-          <h1 style={{
-            fontFamily: 'var(--sans)',
-            fontSize: 'clamp(40px, 5.5vw, 76px)',
-            lineHeight: 1.05,
-            letterSpacing: '0.01em',
-            marginBottom: '32px',
-            textWrap: 'balance',
-          }}>
-            <span style={{ fontWeight: 800, color: '#fff', display: 'block' }}>Industrial maintenance,</span>
-            <span style={{ fontWeight: 400, color: 'var(--headline-accent)', display: 'block' }}>re-leveraged.</span>
+          <h1 className="hero-h1">
+            <span style={{ fontWeight: 800, color: 'var(--hero-title)', display: 'block' }}>Industrial maintenance,</span>
+            <span className="hero-h1-accent" style={{ display: 'block' }}>re-leveraged.</span>
           </h1>
         </FadeIn>
-        <FadeIn delay={0.4}>
+        <FadeIn delay={0.25}>
           <p style={{
             fontFamily: 'var(--sans)', fontSize: 'clamp(15px, 1.3vw, 16px)',
-            fontWeight: 600, color: 'var(--text-muted)',
+            fontWeight: 600, color: 'var(--fg-muted)',
             lineHeight: 1.65, maxWidth: '580px', margin: '0 auto 42px',
             textWrap: 'pretty',
           }}>
             Arkim gives any technician senior-level knowledge from day one — using the phone in their pocket as the diagnostic sensor.
           </p>
         </FadeIn>
-        <FadeIn delay={0.55}>
+        <FadeIn delay={0.4}>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="#cta" style={{
               fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600,
-              background: 'var(--accent)', color: '#000',
+              background: 'var(--accent)', color: 'var(--btn-fg)',
               padding: '14px 30px', borderRadius: '6px', textDecoration: 'none',
               transition: 'opacity 0.2s, transform 0.15s',
               display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -296,27 +613,27 @@ function Hero() {
             >Request a Demo →</a>
             <a href="#layers" style={{
               fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 500,
-              color: 'var(--fg)', border: '1px solid rgba(245,242,237,0.2)',
+              color: 'var(--fg)', border: '1px solid var(--outline)',
               padding: '14px 30px', borderRadius: '6px', textDecoration: 'none',
               background: 'transparent',
               transition: 'border-color 0.2s, background 0.2s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(245,242,237,0.4)'; e.currentTarget.style.background='rgba(245,242,237,0.04)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(245,242,237,0.2)'; e.currentTarget.style.background='transparent'; }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor='var(--outline-hover)'; e.currentTarget.style.background='var(--outline-fill)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor='var(--outline)'; e.currentTarget.style.background='transparent'; }}
             >See how it works</a>
           </div>
         </FadeIn>
-        <FadeIn delay={0.7}>
+        <FadeIn delay={0.55}>
           <div style={{
             marginTop: '60px', display: 'flex', alignItems: 'center',
             justifyContent: 'center', gap: '20px', flexWrap: 'wrap',
           }}>
             {['Backed by NVIDIA Inception', 'Databricks Program', 'AWS Activate'].map((b, i) => (
               <span key={i} style={{
-                fontFamily: 'var(--sans)', fontSize: '12px', color: 'rgba(245,242,237,0.3)',
+                fontFamily: 'var(--sans)', fontSize: '12px', color: 'var(--fg-ghost)',
                 display: 'flex', alignItems: 'center', gap: 8,
               }}>
-                {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(245,242,237,0.2)', display: 'inline-block' }}></span>}
+                {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'var(--outline)', display: 'inline-block' }}></span>}
                 {b}
               </span>
             ))}
@@ -330,11 +647,26 @@ function Hero() {
 // ─── INDUSTRIES STRIP ───────────────────────────────────────────────────────
 
 function IndustriesStrip() {
+  const reducedMotion = usePrefersReducedMotion();
   const items = ['Pharmaceutical CDMOs', 'Food & Beverage Producers', 'Contract Manufacturers', 'Industrial OEMs', 'Maintenance Service Companies', 'Chemical Processing Plants', 'Automotive Suppliers', 'Energy & Utilities'];
   const all = [...items, ...items, ...items];
   return (
     <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '40px 0', overflow: 'hidden' }}>
-      <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(245,242,237,0.25)', textAlign: 'center', marginBottom: '24px' }}>Built For</div>
+      <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--fg-faint)', textAlign: 'center', marginBottom: '24px' }}>Built For</div>
+      {reducedMotion ? (
+        <div style={{
+          display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
+          gap: '10px 18px', padding: '0 16px', maxWidth: '920px', margin: '0 auto',
+        }}>
+          {items.map((item, i) => (
+            <span key={i} style={{
+              fontFamily: 'var(--serif)', fontSize: '18px', fontWeight: 400,
+              color: 'var(--fg-muted)', textAlign: 'center',
+              fontStyle: i % 3 === 1 ? 'italic' : 'normal',
+            }}>{item}</span>
+          ))}
+        </div>
+      ) : (
       <div style={{ display: 'flex', gap: '48px', width: 'max-content', animation: 'marquee 50s linear infinite' }}>
         {all.map((item, i) => (
           <span key={i} style={{
@@ -344,6 +676,7 @@ function IndustriesStrip() {
           }}>{item}</span>
         ))}
       </div>
+      )}
     </div>
   );
 }
@@ -351,9 +684,11 @@ function IndustriesStrip() {
 // ─── THE LEVER ──────────────────────────────────────────────────────────────
 
 function TheLever() {
+  const { isMobile, isTablet } = useViewport();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
   return (
-    <section style={{ padding: '120px 80px', maxWidth: '1300px', margin: '0 auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '100px', alignItems: 'start' }}>
+    <section style={{ padding: `96px ${sectionPaddingX}px`, maxWidth: '1300px', margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '42px' : '100px', alignItems: 'start' }}>
         <FadeIn>
           <div>
             <Eyebrow>Why Arkim</Eyebrow>
@@ -418,10 +753,15 @@ const LAYERS = [
 ];
 
 function ThreeLayers() {
+  const { isNarrowLayout, isMobile, isTablet } = useViewport();
+  const reducedMotion = usePrefersReducedMotion();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
+  const panelPad = isTablet && !isNarrowLayout ? 40 : 80;
   const [active, setActive] = useState(0);
   const containerRef = useRef(null);
 
   useEffect(() => {
+    if (isNarrowLayout || reducedMotion) return;
     const onScroll = () => {
       if (!containerRef.current) return;
       const { top, height } = containerRef.current.getBoundingClientRect();
@@ -432,11 +772,55 @@ function ThreeLayers() {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [isNarrowLayout, reducedMotion]);
 
   const layer = LAYERS[active];
   // Alternate: even index = text left / visual right; odd = visual left / text right
   const isReversed = active % 2 === 1;
+
+  if (isNarrowLayout) {
+    return (
+      <section id="layers" style={{ padding: `72px ${sectionPaddingX}px`, borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+        <div style={{ maxWidth: '720px', margin: '0 auto' }}>
+          <Eyebrow>Three Layers. One Platform.</Eyebrow>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', lineHeight: 1.6, marginBottom: '28px', textWrap: 'pretty' }}>
+            Each layer creates value on its own. Together, they form the industrial nervous system.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {LAYERS.map((l, i) => (
+              <article
+                key={i}
+                style={{
+                  border: '1px solid var(--border)',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  background: 'var(--bg-card)',
+                }}
+              >
+                <div style={{ padding: '22px 20px 18px' }}>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.1em', color: 'var(--accent)', fontWeight: 500, marginBottom: '10px' }}>{l.num}</div>
+                  <h3 style={{
+                    fontFamily: 'var(--sans)',
+                    fontSize: 'clamp(18px, 4.5vw, 22px)',
+                    fontWeight: 700,
+                    color: 'var(--fg)',
+                    letterSpacing: '-0.01em',
+                    lineHeight: 1.2,
+                    marginBottom: '10px',
+                  }}>{l.title}</h3>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--accent)', fontStyle: 'italic', marginBottom: '12px' }}>{l.sub}</div>
+                  <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{l.body}</p>
+                </div>
+                <div style={{ borderTop: '1px solid var(--border)', padding: '16px', background: 'var(--layer-footer-bg)' }}>
+                  <ImgPlaceholder label={l.visual} aspectRatio="4/3" />
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <div id="layers" ref={containerRef} style={{ height: '300vh', position: 'relative' }}>
@@ -448,7 +832,7 @@ function ThreeLayers() {
       }}>
         {/* Text panel */}
         <div style={{
-          width: '50%', padding: '0 80px',
+          width: '50%', padding: `0 ${panelPad}px`,
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
           borderRight: isReversed ? 'none' : '1px solid var(--border)',
           borderLeft: isReversed ? '1px solid var(--border)' : 'none',
@@ -499,7 +883,7 @@ function ThreeLayers() {
         </div>
         {/* Visual panel */}
         <div style={{
-          width: '50%', padding: '0 80px',
+          width: '50%', padding: `0 ${panelPad}px`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           background: 'var(--bg-card)',
         }}>
@@ -545,8 +929,11 @@ const PERSONAS = [
 ];
 
 function Personas() {
+  const { isMobile, isTablet } = useViewport();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
+  const columns = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)';
   return (
-    <section style={{ padding: '120px 80px', maxWidth: '1300px', margin: '0 auto' }}>
+    <section style={{ padding: `96px ${sectionPaddingX}px`, maxWidth: '1300px', margin: '0 auto' }}>
       <FadeIn>
         <Eyebrow>Who Uses Arkim</Eyebrow>
         <h2 style={{
@@ -557,16 +944,16 @@ function Personas() {
           Operators. Technicians.<br />Management. One platform.
         </h2>
       </FadeIn>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: columns, gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
         {PERSONAS.map((p, i) => (
           <FadeIn key={i} delay={i * 0.12}>
             <div style={{
-              background: 'var(--bg-card)', padding: '48px 40px',
+              background: 'var(--bg-card)', padding: isMobile ? '30px 24px' : '48px 40px',
               height: '100%',
               transition: 'background 0.25s',
             }}
-            onMouseEnter={e => e.currentTarget.style.background = '#1a1a1a'}
-            onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-card)'}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-hover)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-card)'; }}
             >
               <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.12em', color: 'var(--fg-muted)', textTransform: 'uppercase', marginBottom: '12px' }}>{p.context}</div>
               <div style={{ fontFamily: 'var(--sans)', fontSize: '28px', fontWeight: 700, marginBottom: '36px', letterSpacing: '0.02em' }}>{p.role}</div>
@@ -588,99 +975,15 @@ function Personas() {
   );
 }
 
-// ─── CAPABILITY CLOUD ────────────────────────────────────────────────────────
-
-const PILLS = [
-  { text: 'Diagnostic Chat Assistant', x: 5, y: 8 },
-  { text: 'Equipment Onboarding', x: 28, y: 22 },
-  { text: 'Daily Compliance Checks', x: 58, y: 6 },
-  { text: 'Tribal Knowledge Capture', x: 72, y: 28 },
-  { text: 'OEM Baseline Scheduling', x: 14, y: 48 },
-  { text: 'Multimodal RAG', x: 42, y: 42 },
-  { text: 'CMMS/ERP Integration', x: 68, y: 52 },
-  { text: 'Nameplate Extraction Agent', x: 3, y: 72 },
-  { text: 'Document Ingestion Agent', x: 30, y: 68 },
-  { text: 'Repair Documentation', x: 58, y: 74 },
-  { text: 'Audio Diagnostic Capture', x: 76, y: 68 },
-  { text: 'Video Symptom Capture', x: 18, y: 88 },
-  { text: 'Maintenance Schedule Optimization', x: 45, y: 84 },
-  { text: 'Operator Mobile App', x: 70, y: 88 },
-  { text: 'Technician Mobile App', x: 87, y: 44 },
-];
-
-function CapabilityCloud() {
-  return (
-    <section style={{ padding: '120px 80px', maxWidth: '1300px', margin: '0 auto' }}>
-      <FadeIn style={{ textAlign: 'center', marginBottom: '80px' }}>
-        <Eyebrow center>What's Included</Eyebrow>
-        <h2 style={{
-          fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 44px)',
-          fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', textWrap: 'balance',
-        }}>
-          One platform.<br />Every layer of your maintenance operation.
-        </h2>
-      </FadeIn>
-      <div style={{
-        position: 'relative', height: '480px',
-        border: '1px solid var(--border)', borderRadius: '20px',
-        background: 'var(--bg-card)', overflow: 'hidden',
-      }}>
-        {/* Glow center */}
-        <div style={{
-          position: 'absolute', top: '50%', left: '50%',
-          transform: 'translate(-50%,-50%)',
-          width: '400px', height: '300px',
-          background: 'radial-gradient(ellipse, rgba(74,138,191,0.06) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
-        {PILLS.map((pill, i) => (
-          <div key={i} style={{
-            position: 'absolute',
-            left: `${pill.x}%`,
-            top: `${pill.y}%`,
-            animation: `float${i % 4} ${5 + (i * 0.4) % 3}s ease-in-out ${i * 0.3}s infinite alternate`,
-          }}>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '9px 18px',
-              border: '1px solid var(--border)',
-              borderRadius: '100px',
-              fontFamily: 'var(--sans)', fontSize: '13px', fontWeight: 400,
-              color: 'var(--fg-muted)',
-              background: 'rgba(10,10,10,0.8)',
-              backdropFilter: 'blur(8px)',
-              whiteSpace: 'nowrap',
-              cursor: 'default',
-              transition: 'border-color 0.3s, color 0.3s, box-shadow 0.3s',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.borderColor = 'var(--accent)';
-              e.currentTarget.style.color = 'var(--fg)';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(74,138,191,0.2)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.borderColor = 'var(--border)';
-              e.currentTarget.style.color = 'var(--fg-muted)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-            >
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', opacity: 0.6 }} />
-              {pill.text}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 // ─── INTEGRATION STRIP ──────────────────────────────────────────────────────
 
 function IntegrationStrip() {
+  const { isMobile, isTablet } = useViewport();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
   const systems = ['IBM Maximo', 'Fiix', 'UpKeep', 'Limble CMMS', 'MaintainX', 'Oracle EAM', 'Fleetio', 'Brightly', 'SAP PM', 'eMaint'];
   return (
     <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '80px 0' }}>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 80px', marginBottom: '48px' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `0 ${sectionPaddingX}px`, marginBottom: '48px' }}>
         <FadeIn>
           <Eyebrow>Coexists With Your Stack</Eyebrow>
           <h2 style={{
@@ -696,10 +999,10 @@ function IntegrationStrip() {
           </p>
         </FadeIn>
       </div>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 80px' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `0 ${sectionPaddingX}px` }}>
         <FadeIn delay={0.1}>
           <div style={{
-            display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)',
+            display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : isTablet ? 'repeat(3, 1fr)' : 'repeat(5, 1fr)',
             gap: '1px', background: 'var(--border)',
             border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
           }}>
@@ -708,11 +1011,11 @@ function IntegrationStrip() {
                 background: 'var(--bg-card)', padding: '32px 20px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontFamily: 'var(--serif)', fontSize: '18px', fontWeight: 400,
-                color: 'rgba(245,242,237,0.3)', textAlign: 'center',
+                color: 'var(--fg-ghost)', textAlign: 'center',
                 transition: 'color 0.25s, background 0.25s', cursor: 'default',
               }}
-              onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.background = '#1a1a1a'; }}
-              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(245,242,237,0.3)'; e.currentTarget.style.background = 'var(--bg-card)'; }}
+              onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.background = 'var(--card-hover)'; }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'var(--fg-ghost)'; e.currentTarget.style.background = 'var(--bg-card)'; }}
               >{s}</div>
             ))}
           </div>
@@ -725,8 +1028,10 @@ function IntegrationStrip() {
 // ─── TIME TO VALUE ──────────────────────────────────────────────────────────
 
 function TimeToValue() {
+  const { isMobile, isTablet } = useViewport();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
   return (
-    <section style={{ padding: '120px 80px', maxWidth: '1300px', margin: '0 auto' }}>
+    <section style={{ padding: `96px ${sectionPaddingX}px`, maxWidth: '1300px', margin: '0 auto' }}>
       <FadeIn>
         <Eyebrow>Why Not Sensors</Eyebrow>
         <h2 style={{
@@ -735,7 +1040,7 @@ function TimeToValue() {
           marginBottom: '64px', textWrap: 'balance',
         }}>ROI in week one.<br /><em style={{ fontStyle: 'normal', color: 'var(--fg-muted)' }}>Not month six.</em></h2>
       </FadeIn>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'stretch' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '24px', alignItems: 'stretch' }}>
         {[
           {
             label: 'Sensor-deployment platforms',
@@ -760,8 +1065,8 @@ function TimeToValue() {
         ].map((col, ci) => (
           <FadeIn key={ci} delay={ci * 0.15}>
             <div style={{
-              background: col.accent ? 'rgba(74,138,191,0.06)' : 'var(--bg-card)',
-              border: `1px solid ${col.accent ? 'rgba(74,138,191,0.3)' : 'var(--border)'}`,
+              background: col.accent ? 'var(--accent-soft)' : 'var(--bg-card)',
+              border: `1px solid ${col.accent ? 'var(--accent-border)' : 'var(--border)'}`,
               borderRadius: '16px', padding: '48px 40px', height: '100%',
             }}>
               <div style={{
@@ -804,40 +1109,52 @@ const TRUST_CARDS = [
 ];
 
 function ComplianceTrust() {
+  const { isMobile, isTablet } = useViewport();
+  const reducedMotion = usePrefersReducedMotion();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
   const [active, setActive] = useState(0);
   const timerRef = useRef(null);
   useEffect(() => {
+    if (reducedMotion) return;
     timerRef.current = setInterval(() => setActive(a => (a + 1) % TRUST_CARDS.length), 3000);
     return () => clearInterval(timerRef.current);
-  }, []);
+  }, [reducedMotion]);
   const handleClick = (i) => {
     clearInterval(timerRef.current);
     setActive(i);
-    timerRef.current = setInterval(() => setActive(a => (a + 1) % TRUST_CARDS.length), 3000);
+    if (!reducedMotion) {
+      timerRef.current = setInterval(() => setActive(a => (a + 1) % TRUST_CARDS.length), 3000);
+    }
   };
   const card = TRUST_CARDS[active];
   return (
     <div style={{ padding: '120px 0', borderTop: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 80px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: `0 ${sectionPaddingX}px` }}>
         <FadeIn style={{ textAlign: 'center', marginBottom: '60px' }}>
           <Eyebrow center>Enterprise Ready</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 42px)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.1, textWrap: 'balance' }}>Built for regulated industries.</h2>
         </FadeIn>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.6fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
           <div style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
             {TRUST_CARDS.map((c, i) => (
               <button key={c.badge} onClick={() => handleClick(i)} style={{
-                background: active === i ? 'rgba(74,138,191,0.06)' : 'transparent',
+                background: active === i ? 'var(--accent-soft)' : 'transparent',
                 border: 'none', cursor: 'pointer', padding: '22px 28px',
                 borderBottom: i < TRUST_CARDS.length - 1 ? '1px solid var(--border)' : 'none',
                 borderLeft: active === i ? '3px solid var(--accent)' : '3px solid transparent',
                 textAlign: 'left', transition: 'background 0.15s',
               }}>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: active === i ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, marginBottom: '4px' }}>{c.badge}</div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, color: active === i ? 'var(--fg)' : 'rgba(245,242,237,0.35)', lineHeight: 1.2 }}>{c.title}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, color: active === i ? 'var(--fg)' : 'var(--fg-dimmer)', lineHeight: 1.2 }}>{c.title}</div>
                 {active === i && (
                   <div style={{ marginTop: 10, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
-                    <div key={active} style={{ height: '100%', background: 'var(--accent)', borderRadius: 2, animation: 'trustProgress 3s linear forwards' }} />
+                    <div key={active} style={{
+                      height: '100%',
+                      background: 'var(--accent)',
+                      borderRadius: 2,
+                      width: reducedMotion ? '100%' : undefined,
+                      animation: reducedMotion ? 'none' : 'trustProgress 3s linear forwards',
+                    }} />
                   </div>
                 )}
               </button>
@@ -857,9 +1174,11 @@ function ComplianceTrust() {
 // ─── ROADMAP TEASE ───────────────────────────────────────────────────────────
 
 function RoadmapTease() {
+  const { isMobile, isTablet } = useViewport();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
   return (
-    <section style={{ padding: '120px 80px', maxWidth: '1300px', margin: '0 auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '100px', alignItems: 'center' }}>
+    <section style={{ padding: `96px ${sectionPaddingX}px`, maxWidth: '1300px', margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '32px' : '100px', alignItems: 'center' }}>
         <FadeIn>
           <Eyebrow>What's Next</Eyebrow>
           <h2 style={{
@@ -872,7 +1191,7 @@ function RoadmapTease() {
             borderRadius: '100px', fontFamily: 'var(--sans)', fontSize: '12px',
             color: 'var(--fg-muted)', marginTop: '24px',
           }}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#3b82f6' }} />
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--status-dot)' }} />
             In development
           </div>
         </FadeIn>
@@ -892,21 +1211,23 @@ function RoadmapTease() {
 // ─── FINAL CTA ───────────────────────────────────────────────────────────────
 
 function FinalCTA() {
+  const { isMobile, isTablet } = useViewport();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
   return (
     <div id="cta" style={{
       borderTop: '1px solid var(--border)', position: 'relative', overflow: 'hidden',
-      background: 'linear-gradient(to bottom, #0A0A0A, #0f0d0b)',
+      background: 'linear-gradient(to bottom, var(--final-cta-1), var(--final-cta-2))',
     }}>
       <div style={{
         position: 'absolute', top: '50%', left: '50%',
         transform: 'translate(-50%,-50%)',
         width: '700px', height: '400px',
-        background: 'radial-gradient(ellipse, rgba(74,138,191,0.08) 0%, transparent 70%)',
+        background: 'radial-gradient(ellipse, var(--radial-accent) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
       <div style={{
-        maxWidth: '1300px', margin: '0 auto', padding: '120px 80px',
-        display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '100px', alignItems: 'center',
+        maxWidth: '1300px', margin: '0 auto', padding: `96px ${sectionPaddingX}px`,
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '42px' : '100px', alignItems: 'center',
         position: 'relative',
       }}>
         <FadeIn>
@@ -931,7 +1252,7 @@ function FinalCTA() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start' }}>
             <a href="https://www.arkim.ai/contact?tab=demo" style={{
               fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600,
-              background: 'var(--accent)', color: '#000',
+              background: 'var(--accent)', color: 'var(--btn-fg)',
               padding: '15px 32px', borderRadius: '6px', textDecoration: 'none',
               display: 'inline-flex', alignItems: 'center', gap: 8,
               transition: 'opacity 0.2s, transform 0.15s',
@@ -953,13 +1274,15 @@ function FinalCTA() {
 // ─── FOOTER ──────────────────────────────────────────────────────────────────
 
 function Footer() {
+  const { isMobile, isTablet } = useViewport();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
   return (
-    <footer style={{ borderTop: '1px solid var(--border)', padding: '64px 80px 40px', maxWidth: '1300px', margin: '0 auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', gap: '60px', marginBottom: '60px' }}>
+    <footer style={{ borderTop: '1px solid var(--border)', padding: `64px ${sectionPaddingX}px 40px`, maxWidth: '1300px', margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? '1.5fr 1fr 1fr' : '2fr 1fr 1fr 1fr 1fr', gap: '40px', marginBottom: '60px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src={window.__resources && window.__resources.logoMark || 'https://www.arkim.ai/logo-arkim.png'} alt="Arkim" style={{ height: 26 }} />
-            <img src={window.__resources && window.__resources.logoText || 'https://www.arkim.ai/arkim-text-logo.png'} alt="Arkim" style={{ height: 16, opacity: 0.8 }} />
+            <img src={window.__resources && window.__resources.logoMark || 'https://www.arkim.ai/logo-arkim.png'} alt="Arkim" style={{ height: 26 }} loading="lazy" decoding="async" />
+            <img src={window.__resources && window.__resources.logoText || 'https://www.arkim.ai/arkim-text-logo.png'} alt="Arkim" style={{ height: 16, opacity: 0.8 }} loading="lazy" decoding="async" />
           </div>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>
             The unified industrial nervous system. Powered by AI and real data.
@@ -992,7 +1315,7 @@ function Footer() {
           {
             title: 'Resources',
             links: [
-              { label: 'Blog', href: 'https://www.arkim.ai/resources/blog' },
+              { label: 'Resources', href: 'Arkim Resources.html' },
               { label: 'Case Studies', href: 'https://www.arkim.ai/resources/case-studies' },
               { label: 'Testimonials', href: 'https://www.arkim.ai/resources/testimonials' },
             ],
@@ -1014,7 +1337,7 @@ function Footer() {
           },
         ].map((col, i) => (
           <div key={i}>
-            <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(245,242,237,0.25)', marginBottom: '20px' }}>{col.title}</div>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--fg-faint)', marginBottom: '20px' }}>{col.title}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {col.links.map((l, j) => (
                 <a key={j} href={l.href} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
@@ -1026,17 +1349,24 @@ function Footer() {
           </div>
         ))}
       </div>
-      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'rgba(245,242,237,0.25)' }}>© 2026 Arkim AI. All rights reserved.</span>
+      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 20 : 0, justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'center' }}>
+        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-faint)' }}>© 2026 Arkim AI. All rights reserved.</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           {[
             { src: (window.__resources && window.__resources.nvidiaLogo) || 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA' },
             { src: (window.__resources && window.__resources.databricksLogo) || 'https://www.arkim.ai/images/databricks-logo.svg', alt: 'Databricks' },
             { src: (window.__resources && window.__resources.awsLogo) || 'https://www.arkim.ai/images/aws-activate.svg', alt: 'AWS' },
           ].map((p, i) => (
-            <img key={i} src={p.src} alt={p.alt} style={{ height: 20, opacity: 0.25, filter: 'brightness(10)', transition: 'opacity 0.2s' }}
-            onMouseEnter={e => e.target.style.opacity='0.55'}
-            onMouseLeave={e => e.target.style.opacity='0.25'}
+            <img key={i} src={p.src} alt={p.alt} style={{
+              height: 20,
+              opacity: 'var(--partner-logo-opacity)',
+              filter: 'var(--partner-logo-filter)',
+              transition: 'opacity 0.2s',
+            }}
+            loading="lazy"
+            decoding="async"
+            onMouseEnter={e => { e.target.style.opacity = 'var(--partner-logo-hover-opacity)'; }}
+            onMouseLeave={e => { e.target.style.opacity = 'var(--partner-logo-opacity)'; }}
             />
           ))}
         </div>
@@ -1048,8 +1378,10 @@ function Footer() {
 // ─── PRODUCT VIDEO ──────────────────────────────────────────────────────────
 
 function ProductVideo() {
+  const { isMobile, isTablet } = useViewport();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
   return (
-    <section style={{ padding: '100px 80px', maxWidth: '1300px', margin: '0 auto' }}>
+    <section style={{ padding: `88px ${sectionPaddingX}px`, maxWidth: '1300px', margin: '0 auto' }}>
       <FadeIn style={{ textAlign: 'center', marginBottom: '48px' }}>
         <Eyebrow center>See It In Action</Eyebrow>
         <h2 style={{
@@ -1063,15 +1395,16 @@ function ProductVideo() {
         <div style={{
           position: 'relative', borderRadius: '16px', overflow: 'hidden',
           border: '1px solid var(--border)',
-          background: '#000',
+          background: 'var(--media-bg)',
           aspectRatio: '16/9',
-          boxShadow: '0 40px 100px rgba(0,0,0,0.6)',
+          boxShadow: '0 40px 100px var(--media-shadow)',
         }}>
           <iframe
             src="https://player.vimeo.com/video/1177525108?autoplay=0&title=0&byline=0&portrait=0&color=4A8ABF"
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
             allow="autoplay; fullscreen; picture-in-picture"
             allowFullScreen
+            loading="lazy"
             title="Arkim AI Product Demo"
           />
         </div>
@@ -1083,13 +1416,14 @@ function ProductVideo() {
 // ─── EXPORT ──────────────────────────────────────────────────────────────────
 
 Object.assign(window, {
+  useViewport,
+  usePrefersReducedMotion,
   ArkimNav: Nav,
   ArkimHero: Hero,
   ArkimIndustriesStrip: IndustriesStrip,
   ArkimTheLever: TheLever,
   ArkimThreeLayers: ThreeLayers,
   ArkimPersonas: Personas,
-  ArkimCapabilityCloud: CapabilityCloud,
   ArkimProductVideo: ProductVideo,
   ArkimIntegrationStrip: IntegrationStrip,
   ArkimTimeToValue: TimeToValue,
@@ -1103,17 +1437,19 @@ Object.assign(window, {
 
 <!-- App -->
 <script type="text/babel">
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
 function AnnouncementBar({ onDismiss }) {
+  const { isMobile } = useViewport();
   return (
     <div style={{
-      background: '#07101a', borderBottom: '1px solid rgba(74,138,191,0.2)',
+      background: 'var(--announce-bg)', borderBottom: '1px solid var(--announce-border)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: '10px 48px', gap: 16, position: 'relative',
+      padding: isMobile ? '10px 44px 10px 16px' : '10px 48px', gap: 12, position: 'relative',
+      minHeight: 44,
     }}>
       <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', flexShrink: 0 }} />
-      <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)' }}>
+      <span style={{ fontFamily: 'var(--sans)', fontSize: isMobile ? '12px' : '13px', color: 'var(--fg-muted)', lineHeight: 1.45 }}>
         Arkim AI joins the{' '}
         <a href="https://www.nvidia.com/en-us/startups/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--fg)', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
           NVIDIA Inception Program
@@ -1124,7 +1460,7 @@ function AnnouncementBar({ onDismiss }) {
       <button onClick={onDismiss} style={{
         position: 'absolute', right: 20, background: 'none',
         border: 'none', color: 'var(--fg-muted)', cursor: 'pointer',
-        fontSize: '18px', lineHeight: 1, padding: '4px',
+        fontSize: '18px', lineHeight: 1, padding: '8px', minWidth: 44, minHeight: 44,
       }}>×</button>
     </div>
   );
@@ -1135,17 +1471,32 @@ function Divider() {
 }
 
 function App() {
+  const headerRef = useRef(null);
   const [announceVisible, setAnnounceVisible] = useState(true);
+  const [headerHeight, setHeaderHeight] = useState(109);
+
+  useEffect(() => {
+    if (!headerRef.current) return;
+    const readHeight = () => setHeaderHeight(headerRef.current ? headerRef.current.getBoundingClientRect().height : 109);
+    readHeight();
+    const observer = new ResizeObserver(readHeight);
+    observer.observe(headerRef.current);
+    window.addEventListener('resize', readHeight, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', readHeight);
+    };
+  }, [announceVisible]);
 
   return (
     <div>
       {/* Fixed header: announcement bar + nav together so they never overlap */}
-      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
+      <div ref={headerRef} style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
         {announceVisible && <AnnouncementBar onDismiss={() => setAnnounceVisible(false)} />}
         <ArkimNav />
       </div>
       {/* Spacer so content starts below fixed header */}
-      <div style={{ height: announceVisible ? 109 : 68 }} />
+      <div style={{ height: headerHeight }} />
       <ArkimHero />
       <ArkimIndustriesStrip />
       <ArkimProductVideo />

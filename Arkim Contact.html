@@ -37,6 +37,26 @@
   --text-muted: rgba(255,255,255,0.72);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: 'Inter', 'Avenir Next', 'Avenir', Helvetica, sans-serif;
+  --hero-h1-size: clamp(32px, 4.5vw, 60px);
+  --hero-h1-line-height: 1.04;
+  --hero-h1-letter-spacing: 0.01em;
+  --hero-h1-accent-scale: 1.2;
+}
+.hero-h1 {
+  font-family: var(--sans);
+  font-size: var(--hero-h1-size);
+  font-weight: 800;
+  line-height: var(--hero-h1-line-height);
+  letter-spacing: var(--hero-h1-letter-spacing);
+  text-wrap: balance;
+  margin: 0 0 32px;
+}
+.hero-h1-accent {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  color: var(--accent);
+  font-size: calc(1em * var(--hero-h1-accent-scale));
 }
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -110,7 +130,7 @@ function Nav() {
         <img src="https://www.arkim.ai/arkim-text-logo.png" alt="Arkim" style={{ height: 17, opacity: 0.9 }} />
       </a>
       <div style={{ display: 'flex', gap: 32 }}>
-        {[{ label: 'Product', href: 'Arkim Product.html' }, { label: 'About Us', href: 'Arkim About.html' }, { label: 'Resources', href: 'https://www.arkim.ai/resources/blog' }, { label: 'Contact Us', href: 'Arkim Contact.html' }].map(({ label, href }) => (
+        {[{ label: 'Product', href: 'Arkim Product.html' }, { label: 'About Us', href: 'Arkim About.html' }, { label: 'Resources', href: 'Arkim Resources.html' }, { label: 'Contact Us', href: 'Arkim Contact.html' }].map(({ label, href }) => (
           <a key={label} href={href} style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: label === 'Contact Us' ? 600 : 400, color: label === 'Contact Us' ? 'var(--fg)' : 'var(--fg-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
           onMouseEnter={e => e.target.style.color='var(--fg)'}
           onMouseLeave={e => e.target.style.color= label === 'Contact Us' ? 'var(--fg)' : 'var(--fg-muted)'}
@@ -130,10 +150,9 @@ function Hero() {
     <div style={{ minHeight: '50vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '160px 48px 80px', position: 'relative', overflow: 'hidden', background: '#000' }}>
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '600px', height: '350px', background: 'radial-gradient(ellipse, rgba(255,107,26,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'relative', maxWidth: '760px', animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
-        <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '20px' }}>Contact Us</div>
-        <h1 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(30px, 4vw, 56px)', fontWeight: 800, lineHeight: 1.05, letterSpacing: '0.01em', marginBottom: '32px', textWrap: 'balance' }}>
+        <h1 className="hero-h1">
           Let's talk about your{' '}
-          <span style={{ fontWeight: 400, color: 'var(--headline-accent)', display: 'inline' }}>facility.</span>
+          <span className="hero-h1-accent" style={{ display: 'inline' }}>facility.</span>
         </h1>
         <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(15px, 1.3vw, 16px)', fontWeight: 600, color: 'var(--text-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>
           30 minutes. No pitch deck. An honest conversation about your maintenance operation and whether Arkim is the right fit.
@@ -263,7 +282,7 @@ function Footer() {
         </div>
         {[
           { title: 'Product', links: [{ label: 'Product Overview', href: 'Arkim Product.html' }, { label: 'Request a Demo', href: 'https://www.arkim.ai/contact?tab=demo' }] },
-          { title: 'Resources', links: [{ label: 'Blog', href: 'https://www.arkim.ai/resources/blog' }, { label: 'Case Studies', href: 'https://www.arkim.ai/resources/case-studies' }] },
+          { title: 'Resources', links: [{ label: 'Resources', href: 'Arkim Resources.html' }, { label: 'Case Studies', href: 'https://www.arkim.ai/resources/case-studies' }] },
           { title: 'Company', links: [{ label: 'About Us', href: 'Arkim About.html' }, { label: 'Contact Us', href: 'Arkim Contact.html' }] },
           { title: 'Partners', links: [{ label: 'NVIDIA Inception', href: 'https://www.nvidia.com/en-us/startups/' }, { label: 'Databricks', href: 'https://www.databricks.com/product/startups' }, { label: 'AWS Activate', href: 'https://aws.amazon.com/activate/' }] },
         ].map((col, i) => (

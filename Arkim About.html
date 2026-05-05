@@ -37,6 +37,27 @@
   --text-muted: rgba(255,255,255,0.72);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: 'Inter', 'Avenir Next', 'Avenir', Helvetica, sans-serif;
+  /* Hero h1: primary (sans) + serif accent — single source of truth */
+  --hero-h1-size: clamp(32px, 4.5vw, 60px);
+  --hero-h1-line-height: 1.04;
+  --hero-h1-letter-spacing: 0.01em;
+  --hero-h1-accent-scale: 1.2;
+}
+.hero-h1 {
+  font-family: var(--sans);
+  font-size: var(--hero-h1-size);
+  font-weight: 800;
+  line-height: var(--hero-h1-line-height);
+  letter-spacing: var(--hero-h1-letter-spacing);
+  text-wrap: balance;
+  margin: 0 0 32px;
+}
+.hero-h1-accent {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  color: var(--accent);
+  font-size: calc(1em * var(--hero-h1-accent-scale));
 }
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -86,7 +107,7 @@ function Nav() {
         <img src="https://www.arkim.ai/arkim-text-logo.png" alt="Arkim" style={{ height: 17, opacity: 0.9 }} />
       </a>
       <div style={{ display: 'flex', gap: 32 }}>
-        {[{ label: 'Product', href: 'Arkim Product.html' }, { label: 'About Us', href: 'Arkim About.html' }, { label: 'Resources', href: 'https://www.arkim.ai/resources/blog' }, { label: 'Contact Us', href: 'Arkim Contact.html' }].map(({ label, href }) => (
+        {[{ label: 'Product', href: 'Arkim Product.html' }, { label: 'About Us', href: 'Arkim About.html' }, { label: 'Resources', href: 'Arkim Resources.html' }, { label: 'Contact Us', href: 'Arkim Contact.html' }].map(({ label, href }) => (
           <a key={label} href={href} style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: label === 'About Us' ? 600 : 400, color: label === 'About Us' ? 'var(--fg)' : 'var(--fg-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
           onMouseEnter={e => e.target.style.color='var(--fg)'}
           onMouseLeave={e => e.target.style.color= label === 'About Us' ? 'var(--fg)' : 'var(--fg-muted)'}
@@ -107,10 +128,9 @@ function Hero() {
       <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: '700px', height: '400px', background: 'radial-gradient(ellipse, rgba(255,107,26,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'relative', maxWidth: '860px' }}>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
-          <Eyebrow>About Us</Eyebrow>
-          <h1 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(34px, 5vw, 64px)', fontWeight: 800, lineHeight: 1.04, letterSpacing: '0.01em', marginBottom: '32px', textWrap: 'balance' }}>
+          <h1 className="hero-h1">
             We built Arkim because<br />the problem was{' '}
-            <span style={{ fontWeight: 400, color: 'var(--headline-accent)', display: 'inline' }}>personal.</span>
+            <span className="hero-h1-accent" style={{ display: 'inline' }}>personal.</span>
           </h1>
         </div>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s both' }}>
@@ -171,7 +191,7 @@ function WhatWeBuilt() {
           <Eyebrow>What We Built</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 42px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em', maxWidth: '640px', textWrap: 'balance' }}>
             Three layers. Each valuable alone.<br />
-            <em style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', color: 'var(--accent)', fontWeight: 500 }}>Transformative together.</em>
+            <em style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', color: 'var(--accent)', fontWeight: 600 }}>Transformative together.</em>
           </h2>
         </FadeIn>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
@@ -255,7 +275,7 @@ function CTA() {
           <Eyebrow>See It in Action</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(24px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.06, letterSpacing: '0.01em', marginBottom: '20px', textWrap: 'balance' }}>
             Come see it in{' '}
-            <em style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', color: 'var(--accent)', fontWeight: 500 }}>action.</em>
+            <em style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', color: 'var(--accent)', fontWeight: 600 }}>action.</em>
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.7, marginBottom: '40px' }}>A 30-minute conversation. No pitch deck.</p>
           <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: '15px 36px', borderRadius: '6px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s' }}
@@ -289,7 +309,7 @@ function Footer() {
         </div>
         {[
           { title: 'Product', links: [{ label: 'Product Overview', href: 'Arkim Product.html' }, { label: 'Request a Demo', href: 'https://www.arkim.ai/contact?tab=demo' }] },
-          { title: 'Resources', links: [{ label: 'Blog', href: 'https://www.arkim.ai/resources/blog' }, { label: 'Case Studies', href: 'https://www.arkim.ai/resources/case-studies' }] },
+          { title: 'Resources', links: [{ label: 'Resources', href: 'Arkim Resources.html' }, { label: 'Case Studies', href: 'https://www.arkim.ai/resources/case-studies' }] },
           { title: 'Company', links: [{ label: 'About Us', href: 'Arkim About.html' }, { label: 'Contact Us', href: 'Arkim Contact.html' }] },
           { title: 'Partners', links: [{ label: 'NVIDIA Inception', href: 'https://www.nvidia.com/en-us/startups/' }, { label: 'Databricks', href: 'https://www.databricks.com/product/startups' }, { label: 'AWS Activate', href: 'https://aws.amazon.com/activate/' }] },
         ].map((col, i) => (

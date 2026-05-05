@@ -55,7 +55,24 @@ function useArkimTheme() {
   return isLight;
 }
 
-function ThemeToggle({ mobile = false, lightOnDarkHero = false }) {
+function DayIcon() {
+  return (
+    <svg aria-hidden viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" />
+    </svg>
+  );
+}
+
+function NightIcon() {
+  return (
+    <svg aria-hidden viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  );
+}
+
+function ThemeToggle({ lightOnDarkHero = false }) {
   const [theme, setTheme] = useState(() =>
     document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'
   );
@@ -77,15 +94,18 @@ function ThemeToggle({ mobile = false, lightOnDarkHero = false }) {
         background: 'transparent',
         color: lightOnDarkHero ? 'rgba(245, 242, 237, 0.78)' : 'var(--fg-muted)',
         border: lightOnDarkHero ? '1px solid rgba(245, 242, 237, 0.35)' : '1px solid var(--border)',
-        padding: mobile ? '10px 12px' : '8px 12px',
-        minWidth: mobile ? 44 : undefined,
-        minHeight: 44,
-        fontFamily: 'var(--sans)',
+        width: 44,
+        height: 44,
+        padding: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        lineHeight: 0,
         cursor: 'pointer',
         flexShrink: 0,
       }}
     >
-      {theme === 'dark' ? 'Light' : 'Dark'}
+      {theme === 'dark' ? <DayIcon /> : <NightIcon />}
     </button>
   );
 }
@@ -159,9 +179,12 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
 
   const emailColor = lightOnDarkHero ? 'rgba(245, 242, 237, 0.72)' : undefined;
 
-  const logoSideBySideSrc =
+  const logoSideBySideLight =
     (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
+  const logoSideBySideDark =
+    (window.__resources && window.__resources.logoSideBySideWhite) || 'uploads/arkim-side-by-side-wht.svg';
   const useLightWordmark = isLightTheme && (!isHome || !lightOnDarkHero);
+  const navLogoSrc = useLightWordmark ? logoSideBySideLight : logoSideBySideDark;
 
   return (
     <nav
@@ -174,30 +197,7 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
           href="index.html"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', minHeight: 44 }}
         >
-          {useLightWordmark ? (
-            <img
-              src={logoSideBySideSrc}
-              alt="Arkim"
-              style={{ height: 28, width: 'auto', display: 'block' }}
-            />
-          ) : (
-            <>
-              <img
-                src={(window.__resources && window.__resources.logoMark) || 'https://www.arkim.ai/logo-arkim.png'}
-                alt="Arkim"
-                style={{ height: 28, filter: lightOnDarkHero ? 'brightness(0) invert(1)' : 'none' }}
-              />
-              <img
-                src={(window.__resources && window.__resources.logoText) || 'https://www.arkim.ai/arkim-text-logo.png'}
-                alt="Arkim"
-                style={{
-                  height: 17,
-                  opacity: 0.9,
-                  filter: lightOnDarkHero ? 'brightness(0) invert(1)' : 'none',
-                }}
-              />
-            </>
-          )}
+          <img src={navLogoSrc} alt="Arkim" style={{ height: 28, width: 'auto', display: 'block' }} />
         </a>
 
         {!isMobile && (
@@ -251,7 +251,7 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
           </div>
         ) : (
           <div className="arkim-site-nav__tools">
-            <ThemeToggle mobile lightOnDarkHero={lightOnDarkHero} />
+            <ThemeToggle lightOnDarkHero={lightOnDarkHero} />
             <button
               type="button"
               className="arkim-site-nav__menu-btn"

@@ -234,6 +234,7 @@ button:focus-visible { border-radius: 4px; }
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/logo-arkim.png" data-resource-id="logoMark" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/arkim-text-logo.png" data-resource-id="logoText" />
 <meta name="ext-resource-dependency" content="uploads/arkim-side-by-side.svg" data-resource-id="logoSideBySide" />
+<meta name="ext-resource-dependency" content="uploads/arkim-side-by-side-wht.svg" data-resource-id="logoSideBySideWhite" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/IX-bg-og.jpg" data-resource-id="heroBg" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/nvidia-inception.png" data-resource-id="nvidiaLogo" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/databricks-logo.svg" data-resource-id="databricksLogo" />
@@ -977,21 +978,17 @@ function Footer() {
   const { isMobile, isTablet } = useViewport();
   const isLightTheme = useArkimTheme();
   const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
-  const logoSideBySideSrc =
+  const logoSideBySideLight =
     (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
+  const logoSideBySideDark =
+    (window.__resources && window.__resources.logoSideBySideWhite) || 'uploads/arkim-side-by-side-wht.svg';
+  const footerLogoSrc = isLightTheme ? logoSideBySideLight : logoSideBySideDark;
   return (
     <footer style={{ borderTop: '1px solid var(--border)', padding: `64px ${sectionPaddingX}px 40px`, maxWidth: '1300px', margin: '0 auto' }}>
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? '1.5fr 1fr 1fr' : '2fr 1fr 1fr 1fr 1fr', gap: '40px', marginBottom: '60px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            {isLightTheme ? (
-              <img src={logoSideBySideSrc} alt="Arkim" style={{ height: 26, width: 'auto', display: 'block' }} loading="lazy" decoding="async" />
-            ) : (
-              <>
-                <img src={window.__resources && window.__resources.logoMark || 'https://www.arkim.ai/logo-arkim.png'} alt="Arkim" style={{ height: 26 }} loading="lazy" decoding="async" />
-                <img src={window.__resources && window.__resources.logoText || 'https://www.arkim.ai/arkim-text-logo.png'} alt="Arkim" style={{ height: 16, opacity: 0.8 }} loading="lazy" decoding="async" />
-              </>
-            )}
+            <img src={footerLogoSrc} alt="Arkim" style={{ height: 26, width: 'auto', display: 'block' }} loading="lazy" decoding="async" />
           </div>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', color: 'var(--fg-muted)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>
             The unified industrial nervous system. Powered by AI and real data.

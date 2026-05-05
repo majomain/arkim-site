@@ -31,14 +31,9 @@
 .arkim-site-nav[data-menu-open='true'] {
   background: var(--nav-scrim);
   border-bottom-color: var(--border);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.055);
   -webkit-backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
   backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
-}
-
-html[data-theme='light'] .arkim-site-nav[data-scrolled='true'],
-html[data-theme='light'] .arkim-site-nav[data-menu-open='true'] {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -148,10 +143,7 @@ html[data-theme='light'] .arkim-site-nav[data-menu-open='true'] {
 
 .arkim-site-nav__theme {
   border-radius: 4px;
-  font-size: var(--text-micro, 11px);
-  font-weight: 600;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  box-sizing: border-box;
 }
 
 .arkim-site-nav__links {

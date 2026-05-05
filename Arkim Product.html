@@ -107,7 +107,7 @@ body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webki
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/logo-arkim.png" data-resource-id="logoMark" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/arkim-text-logo.png" data-resource-id="logoText" />
 <meta name="ext-resource-dependency" content="uploads/arkim-side-by-side.svg" data-resource-id="logoSideBySide" />
-<meta name="ext-resource-dependency" content="uploads/arkim-side-by-side-wht.svg" data-resource-id="logoSideBySideWhite" />
+<meta name="ext-resource-dependency" content="uploads/arkim-side-by-side-wht.svg" data-resource-id="logoSideBySideWht" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/nvidia-inception.png" data-resource-id="nvidiaLogo" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/databricks-logo.svg" data-resource-id="databricksLogo" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/aws-activate.svg" data-resource-id="awsLogo" />
@@ -655,11 +655,11 @@ function FinalCTA() {
 // ── FOOTER ────────────────────────────────────────────────────────────────────
 function Footer() {
   const isLightTheme = useArkimTheme();
-  const logoSideBySideLight =
+  const logoLightSurface =
     (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
-  const logoSideBySideDark =
-    (window.__resources && window.__resources.logoSideBySideWhite) || 'uploads/arkim-side-by-side-wht.svg';
-  const footerLogoSrc = isLightTheme ? logoSideBySideLight : logoSideBySideDark;
+  const logoDarkSurface =
+    (window.__resources && window.__resources.logoSideBySideWht) || 'uploads/arkim-side-by-side-wht.svg';
+  const footerLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
   return (
     <footer style={{ borderTop: '1px solid var(--border)', padding: '48px 80px 32px', maxWidth: '1300px', margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>

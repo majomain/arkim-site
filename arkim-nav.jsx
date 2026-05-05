@@ -179,12 +179,13 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
 
   const emailColor = lightOnDarkHero ? 'rgba(245, 242, 237, 0.72)' : undefined;
 
-  const logoSideBySideLight =
+  /* Brand: arkim-side-by-side.svg = light UI surfaces; arkim-side-by-side-wht.svg = dark UI (incl. dark theme). */
+  const logoLightSurface =
     (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
-  const logoSideBySideDark =
-    (window.__resources && window.__resources.logoSideBySideWhite) || 'uploads/arkim-side-by-side-wht.svg';
+  const logoDarkSurface =
+    (window.__resources && window.__resources.logoSideBySideWht) || 'uploads/arkim-side-by-side-wht.svg';
   const useLightWordmark = isLightTheme && (!isHome || !lightOnDarkHero);
-  const navLogoSrc = useLightWordmark ? logoSideBySideLight : logoSideBySideDark;
+  const navLogoSrc = useLightWordmark ? logoLightSurface : logoDarkSurface;
 
   return (
     <nav

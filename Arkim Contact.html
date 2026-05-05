@@ -267,11 +267,11 @@ function ContactSection() {
 
 function Footer() {
   const isLightTheme = useArkimTheme();
-  const logoSideBySideLight =
+  const logoLightSurface =
     (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
-  const logoSideBySideDark =
-    (window.__resources && window.__resources.logoSideBySideWhite) || 'uploads/arkim-side-by-side-wht.svg';
-  const footerLogoSrc = isLightTheme ? logoSideBySideLight : logoSideBySideDark;
+  const logoDarkSurface =
+    (window.__resources && window.__resources.logoSideBySideWht) || 'uploads/arkim-side-by-side-wht.svg';
+  const footerLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
   return (
     <footer style={{ borderTop: '1px solid var(--border)', padding: '64px 80px 40px', maxWidth: '1300px', margin: '0 auto' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', gap: '60px', marginBottom: '60px' }}>

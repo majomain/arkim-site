@@ -42,6 +42,19 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
+function useArkimTheme() {
+  const [isLight, setIsLight] = useState(
+    () => typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'light'
+  );
+  useEffect(() => {
+    const sync = () => setIsLight(document.documentElement.getAttribute('data-theme') === 'light');
+    sync();
+    window.addEventListener('arkim-theme', sync);
+    return () => window.removeEventListener('arkim-theme', sync);
+  }, []);
+  return isLight;
+}
+
 function ThemeToggle({ mobile = false, lightOnDarkHero = false }) {
   const [theme, setTheme] = useState(() =>
     document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'
@@ -79,6 +92,7 @@ function ThemeToggle({ mobile = false, lightOnDarkHero = false }) {
 
 function ArkimNav({ variant = 'internal', activeLabel = null }) {
   const isHome = variant === 'home';
+  const isLightTheme = useArkimTheme();
   const { isMobile } = useViewport();
   const [scrolled, setScrolled] = useState(
     () => typeof window !== 'undefined' && window.scrollY > NAV_SCROLL_PX
@@ -145,6 +159,10 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
 
   const emailColor = lightOnDarkHero ? 'rgba(245, 242, 237, 0.72)' : undefined;
 
+  const logoSideBySideSrc =
+    (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
+  const useLightWordmark = isLightTheme && (!isHome || !lightOnDarkHero);
+
   return (
     <nav
       className="arkim-site-nav"
@@ -156,20 +174,30 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
           href="index.html"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', minHeight: 44 }}
         >
-          <img
-            src={(window.__resources && window.__resources.logoMark) || 'https://www.arkim.ai/logo-arkim.png'}
-            alt="Arkim"
-            style={{ height: 28, filter: lightOnDarkHero ? 'brightness(0) invert(1)' : 'none' }}
-          />
-          <img
-            src={(window.__resources && window.__resources.logoText) || 'https://www.arkim.ai/arkim-text-logo.png'}
-            alt="Arkim"
-            style={{
-              height: 17,
-              opacity: 0.9,
-              filter: lightOnDarkHero ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
+          {useLightWordmark ? (
+            <img
+              src={logoSideBySideSrc}
+              alt="Arkim"
+              style={{ height: 28, width: 'auto', display: 'block' }}
+            />
+          ) : (
+            <>
+              <img
+                src={(window.__resources && window.__resources.logoMark) || 'https://www.arkim.ai/logo-arkim.png'}
+                alt="Arkim"
+                style={{ height: 28, filter: lightOnDarkHero ? 'brightness(0) invert(1)' : 'none' }}
+              />
+              <img
+                src={(window.__resources && window.__resources.logoText) || 'https://www.arkim.ai/arkim-text-logo.png'}
+                alt="Arkim"
+                style={{
+                  height: 17,
+                  opacity: 0.9,
+                  filter: lightOnDarkHero ? 'brightness(0) invert(1)' : 'none',
+                }}
+              />
+            </>
+          )}
         </a>
 
         {!isMobile && (
@@ -238,9 +266,9 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
                 minWidth: 44,
                 minHeight: 44,
                 fontFamily: 'var(--sans)',
-                fontSize: 11,
+                fontSize: 'var(--text-micro, 11px)',
                 fontWeight: 600,
-                letterSpacing: '0.09em',
+                letterSpacing: 'var(--text-eyebrow-tracking, 0.09em)',
                 textTransform: 'uppercase',
                 cursor: 'pointer',
               }}
@@ -293,4 +321,5 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
 
 window.useViewport = useViewport;
 window.usePrefersReducedMotion = usePrefersReducedMotion;
+window.useArkimTheme = useArkimTheme;
 window.ArkimNav = ArkimNav;

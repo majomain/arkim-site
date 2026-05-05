@@ -94,10 +94,23 @@
   --selection: rgba(74, 138, 191, 0.25);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: 'Avenir Next', 'Avenir', Helvetica, sans-serif;
-  --hero-h1-size: clamp(32px, 4.5vw, 60px);
+  /* Type scale — consistent steps (display → section → card → body → meta) */
+  --hero-h1-size: clamp(28px, 4vw, 54px);
   --hero-h1-line-height: 1.04;
   --hero-h1-letter-spacing: 0.01em;
   --hero-h1-accent-scale: 1.2;
+  --text-eyebrow-size: clamp(12px, 0.95vw, 14px);
+  --text-eyebrow-tracking: 0.12em;
+  --text-lead: clamp(17px, 1.35vw, 19px);
+  --text-body: 17px;
+  --text-label: 15px;
+  --text-caption: 14px;
+  --text-micro: 13px;
+  --title-display: clamp(30px, 3.25vw, 46px);
+  --title-section: clamp(26px, 2.75vw, 36px);
+  --title-card: clamp(21px, 2vw, 28px);
+  --text-serif-display: clamp(18px, 1.65vw, 22px);
+  --text-serif-body: clamp(17px, 1.45vw, 19px);
 }
 
 html[data-theme="light"] {
@@ -220,6 +233,7 @@ button:focus-visible { border-radius: 4px; }
 </style>
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/logo-arkim.png" data-resource-id="logoMark" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/arkim-text-logo.png" data-resource-id="logoText" />
+<meta name="ext-resource-dependency" content="uploads/arkim-side-by-side.svg" data-resource-id="logoSideBySide" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/IX-bg-og.jpg" data-resource-id="heroBg" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/nvidia-inception.png" data-resource-id="nvidiaLogo" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/databricks-logo.svg" data-resource-id="databricksLogo" />
@@ -249,11 +263,12 @@ button:focus-visible { border-radius: 4px; }
 
 // Arkim Homepage — Section Components
 // Exports all sections to window for use in main HTML file
-// Typography: Avenir Next (headings/body) + Cormorant Garamond Italic (accent words) + accent #4A8ABF
+// Typography: Avenir Next + Cormorant Garamond (accent); sizes from :root tokens (--title-display, --title-section, --title-card, --text-body, …).
 
 const { useState, useEffect, useRef } = React;
 const useViewport = window.useViewport;
 const usePrefersReducedMotion = window.usePrefersReducedMotion;
+const useArkimTheme = window.useArkimTheme;
 
 // ─── UTILS ──────────────────────────────────────────────────────────────────
 
@@ -291,9 +306,9 @@ function Eyebrow({ children, center = false }) {
   return (
     <div style={{
       fontFamily: 'var(--sans)',
-      fontSize: '11px',
+      fontSize: 'var(--text-eyebrow-size)',
       fontWeight: 500,
-      letterSpacing: '0.15em',
+      letterSpacing: 'var(--text-eyebrow-tracking)',
       textTransform: 'uppercase',
       color: 'var(--accent)',
       marginBottom: '20px',
@@ -348,7 +363,7 @@ function Hero() {
         </FadeIn>
         <FadeIn delay={0.25}>
           <p style={{
-            fontFamily: 'var(--sans)', fontSize: 'clamp(15px, 1.3vw, 16px)',
+            fontFamily: 'var(--sans)', fontSize: 'var(--text-lead)',
             fontWeight: 600, color: 'var(--fg-muted)',
             lineHeight: 1.65, maxWidth: '580px', margin: '0 auto 42px',
             textWrap: 'pretty',
@@ -359,7 +374,7 @@ function Hero() {
         <FadeIn delay={0.4}>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="#cta" style={{
-              fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600,
+              fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', fontWeight: 600,
               background: 'var(--accent)', color: 'var(--btn-fg)',
               padding: '14px 30px', borderRadius: '6px', textDecoration: 'none',
               transition: 'opacity 0.2s, transform 0.15s',
@@ -369,7 +384,7 @@ function Hero() {
             onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
             >Request a Demo →</a>
             <a href="#layers" style={{
-              fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 500,
+              fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', fontWeight: 500,
               color: 'var(--fg)', border: '1px solid var(--outline)',
               padding: '14px 30px', borderRadius: '6px', textDecoration: 'none',
               background: 'transparent',
@@ -387,7 +402,7 @@ function Hero() {
           }}>
             {['Backed by NVIDIA Inception', 'Databricks Program', 'AWS Activate'].map((b, i) => (
               <span key={i} style={{
-                fontFamily: 'var(--sans)', fontSize: '12px', color: 'var(--fg-ghost)',
+                fontFamily: 'var(--sans)', fontSize: 'var(--text-micro)', color: 'var(--fg-ghost)',
                 display: 'flex', alignItems: 'center', gap: 8,
               }}>
                 {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'var(--outline)', display: 'inline-block' }}></span>}
@@ -409,7 +424,7 @@ function IndustriesStrip() {
   const all = [...items, ...items, ...items];
   return (
     <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '40px 0', overflow: 'hidden' }}>
-      <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--fg-faint)', textAlign: 'center', marginBottom: '24px' }}>Built For</div>
+      <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--fg-faint)', textAlign: 'center', marginBottom: '24px' }}>Built For</div>
       {reducedMotion ? (
         <div style={{
           display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
@@ -417,7 +432,7 @@ function IndustriesStrip() {
         }}>
           {items.map((item, i) => (
             <span key={i} style={{
-              fontFamily: 'var(--serif)', fontSize: '18px', fontWeight: 400,
+              fontFamily: 'var(--serif)', fontSize: 'var(--text-serif-display)', fontWeight: 400,
               color: 'var(--fg-muted)', textAlign: 'center',
               fontStyle: i % 3 === 1 ? 'italic' : 'normal',
             }}>{item}</span>
@@ -427,7 +442,7 @@ function IndustriesStrip() {
       <div style={{ display: 'flex', gap: '48px', width: 'max-content', animation: 'marquee 50s linear infinite' }}>
         {all.map((item, i) => (
           <span key={i} style={{
-            fontFamily: 'var(--serif)', fontSize: '22px', fontWeight: 400,
+            fontFamily: 'var(--serif)', fontSize: 'var(--text-serif-display)', fontWeight: 400,
             color: 'var(--fg-muted)', whiteSpace: 'nowrap', flexShrink: 0,
             fontStyle: i % 3 === 1 ? 'italic' : 'normal',
           }}>{item}</span>
@@ -450,7 +465,7 @@ function TheLever() {
           <div>
             <Eyebrow>Why Arkim</Eyebrow>
             <h2 style={{
-              fontFamily: 'var(--sans)', fontSize: 'clamp(30px, 3.5vw, 50px)',
+              fontFamily: 'var(--sans)', fontSize: 'var(--title-display)',
               fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em',
               color: 'var(--fg)', textWrap: 'balance',
             }}>
@@ -462,13 +477,13 @@ function TheLever() {
         <FadeIn delay={0.15}>
           <div style={{ paddingTop: '8px' }}>
             <p style={{
-              fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300,
+              fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
               color: 'var(--fg-muted)', lineHeight: 1.75, marginBottom: '28px', textWrap: 'pretty',
             }}>
               Senior technicians are retiring. Tribal knowledge is walking out the door. New hires take years to reach journey-level. Meanwhile, every facility is asked to do more with less.
             </p>
             <p style={{
-              fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300,
+              fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
               color: 'var(--fg-muted)', lineHeight: 1.75, textWrap: 'pretty',
             }}>
               Arkim is the lever — any technician, on their first day, executes with the knowledge your most experienced people spent years building. The phone in their pocket is the sensor. The platform is the brain.
@@ -483,7 +498,7 @@ function TheLever() {
   );
 }
 
-// ─── THREE LAYERS (sticky scroll) ───────────────────────────────────────────
+// ─── THREE LAYERS ────────────────────────────────────────────────────────────
 
 const LAYERS = [
   {
@@ -510,146 +525,74 @@ const LAYERS = [
 ];
 
 function ThreeLayers() {
-  const { isNarrowLayout, isMobile, isTablet } = useViewport();
-  const reducedMotion = usePrefersReducedMotion();
+  const { isMobile, isTablet } = useViewport();
   const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
-  const panelPad = isTablet && !isNarrowLayout ? 40 : 80;
-  const [active, setActive] = useState(0);
-  const containerRef = useRef(null);
+  const colPadX = isMobile ? 20 : isTablet ? 40 : 56;
 
-  useEffect(() => {
-    if (isNarrowLayout || reducedMotion) return;
-    const onScroll = () => {
-      if (!containerRef.current) return;
-      const { top, height } = containerRef.current.getBoundingClientRect();
-      const scrolled = -top;
-      const scrollable = height - window.innerHeight;
-      const pct = Math.max(0, Math.min(1, scrolled / scrollable));
-      setActive(Math.min(2, Math.floor(pct * 3)));
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [isNarrowLayout, reducedMotion]);
-
-  const layer = LAYERS[active];
-  // Alternate: even index = text left / visual right; odd = visual left / text right
-  const isReversed = active % 2 === 1;
-
-  if (isNarrowLayout) {
-    return (
-      <section id="layers" style={{ padding: `72px ${sectionPaddingX}px`, borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-        <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          <Eyebrow>Three Layers. One Platform.</Eyebrow>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', lineHeight: 1.6, marginBottom: '28px', textWrap: 'pretty' }}>
-            Each layer creates value on its own. Together, they form the industrial nervous system.
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {LAYERS.map((l, i) => (
-              <article
-                key={i}
-                style={{
-                  border: '1px solid var(--border)',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  background: 'var(--bg-card)',
-                }}
-              >
-                <div style={{ padding: '22px 20px 18px' }}>
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.1em', color: 'var(--accent)', fontWeight: 500, marginBottom: '10px' }}>{l.num}</div>
+  return (
+    <section id="layers" style={{ padding: `72px ${sectionPaddingX}px`, borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
+        <Eyebrow>Three Layers. One Platform.</Eyebrow>
+        <p style={{
+          fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', color: 'var(--fg-muted)', lineHeight: 1.6,
+          marginBottom: isMobile ? '28px' : '40px', textWrap: 'pretty', maxWidth: '640px',
+        }}>
+          Each layer creates value on its own. Together, they form the industrial nervous system.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '20px' : '28px' }}>
+          {LAYERS.map((l, i) => (
+            <article
+              key={i}
+              style={{
+                border: '1px solid var(--border)',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                background: 'var(--bg-card)',
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                flexDirection: isMobile ? 'column' : 'row',
+                alignItems: 'stretch',
+              }}>
+                <div style={{
+                  flex: isMobile ? 'none' : 1,
+                  minWidth: 0,
+                  padding: isMobile ? '22px 20px 18px' : `56px ${colPadX}px`,
+                  borderRight: isMobile ? 'none' : '1px solid var(--border)',
+                  borderBottom: isMobile ? '1px solid var(--border)' : 'none',
+                  display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                }}>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', color: 'var(--accent)', fontWeight: 500, marginBottom: '10px' }}>{l.num}</div>
                   <h3 style={{
                     fontFamily: 'var(--sans)',
-                    fontSize: 'clamp(18px, 4.5vw, 22px)',
+                    fontSize: 'var(--title-card)',
                     fontWeight: 700,
                     color: 'var(--fg)',
                     letterSpacing: '-0.01em',
                     lineHeight: 1.2,
                     marginBottom: '10px',
                   }}>{l.title}</h3>
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--accent)', fontStyle: 'italic', marginBottom: '12px' }}>{l.sub}</div>
-                  <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{l.body}</p>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', color: 'var(--accent)', fontStyle: 'italic', marginBottom: '12px' }}>{l.sub}</div>
+                  <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{l.body}</p>
                 </div>
-                <div style={{ borderTop: '1px solid var(--border)', padding: '16px', background: 'var(--layer-footer-bg)' }}>
-                  <ImgPlaceholder label={l.visual} aspectRatio="4/3" />
+                <div style={{
+                  flex: isMobile ? 'none' : 1,
+                  minWidth: 0,
+                  padding: isMobile ? '16px' : `56px ${colPadX}px`,
+                  background: 'var(--layer-footer-bg)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <div style={{ width: '100%', maxWidth: isMobile ? 'none' : '520px' }}>
+                    <ImgPlaceholder label={l.visual} aspectRatio="4/3" />
+                  </div>
                 </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <div id="layers" ref={containerRef} style={{ height: '300vh', position: 'relative' }}>
-      <div style={{
-        position: 'sticky', top: 0, height: '100vh',
-        display: 'flex', overflow: 'hidden',
-        flexDirection: isReversed ? 'row-reverse' : 'row',
-        transition: 'flex-direction 0s',
-      }}>
-        {/* Text panel */}
-        <div style={{
-          width: '50%', padding: `0 ${panelPad}px`,
-          display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          borderRight: isReversed ? 'none' : '1px solid var(--border)',
-          borderLeft: isReversed ? '1px solid var(--border)' : 'none',
-        }}>
-          <div style={{ marginBottom: '48px' }}>
-            <Eyebrow>Three Layers. One Platform.</Eyebrow>
-            <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', lineHeight: 1.6, maxWidth: '380px' }}>
-              Each layer creates value on its own. Together, they form the industrial nervous system.
-            </p>
-          </div>
-          {LAYERS.map((l, i) => (
-            <div key={i}
-              onClick={() => setActive(i)}
-              style={{
-                padding: '20px 0', borderTop: '1px solid var(--border)',
-                cursor: 'pointer', transition: 'all 0.3s',
-                opacity: active === i ? 1 : 0.35,
-              }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                <span style={{
-                  fontFamily: 'var(--sans)', fontSize: '11px',
-                  letterSpacing: '0.1em', color: active === i ? 'var(--accent)' : 'var(--fg-muted)',
-                  fontWeight: 500, transition: 'color 0.3s',
-                }}>{l.num}</span>
-                <span style={{
-                  fontFamily: 'var(--sans)', fontSize: '20px', fontWeight: 600,
-                  color: 'var(--fg)', letterSpacing: '-0.01em',
-                }}>{l.title}</span>
               </div>
-              {active === i && (
-                <div style={{ marginTop: '4px', marginLeft: '36px' }}>
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--accent)', fontStyle: 'italic', marginBottom: '8px' }}>{l.sub}</div>
-                  <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{l.body}</p>
-                </div>
-              )}
-            </div>
+            </article>
           ))}
-          {/* Progress indicator */}
-          <div style={{ display: 'flex', gap: 8, marginTop: '40px' }}>
-            {LAYERS.map((_, i) => (
-              <div key={i} style={{
-                height: 2, flex: 1, borderRadius: 2,
-                background: i <= active ? 'var(--accent)' : 'var(--border)',
-                transition: 'background 0.4s',
-              }} />
-            ))}
-          </div>
-        </div>
-        {/* Visual panel */}
-        <div style={{
-          width: '50%', padding: `0 ${panelPad}px`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'var(--bg-card)',
-        }}>
-          <div style={{ width: '100%', maxWidth: '480px' }}>
-            <ImgPlaceholder label={layer.visual} aspectRatio="4/3" />
-          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -694,7 +637,7 @@ function Personas() {
       <FadeIn>
         <Eyebrow>Who Uses Arkim</Eyebrow>
         <h2 style={{
-          fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 44px)',
+          fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
           fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em',
           marginBottom: '64px', textWrap: 'balance',
         }}>
@@ -712,15 +655,15 @@ function Personas() {
             onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-hover)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-card)'; }}
             >
-              <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.12em', color: 'var(--fg-muted)', textTransform: 'uppercase', marginBottom: '12px' }}>{p.context}</div>
-              <div style={{ fontFamily: 'var(--sans)', fontSize: '28px', fontWeight: 700, marginBottom: '36px', letterSpacing: '0.02em' }}>{p.role}</div>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', color: 'var(--fg-muted)', textTransform: 'uppercase', marginBottom: '12px' }}>{p.context}</div>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-card)', fontWeight: 700, marginBottom: '36px', letterSpacing: '0.02em' }}>{p.role}</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {p.outcomes.map((o, j) => (
                   <div key={j} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
                     <div style={{ width: 20, height: 20, borderRadius: '50%', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
                       <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
                     </div>
-                    <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.6, textWrap: 'pretty' }}>{o}</p>
+                    <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.6, textWrap: 'pretty' }}>{o}</p>
                   </div>
                 ))}
               </div>
@@ -744,12 +687,12 @@ function IntegrationStrip() {
         <FadeIn>
           <Eyebrow>Coexists With Your Stack</Eyebrow>
           <h2 style={{
-            fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 42px)',
+            fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
             fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em',
             marginBottom: '16px', textWrap: 'balance',
           }}>No rip and replace.</h2>
           <p style={{
-            fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300,
+            fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
             color: 'var(--fg-muted)', lineHeight: 1.7, maxWidth: '560px', textWrap: 'pretty',
           }}>
             Read/write integration with the legacy CMMS and ERP systems your team already runs. Arkim layers on top — your existing data, processes, and workflows stay intact.
@@ -767,7 +710,7 @@ function IntegrationStrip() {
               <div key={i} style={{
                 background: 'var(--bg-card)', padding: '32px 20px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--serif)', fontSize: '18px', fontWeight: 400,
+                fontFamily: 'var(--serif)', fontSize: 'var(--text-serif-body)', fontWeight: 400,
                 color: 'var(--fg-ghost)', textAlign: 'center',
                 transition: 'color 0.25s, background 0.25s', cursor: 'default',
               }}
@@ -792,7 +735,7 @@ function TimeToValue() {
       <FadeIn>
         <Eyebrow>Why Not Sensors</Eyebrow>
         <h2 style={{
-          fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 44px)',
+          fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
           fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em',
           marginBottom: '64px', textWrap: 'balance',
         }}>ROI in week one.<br /><em style={{ fontStyle: 'normal', color: 'var(--fg-muted)' }}>Not month six.</em></h2>
@@ -827,7 +770,7 @@ function TimeToValue() {
               borderRadius: '16px', padding: '48px 40px', height: '100%',
             }}>
               <div style={{
-                fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.12em',
+                fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)',
                 textTransform: 'uppercase', color: col.accent ? 'var(--accent)' : 'var(--fg-muted)',
                 marginBottom: '28px', fontWeight: 500,
               }}>{col.label}</div>
@@ -835,12 +778,12 @@ function TimeToValue() {
                 {col.items.map(([text, good], ii) => (
                   <div key={ii} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                     <div style={{
-                      fontFamily: 'var(--sans)', fontSize: '16px', lineHeight: 1, marginTop: '2px',
+                      fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', lineHeight: 1, marginTop: '2px',
                       color: col.accent && good ? 'var(--accent)' : 'var(--border)',
                       flexShrink: 0,
                     }}>{col.accent ? '✓' : '✗'}</div>
                     <p style={{
-                      fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 300,
+                      fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
                       color: col.accent ? 'var(--fg)' : 'var(--fg-muted)',
                       lineHeight: 1.6, textWrap: 'pretty',
                     }}>{text}</p>
@@ -889,7 +832,7 @@ function ComplianceTrust() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: `0 ${sectionPaddingX}px` }}>
         <FadeIn style={{ textAlign: 'center', marginBottom: '60px' }}>
           <Eyebrow center>Enterprise Ready</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 42px)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.1, textWrap: 'balance' }}>Built for regulated industries.</h2>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-section)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.1, textWrap: 'balance' }}>Built for regulated industries.</h2>
         </FadeIn>
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.6fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
           <div style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
@@ -901,8 +844,8 @@ function ComplianceTrust() {
                 borderLeft: active === i ? '3px solid var(--accent)' : '3px solid transparent',
                 textAlign: 'left', transition: 'background 0.15s',
               }}>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: active === i ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, marginBottom: '4px' }}>{c.badge}</div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, color: active === i ? 'var(--fg)' : 'var(--fg-dimmer)', lineHeight: 1.2 }}>{c.title}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: active === i ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, marginBottom: '4px' }}>{c.badge}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', fontWeight: 600, color: active === i ? 'var(--fg)' : 'var(--fg-dimmer)', lineHeight: 1.2 }}>{c.title}</div>
                 {active === i && (
                   <div style={{ marginTop: 10, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
                     <div key={active} style={{
@@ -918,9 +861,9 @@ function ComplianceTrust() {
             ))}
           </div>
           <div style={{ background: 'var(--bg-card)', padding: '52px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '320px' }}>
-            <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>{card.badge}</div>
-            <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 38px)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '20px' }}>{card.title}</div>
-            <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, textWrap: 'pretty', maxWidth: '480px' }}>{card.body}</p>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>{card.badge}</div>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-card)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '20px' }}>{card.title}</div>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, textWrap: 'pretty', maxWidth: '480px' }}>{card.body}</p>
           </div>
         </div>
       </div>
@@ -939,13 +882,13 @@ function RoadmapTease() {
         <FadeIn>
           <Eyebrow>What's Next</Eyebrow>
           <h2 style={{
-            fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 42px)',
+            fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
             fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', marginBottom: '24px', textWrap: 'balance',
           }}>Coming next:<br /><em style={{ fontStyle: 'normal' }}>agentic procurement.</em></h2>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             padding: '6px 14px', border: '1px solid var(--border)',
-            borderRadius: '100px', fontFamily: 'var(--sans)', fontSize: '12px',
+            borderRadius: '100px', fontFamily: 'var(--sans)', fontSize: 'var(--text-micro)',
             color: 'var(--fg-muted)', marginTop: '24px',
           }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--status-dot)' }} />
@@ -954,7 +897,7 @@ function RoadmapTease() {
         </FadeIn>
         <FadeIn delay={0.15}>
           <p style={{
-            fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300,
+            fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
             color: 'var(--fg-muted)', lineHeight: 1.75, textWrap: 'pretty',
           }}>
             Once Arkim diagnoses a root cause, the next logical step is sourcing the part. Our procurement agent prototype scores replacement options on total cost of acquisition and total lifecycle value, preserves OEM warranty by routing through authorized distributors, and updates inventory in your CMMS automatically.
@@ -989,26 +932,26 @@ function FinalCTA() {
       }}>
         <FadeIn>
           <ImgPlaceholder label="Tom Dickie, CEO, Arkim AI" aspectRatio="3/4" />
-          <div style={{ marginTop: '20px', fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)' }}>
+          <div style={{ marginTop: '20px', fontFamily: 'var(--sans)', fontSize: 'var(--text-caption)', color: 'var(--fg-muted)' }}>
             Tom Dickie, CEO, Arkim AI
           </div>
         </FadeIn>
         <FadeIn delay={0.15}>
           <Eyebrow>Let's Talk</Eyebrow>
           <h2 style={{
-            fontFamily: 'var(--sans)', fontSize: 'clamp(30px, 4vw, 52px)',
+            fontFamily: 'var(--sans)', fontSize: 'var(--title-display)',
             fontWeight: 700, lineHeight: 1.06, letterSpacing: '0.01em',
             marginBottom: '24px', textWrap: 'balance',
           }}>Tell us about<br />your facility.</h2>
           <p style={{
-            fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300,
+            fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
             color: 'var(--fg-muted)', lineHeight: 1.7, marginBottom: '40px', textWrap: 'pretty',
           }}>
             A 30-minute conversation about your current maintenance operation, where Arkim could fit, and what a deployment would look like. No pitch deck.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start' }}>
             <a href="https://www.arkim.ai/contact?tab=demo" style={{
-              fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600,
+              fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', fontWeight: 600,
               background: 'var(--accent)', color: 'var(--btn-fg)',
               padding: '15px 32px', borderRadius: '6px', textDecoration: 'none',
               display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -1018,7 +961,7 @@ function FinalCTA() {
             onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
             >Book a Consultation →</a>
             <span style={{
-              fontFamily: 'var(--sans)', fontSize: '14px',
+              fontFamily: 'var(--sans)', fontSize: 'var(--text-caption)',
               color: 'var(--fg-muted)',
             }}>or email <a href="mailto:info@arkim.ai" style={{ color: 'var(--fg)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>info@arkim.ai</a></span>
           </div>
@@ -1032,16 +975,25 @@ function FinalCTA() {
 
 function Footer() {
   const { isMobile, isTablet } = useViewport();
+  const isLightTheme = useArkimTheme();
   const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
+  const logoSideBySideSrc =
+    (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
   return (
     <footer style={{ borderTop: '1px solid var(--border)', padding: `64px ${sectionPaddingX}px 40px`, maxWidth: '1300px', margin: '0 auto' }}>
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? '1.5fr 1fr 1fr' : '2fr 1fr 1fr 1fr 1fr', gap: '40px', marginBottom: '60px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src={window.__resources && window.__resources.logoMark || 'https://www.arkim.ai/logo-arkim.png'} alt="Arkim" style={{ height: 26 }} loading="lazy" decoding="async" />
-            <img src={window.__resources && window.__resources.logoText || 'https://www.arkim.ai/arkim-text-logo.png'} alt="Arkim" style={{ height: 16, opacity: 0.8 }} loading="lazy" decoding="async" />
+            {isLightTheme ? (
+              <img src={logoSideBySideSrc} alt="Arkim" style={{ height: 26, width: 'auto', display: 'block' }} loading="lazy" decoding="async" />
+            ) : (
+              <>
+                <img src={window.__resources && window.__resources.logoMark || 'https://www.arkim.ai/logo-arkim.png'} alt="Arkim" style={{ height: 26 }} loading="lazy" decoding="async" />
+                <img src={window.__resources && window.__resources.logoText || 'https://www.arkim.ai/arkim-text-logo.png'} alt="Arkim" style={{ height: 16, opacity: 0.8 }} loading="lazy" decoding="async" />
+              </>
+            )}
           </div>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', color: 'var(--fg-muted)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>
             The unified industrial nervous system. Powered by AI and real data.
           </p>
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
@@ -1052,7 +1004,7 @@ function Footer() {
               <a key={i} href={href} target="_blank" rel="noopener noreferrer" style={{
                 width: 36, height: 36, border: '1px solid var(--border)', borderRadius: 8,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)',
+                fontFamily: 'var(--sans)', fontSize: 'var(--text-micro)', color: 'var(--fg-muted)',
                 textDecoration: 'none', transition: 'border-color 0.2s, color 0.2s',
               }}
               onMouseEnter={e => { e.currentTarget.style.borderColor='var(--fg-muted)'; e.currentTarget.style.color='var(--fg)'; }}
@@ -1094,10 +1046,10 @@ function Footer() {
           },
         ].map((col, i) => (
           <div key={i}>
-            <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--fg-faint)', marginBottom: '20px' }}>{col.title}</div>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 600, letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--fg-faint)', marginBottom: '20px' }}>{col.title}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {col.links.map((l, j) => (
-                <a key={j} href={l.href} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
+                <a key={j} href={l.href} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-caption)', color: 'var(--fg-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
                 onMouseEnter={e => e.target.style.color='var(--fg)'}
                 onMouseLeave={e => e.target.style.color='var(--fg-muted)'}
                 >{l.label}</a>
@@ -1107,7 +1059,7 @@ function Footer() {
         ))}
       </div>
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 20 : 0, justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'center' }}>
-        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-faint)' }}>© 2026 Arkim AI. All rights reserved.</span>
+        <span style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-micro)', color: 'var(--fg-faint)' }}>© 2026 Arkim AI. All rights reserved.</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           {[
             { src: (window.__resources && window.__resources.nvidiaLogo) || 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA' },
@@ -1142,7 +1094,7 @@ function ProductVideo() {
       <FadeIn style={{ textAlign: 'center', marginBottom: '48px' }}>
         <Eyebrow center>See It In Action</Eyebrow>
         <h2 style={{
-          fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 42px)',
+          fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
           fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', textWrap: 'balance',
         }}>
           Watch Arkim in the field.
@@ -1204,14 +1156,14 @@ function AnnouncementBar({ onDismiss }) {
       minHeight: 44,
     }}>
       <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', flexShrink: 0 }} />
-      <span style={{ fontFamily: 'var(--sans)', fontSize: isMobile ? '12px' : '13px', color: 'var(--fg-muted)', lineHeight: 1.45 }}>
+      <span style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-caption)', color: 'var(--fg-muted)', lineHeight: 1.45 }}>
         Arkim AI joins the{' '}
         <a href="https://www.nvidia.com/en-us/startups/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--fg)', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
           NVIDIA Inception Program
         </a>
         {' '}for AI-driven industrial startups
       </span>
-      <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--accent)' }}>→</span>
+      <span style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-micro)', color: 'var(--accent)' }}>→</span>
       <button onClick={onDismiss} style={{
         position: 'absolute', right: 20, background: 'none',
         border: 'none', color: 'var(--fg-muted)', cursor: 'pointer',

@@ -61,7 +61,7 @@ html[data-theme='light'] .arkim-site-nav[data-menu-open='true'] {
 
 .arkim-site-nav__link {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: var(--text-caption, 13px);
   font-weight: 500;
   letter-spacing: 0.06em;
   text-decoration: none;
@@ -91,7 +91,7 @@ html[data-theme='light'] .arkim-site-nav[data-menu-open='true'] {
 
 .arkim-site-nav__email {
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: var(--text-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.04em;
   color: var(--fg-muted);
@@ -100,7 +100,7 @@ html[data-theme='light'] .arkim-site-nav[data-menu-open='true'] {
 
 .arkim-site-nav__cta {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: var(--text-caption, 13px);
   font-weight: 600;
   letter-spacing: 0.02em;
   padding: 10px 22px;
@@ -119,7 +119,7 @@ html[data-theme='light'] .arkim-site-nav[data-menu-open='true'] {
 
 .arkim-site-nav__drawer-link {
   font-family: var(--sans);
-  font-size: 15px;
+  font-size: var(--text-label, 15px);
   letter-spacing: 0.03em;
   text-decoration: none;
   padding: 14px 0;
@@ -129,7 +129,7 @@ html[data-theme='light'] .arkim-site-nav[data-menu-open='true'] {
 
 .arkim-site-nav__drawer-cta {
   font-family: var(--sans);
-  font-size: 14px;
+  font-size: var(--text-caption, 14px);
   font-weight: 600;
   letter-spacing: 0.02em;
   padding: 14px 18px;
@@ -148,7 +148,7 @@ html[data-theme='light'] .arkim-site-nav[data-menu-open='true'] {
 
 .arkim-site-nav__theme {
   border-radius: 4px;
-  font-size: 11px;
+  font-size: var(--text-micro, 11px);
   font-weight: 600;
   letter-spacing: 0.09em;
   text-transform: uppercase;

@@ -1,0 +1,696 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Arkim AI — Maintenance Solutions for Every Facility</title>
+<style>
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('uploads/Avenir Next.ttc') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avenir Next';
+  src: url('uploads/Avenir Next.ttc') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0A0A0A;
+  --bg-card: #141414;
+  --border: #2A2A2A;
+  --fg: #F5F2ED;
+  --fg-muted: #8A857C;
+  --accent: #4A8ABF;
+  --headline-accent: #7AB5E0;
+  --text-muted: rgba(255,255,255,0.72);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Inter', 'Avenir Next', 'Avenir', Helvetica, sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+::selection { background: rgba(74,138,191,0.25); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+@keyframes trustProgress { from { width: 0%; } to { width: 100%; } }
+@keyframes kenburns {
+  from { transform: scale(1.06) translate(-1%,0); }
+  to   { transform: scale(1) translate(1%,1%); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+</style>
+<meta name="ext-resource-dependency" content="https://www.arkim.ai/logo-arkim.png" data-resource-id="logoMark" />
+<meta name="ext-resource-dependency" content="https://www.arkim.ai/arkim-text-logo.png" data-resource-id="logoText" />
+<meta name="ext-resource-dependency" content="https://www.arkim.ai/images/nvidia-inception.png" data-resource-id="nvidiaLogo" />
+<meta name="ext-resource-dependency" content="https://www.arkim.ai/images/databricks-logo.svg" data-resource-id="databricksLogo" />
+<meta name="ext-resource-dependency" content="https://www.arkim.ai/images/aws-activate.svg" data-resource-id="awsLogo" />
+</head>
+<template id="__bundler_thumbnail" data-bg-color="#0A0A0A">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0A0A0A"/>
+    <rect x="80" y="60" width="120" height="28" rx="4" fill="#4A8ABF" opacity="0.8"/>
+    <rect x="80" y="120" width="600" height="80" rx="4" fill="#F5F2ED" opacity="0.9"/>
+    <rect x="80" y="220" width="440" height="40" rx="4" fill="#F5F2ED" opacity="0.4"/>
+    <rect x="80" y="360" width="260" height="200" rx="12" fill="#141414" stroke="#2A2A2A"/>
+    <rect x="360" y="360" width="260" height="200" rx="12" fill="#141414" stroke="#2A2A2A"/>
+    <rect x="640" y="360" width="260" height="200" rx="12" fill="#141414" stroke="#2A2A2A"/>
+    <rect x="920" y="360" width="200" height="200" rx="12" fill="#141414" stroke="#4A8ABF" opacity="0.5"/>
+  </svg>
+</template>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// ── Shared helpers ────────────────────────────────────────────────────────────
+function useFadeIn(threshold = 0.1) {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVis(true); obs.disconnect(); } }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, vis];
+}
+function FadeIn({ children, delay = 0, style = {} }) {
+  const [ref, vis] = useFadeIn();
+  return (
+    <div ref={ref} style={{
+      opacity: vis ? 1 : 0,
+      transform: vis ? 'none' : 'translateY(28px)',
+      transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+      ...style,
+    }}>{children}</div>
+  );
+}
+function Eyebrow({ children, accent = false }) {
+  return (
+    <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: accent ? 'var(--accent)' : 'var(--fg-muted)', marginBottom: '20px' }}>
+      {children}
+    </div>
+  );
+}
+function DemoBtn({ label = 'Request a Demo', style = {} }) {
+  return (
+    <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener" style={{
+      display: 'inline-flex', alignItems: 'center', gap: 8,
+      fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600,
+      background: 'var(--accent)', color: '#000',
+      padding: '13px 28px', borderRadius: '6px', textDecoration: 'none',
+      transition: 'opacity 0.2s, transform 0.15s',
+      ...style,
+    }}
+    onMouseEnter={e => { e.currentTarget.style.opacity='0.85'; e.currentTarget.style.transform='translateY(-1px)'; }}
+    onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
+    >{label} →</a>
+  );
+}
+function SectionImg({ label, height = '55vh' }) {
+  return (
+    <div style={{
+      width: '100%', height, position: 'relative', overflow: 'hidden',
+      background: 'repeating-linear-gradient(45deg, #111 0, #111 16px, #0e0e0e 16px, #0e0e0e 32px)',
+      borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
+    }}>
+      <div style={{
+        position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        flexDirection: 'column', gap: 10, color: 'rgba(245,242,237,0.15)', fontFamily: 'monospace', fontSize: '13px', textAlign: 'center', padding: '32px',
+      }}>
+        <div style={{ fontSize: 40, opacity: 0.2 }}>◻</div>
+        <div>{label}</div>
+      </div>
+    </div>
+  );
+}
+
+// ── NAV ──────────────────────────────────────────────────────────────────────
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+  return (
+    <nav style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: '0 48px', height: '68px',
+      background: scrolled ? 'rgba(10,10,10,0.9)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(20px)' : 'none',
+      borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
+      transition: 'all 0.4s ease',
+    }}>
+      <a href="Arkim Homepage.html" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+        <img src={window.__resources && window.__resources.logoMark || 'https://www.arkim.ai/logo-arkim.png'} alt="Arkim" style={{ height: 28 }} />
+        <img src={window.__resources && window.__resources.logoText || 'https://www.arkim.ai/arkim-text-logo.png'} alt="Arkim" style={{ height: 17, opacity: 0.9 }} />
+      </a>
+      <div style={{ display: 'flex', gap: 32 }}>
+        {[{ label: 'Product', href: 'Arkim Product.html' }, { label: 'About Us', href: 'Arkim About.html' }, { label: 'Resources', href: 'https://www.arkim.ai/resources/blog' }, { label: 'Contact Us', href: 'Arkim Contact.html' }].map(({ label, href }) => (
+          <a key={label} href={href} style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 400, color: 'var(--fg-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
+          onMouseEnter={e => e.target.style.color='var(--fg)'}
+          onMouseLeave={e => e.target.style.color='var(--fg-muted)'}
+          >{label}</a>
+        ))}
+      </div>
+      <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener" style={{
+        fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 600,
+        background: 'var(--accent)', color: '#000',
+        padding: '9px 20px', borderRadius: '6px', textDecoration: 'none',
+        transition: 'opacity 0.2s',
+      }}
+      onMouseEnter={e => e.target.style.opacity='0.85'}
+      onMouseLeave={e => e.target.style.opacity='1'}
+      >Request Demo</a>
+    </nav>
+  );
+}
+
+// ── HERO ─────────────────────────────────────────────────────────────────────
+function Hero() {
+  return (
+    <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '140px 48px 80px', overflow: 'hidden' }}>
+      {/* Video bg */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+        <iframe
+          src="https://player.vimeo.com/video/1177525108?autoplay=1&loop=1&muted=1&background=1&title=0&byline=0&portrait=0"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', objectFit: 'cover', pointerEvents: 'none' }}
+          allow="autoplay; fullscreen"
+          title="bg"
+        />
+      </div>
+      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: '#000' }} />
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', textAlign: 'center' }}>
+        <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
+          <h1 style={{ fontFamily: 'var(--sans)', lineHeight: 1.05, letterSpacing: '0.01em', marginBottom: '28px', textWrap: 'balance' }}>
+            <span style={{ fontWeight: 800, color: '#fff', display: 'block', fontSize: 'clamp(36px, 5vw, 72px)' }}>Maintenance Solutions</span>
+            <span style={{ fontWeight: 400, color: 'var(--headline-accent)', display: 'block', fontSize: 'clamp(36px, 5vw, 72px)' }}>for Every Facility</span>
+          </h1>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(15px, 1.3vw, 16px)', fontWeight: 600, color: 'var(--text-muted)', lineHeight: 1.65, maxWidth: '580px', margin: '0 auto 48px', textWrap: 'pretty' }}>
+            Capture knowledge automatically. Diagnose faster. Stop downtime before it starts.
+          </p>
+        </div>
+        {/* Anchor nav */}
+        <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s both' }}>
+          <div style={{ display: 'inline-grid', gridTemplateColumns: 'repeat(4, 1fr)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', background: 'rgba(10,10,10,0.6)', backdropFilter: 'blur(12px)', maxWidth: '740px', margin: '0 auto' }}>
+            {[
+              { num: '01', label: 'Diagnose faster', id: 's01' },
+              { num: '02', label: 'Capture knowledge', id: 's02' },
+              { num: '03', label: 'Maintain smarter', id: 's03' },
+              { num: '04', label: 'Your existing tools', id: 's04' },
+            ].map((item, i) => (
+              <a key={i} href={`#${item.id}`} style={{
+                display: 'flex', flexDirection: 'column', gap: 4,
+                padding: '20px 24px', textDecoration: 'none',
+                borderRight: i < 3 ? '1px solid var(--border)' : 'none',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background='rgba(74,138,191,0.08)'}
+              onMouseLeave={e => e.currentTarget.style.background='transparent'}
+              >
+                <span style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.1em', color: 'var(--accent)', fontWeight: 500 }}>{item.num}</span>
+                <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)', fontWeight: 400, lineHeight: 1.3 }}>{item.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── STICKY ANCHOR NAV (shows when hero nav scrolls away) ─────────────────────
+function StickyAnchorNav() {
+  const [show, setShow] = useState(false);
+  const [active, setActive] = useState(null);
+  useEffect(() => {
+    const sectionIds = ['s01','s02','s03','s04'];
+    const fn = () => {
+      setShow(window.scrollY > window.innerHeight * 0.7);
+      const found = sectionIds.slice().reverse().find(id => {
+        const el = document.getElementById(id);
+        return el && el.getBoundingClientRect().top <= 120;
+      });
+      setActive(found || null);
+    };
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+  if (!show) return null;
+  const items = [
+    { num: '01', label: 'Diagnose faster', id: 's01' },
+    { num: '02', label: 'Capture knowledge', id: 's02' },
+    { num: '03', label: 'Maintain smarter', id: 's03' },
+    { num: '04', label: 'Your existing tools', id: 's04' },
+  ];
+  return (
+    <div style={{
+      position: 'fixed', top: 68, left: 0, right: 0, zIndex: 150,
+      background: 'rgba(10,10,10,0.95)', backdropFilter: 'blur(16px)',
+      borderBottom: '1px solid var(--border)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '0 48px', height: '52px', gap: 0,
+      transition: 'opacity 0.3s',
+    }}>
+      {items.map((item, i) => (
+        <a key={i} href={`#${item.id}`} style={{
+          display: 'flex', alignItems: 'center', gap: 10,
+          padding: '0 28px', height: '100%', textDecoration: 'none',
+          borderRight: i < 3 ? '1px solid var(--border)' : 'none',
+          borderBottom: active === item.id ? `2px solid var(--accent)` : '2px solid transparent',
+          transition: 'all 0.2s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.background='rgba(74,138,191,0.06)'}
+        onMouseLeave={e => e.currentTarget.style.background='transparent'}
+        >
+          <span style={{ fontFamily: 'var(--sans)', fontSize: '11px', color: active === item.id ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, letterSpacing: '0.08em' }}>{item.num}</span>
+          <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: active === item.id ? 'var(--fg)' : 'var(--fg-muted)', fontWeight: 400 }}>{item.label}</span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+// ── FEATURE PILLS ─────────────────────────────────────────────────────────────
+function FeaturePills({ items }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
+      {items.map((item, i) => (
+        <div key={i} style={{
+          background: 'var(--bg-card)', padding: '32px 36px',
+          transition: 'background 0.2s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.background='#1a1a1a'}
+        onMouseLeave={e => e.currentTarget.style.background='var(--bg-card)'}
+        >
+          <div style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{item.title}</div>
+          <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{item.body}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── STAT BLOCK ────────────────────────────────────────────────────────────────
+function StatBlock({ num, label, sub }) {
+  return (
+    <div style={{ padding: '48px 0', borderTop: '1px solid var(--border)' }}>
+      <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(30px, 4vw, 52px)', fontWeight: 700, color: 'var(--accent)', lineHeight: 1, letterSpacing: '0.01em', marginBottom: '12px' }}>{num}</div>
+      <div style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 500, color: 'var(--fg)', marginBottom: '8px' }}>{label}</div>
+      {sub && <div style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.6, maxWidth: '560px', textWrap: 'pretty' }}>{sub}</div>}
+    </div>
+  );
+}
+
+// ── SECTION WRAPPER ───────────────────────────────────────────────────────────
+function Section({ id, eyebrow, headline, sub, imageLabel, imageHeight = '55vh', children, statNum, statLabel, statSub }) {
+  return (
+    <div id={id} style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px 60px' }}>
+        <FadeIn>
+          <Eyebrow accent>{eyebrow}</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(24px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>{headline}</h2>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>{sub}</p>
+        </FadeIn>
+        <FadeIn delay={0.1}>{children}</FadeIn>
+      </div>
+      <FadeIn>
+        <SectionImg label={imageLabel} height={imageHeight} />
+      </FadeIn>
+      {statNum && (
+        <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 80px' }}>
+          <FadeIn delay={0.1}>
+            <StatBlock num={statNum} label={statLabel} sub={statSub} />
+          </FadeIn>
+        </div>
+      )}
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '40px 80px 80px' }}>
+        <FadeIn>
+          <DemoBtn />
+        </FadeIn>
+      </div>
+    </div>
+  );
+}
+
+// ── SECTION 01 — DIAGNOSE FASTER ─────────────────────────────────────────────
+function S01() {
+  return (
+    <Section
+      id="s01"
+      eyebrow="01 — Diagnose Faster"
+      headline="Your team already has everything they need to diagnose equipment. They just need Arkim."
+      sub="The phone in your technician's pocket is a diagnostic sensor. Point it at a machine, describe what you're hearing or seeing, and Arkim tells you what's wrong — and what to do about it."
+      imageLabel="phone screen with audio waveform overlay against industrial equipment — dark, dramatic"
+      statNum="Day zero."
+      statLabel="65% of a technician's time is non-wrench time."
+      statSub="Knowledge gaps and admin burden eat the majority of every shift. Arkim eliminates the search — technicians arrive at the machine knowing exactly what to do."
+    >
+      <FeaturePills items={[
+        { title: 'Video capture', body: 'Hold your phone up to a machine. Arkim reads smoke, cracks, vibration, and fluid leaks from the video automatically.' },
+        { title: 'Audio capture', body: 'Unusual sound from a pump? Arkim listens to the frequency and compares it to what healthy equipment should sound like.' },
+        { title: 'AI chat assistant', body: "Ask Arkim what's wrong in plain language. It pulls from the equipment manual, your past repair logs, and asset history to give you an answer in seconds." },
+        { title: 'Pre-diagnosed repair summary', body: "Before a technician touches the machine, they already know what's wrong, what part is needed, and what the manual says to do." },
+      ]} />
+    </Section>
+  );
+}
+
+// ── SECTION 02 — CAPTURE KNOWLEDGE ───────────────────────────────────────────
+function S02() {
+  return (
+    <Section
+      id="s02"
+      eyebrow="02 — Capture Knowledge Automatically"
+      headline="Every repair your team does is a permanent company asset. Right now, most of it disappears when they clock out."
+      sub="Arkim captures every repair, every inspection, every compliance check — automatically. When your most experienced technician retires, their knowledge stays."
+      imageLabel="technician completing a repair on one side / clean repair log card appearing on the other"
+      statNum="The 0-day technician."
+      statLabel="Any technician, from day one."
+      statSub="With Arkim, any technician can execute at a senior level on their first day — using the knowledge your best people built over years."
+    >
+      <FeaturePills items={[
+        { title: 'Repair documentation', body: 'Every repair is logged as it happens. No paperwork. No end-of-shift data entry.' },
+        { title: 'Equipment manual ingestion', body: 'Arkim reads your equipment manuals, wiring schematics, and parts lists and makes them searchable in plain language.' },
+        { title: 'Daily compliance checks', body: 'Operators complete digital checklists on their phone, with photo and video attached. Every check is logged and searchable.' },
+        { title: 'Tribal knowledge capture', body: 'The way your senior technician would diagnose a specific machine quirk? That lives in Arkim now, not just in their head.' },
+      ]} />
+    </Section>
+  );
+}
+
+// ── SECTION 03 — MAINTAIN SMARTER ────────────────────────────────────────────
+function S03() {
+  return (
+    <Section
+      id="s03"
+      eyebrow="03 — Maintain Smarter"
+      headline="The manufacturer's schedule is a starting point. Arkim makes it better every day."
+      sub="Most facilities run the maintenance schedule that came in the manual. Arkim learns from your actual equipment, in your actual conditions, and adjusts the schedule automatically."
+      imageLabel="dark timeline: maintenance schedule adapting over time — evenly-spaced markers shifting based on observed events"
+    >
+      <FeaturePills items={[
+        { title: 'Manufacturer baseline scheduling', body: "Arkim ingests your equipment manuals and builds the initial maintenance schedule from the manufacturer's specs. Done in hours, not weeks." },
+        { title: 'Event learning', body: 'Every downtime event — even a 15-minute one — is captured and analyzed. Arkim looks for patterns that show up before failures.' },
+        { title: 'Automatic schedule adjustment', body: 'When Arkim spots a pattern, it adds new tasks, changes frequencies, and flags components likely to fail — before they do.' },
+        { title: 'Operator event capture', body: 'Operators on the floor see something unusual? They report it in Arkim. That report feeds directly into the maintenance picture.' },
+      ]} />
+    </Section>
+  );
+}
+
+// ── SECTION 04 — EXISTING TOOLS ───────────────────────────────────────────────
+const INTEGRATIONS = ['eMaint','Fiix','UpKeep','Limble CMMS','IBM Maximo','SAP PM','MaintainX','Oracle EAM','Fleetio','Brightly'];
+
+function S04() {
+  return (
+    <div id="s04" style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px 60px' }}>
+        <FadeIn>
+          <Eyebrow accent>04 — Works With What You Already Have</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(24px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
+            No rip and replace. Arkim works alongside the systems your team already uses.
+          </h2>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>
+            We connect directly to your existing maintenance software. Your data stays where it is. Your team doesn't have to change how they work.
+          </p>
+        </FadeIn>
+        {/* Integration logos */}
+        <FadeIn delay={0.1}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', marginBottom: '40px' }}>
+            {INTEGRATIONS.map((name, i) => (
+              <div key={i} style={{
+                background: 'var(--bg-card)', padding: '28px 24px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 500,
+                color: 'rgba(245,242,237,0.3)', textAlign: 'center',
+                transition: 'color 0.25s, background 0.25s',
+                cursor: 'default',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color='var(--accent)'; e.currentTarget.style.background='#1a1a1a'; }}
+              onMouseLeave={e => { e.currentTarget.style.color='rgba(245,242,237,0.3)'; e.currentTarget.style.background='var(--bg-card)'; }}
+              >{name}</div>
+            ))}
+          </div>
+        </FadeIn>
+        <FadeIn delay={0.2}>
+          <FeaturePills items={[
+            { title: 'Two-way sync', body: 'Arkim reads work orders from your maintenance software and writes completed repairs, compliance checks, and updated schedules back automatically.' },
+            { title: 'No migration required', body: 'Your historical data, your asset list, your workflows — they all stay in your existing system. Arkim layers on top.' },
+          ]} />
+        </FadeIn>
+      </div>
+      <FadeIn>
+        <SectionImg label="Arkim at center, connecting lines to maintenance software logos — clean, dark" />
+      </FadeIn>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '40px 80px 80px' }}>
+        <FadeIn><DemoBtn /></FadeIn>
+      </div>
+    </div>
+  );
+}
+
+// ── ENTERPRISE READY CAROUSEL ───────────────────────────────────────────────
+const ENTERPRISE_CARDS = [
+  {
+    id: '21cfr',
+    badge: '21 CFR Part 11',
+    title: 'Pharma Ready',
+    detail: 'Validation documentation, IQ/OQ/PQ templates, and audit-trail logging built for regulated pharmaceutical environments. Every action is timestamped, attributed, and exportable for inspection.',
+  },
+  {
+    id: 'nvidia',
+    badge: 'NVIDIA Inception',
+    title: 'AI Infrastructure',
+    detail: "Member of NVIDIA's Inception program — built on the same AI infrastructure powering the world's leading industrial platforms. GPU-accelerated inference for real-time multimodal diagnostics.",
+  },
+  {
+    id: 'databricks',
+    badge: 'Databricks Program',
+    title: 'Enterprise Data',
+    detail: 'Part of the Databricks program — enterprise-grade data infrastructure for scalable ingestion, model training, and real-time analytics across your entire asset base.',
+  },
+  {
+    id: 'aws',
+    badge: 'AWS Activate',
+    title: 'Cloud Infrastructure',
+    detail: 'Deployed on enterprise AWS infrastructure with global availability, multi-region redundancy, and the security posture your IT team requires. SOC 2 aligned by design.',
+  },
+  {
+    id: 'audit',
+    badge: 'Audit-Ready Documentation',
+    title: 'Full Traceability',
+    detail: 'Every repair, every compliance check, every diagnostic event — fully logged, attributed, and exportable. Nothing falls through the cracks. Arkim is your paper trail.',
+  },
+];
+
+function EnterpriseReady() {
+  const [active, setActive] = useState(0);
+  const card = ENTERPRISE_CARDS[active];
+  return (
+    <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-card)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px' }}>
+        <FadeIn style={{ marginBottom: '60px' }}>
+          <Eyebrow accent>Enterprise Ready</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 44px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', textWrap: 'balance' }}>
+            Built for regulated industries.
+          </h2>
+        </FadeIn>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
+          {/* Tab list */}
+          <div style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
+            {ENTERPRISE_CARDS.map((c, i) => (
+              <button key={c.id} onClick={() => setActive(i)} style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                padding: '28px 32px',
+                borderBottom: i < ENTERPRISE_CARDS.length - 1 ? '1px solid var(--border)' : 'none',
+                borderLeft: active === i ? '3px solid var(--accent)' : '3px solid transparent',
+                textAlign: 'left',
+                transition: 'background 0.15s, border-color 0.15s',
+                background: active === i ? 'rgba(74,138,191,0.06)' : 'transparent',
+              }}>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: active === i ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, marginBottom: '6px' }}>{c.badge}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, color: active === i ? 'var(--fg)' : 'rgba(245,242,237,0.5)', lineHeight: 1.2, letterSpacing: '-0.01em' }}>{c.title}</div>
+              </button>
+            ))}
+          </div>
+          {/* Detail panel */}
+          <div style={{ background: 'var(--bg-card)', padding: '56px 52px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>{card.badge}</div>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(28px, 3vw, 42px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', marginBottom: '24px' }}>{card.title}</div>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, textWrap: 'pretty' }}>{card.detail}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── HOW IT WORKS ──────────────────────────────────────────────────────────────
+function HowItWorks() {
+  const steps = [
+    { num: '01', title: 'Connect your systems', body: 'We integrate with your existing maintenance software. No hardware to install. No IT project.' },
+    { num: '02', title: 'Load your equipment', body: 'Upload your equipment manuals or point us at your asset list. Arkim builds the baseline schedule and knowledge base automatically.' },
+    { num: '03', title: 'Put the phone to work', body: 'Operators and technicians start capturing on day one — compliance checks, symptoms, repairs. Every interaction builds the knowledge base.' },
+    { num: '04', title: 'Arkim gets smarter', body: 'Every event, every repair, every captured symptom feeds back into the system. The diagnostic accuracy and maintenance schedule improve automatically over time.' },
+  ];
+  return (
+    <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-card)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px' }}>
+        <FadeIn style={{ marginBottom: '80px' }}>
+          <Eyebrow>From Kickoff to Live</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 44px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', textWrap: 'balance' }}>
+            Up and running in days.<br /><em style={{ fontStyle: 'normal', color: 'var(--fg-muted)' }}>Not months.</em>
+          </h2>
+        </FadeIn>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
+          {steps.map((s, i) => (
+            <FadeIn key={i} delay={i * 0.1}>
+              <div style={{ background: '#111', padding: '40px 36px', height: '100%', transition: 'background 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.background='#181818'}
+              onMouseLeave={e => e.currentTarget.style.background='#111'}
+              >
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.12em', color: 'var(--accent)', fontWeight: 500, marginBottom: '20px' }}>{s.num}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 600, marginBottom: '16px', lineHeight: 1.2, letterSpacing: '-0.01em' }}>{s.title}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.body}</div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
+function Results() {
+  const stats = [
+    { num: '65%', label: "of a technician's time is non-wrench time", sub: 'Knowledge gaps and admin burden eat the majority of every shift. Arkim eliminates the search — technicians arrive at the machine knowing exactly what to do.' },
+    { num: '80%', label: 'of repair knowledge is undocumented', sub: 'When your best technician leaves, their knowledge leaves with them. Arkim captures every repair in real time and builds a collective memory for every asset.' },
+    { num: 'The 0-day technician.', label: 'Any hire. Any experience level.', sub: 'Senior-level knowledge available from the very first shift — not after years on the floor.' },
+  ];
+  return (
+    <div style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px' }}>
+        <FadeIn style={{ marginBottom: '64px' }}>
+          <Eyebrow accent>What You Get</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 44px)', fontWeight: 700, letterSpacing: '0.01em', lineHeight: 1.1, textWrap: 'balance' }}>Results from week one.</h2>
+        </FadeIn>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
+          {stats.map((s, i) => (
+            <FadeIn key={i} delay={i * 0.12}>
+              <div style={{
+                background: 'var(--bg-card)', padding: '48px 40px', height: '100%',
+                borderTop: '3px solid var(--accent)',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background='#1a1a1a'}
+              onMouseLeave={e => e.currentTarget.style.background='var(--bg-card)'}
+              >
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(32px, 3.5vw, 52px)', fontWeight: 700, color: 'var(--accent)', lineHeight: 1.05, letterSpacing: '-0.025em', marginBottom: '16px' }}>{s.num}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{s.label}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.sub}</div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── FINAL CTA ─────────────────────────────────────────────────────────────────
+function FinalCTA() {
+  return (
+    <div style={{ borderTop: '1px solid var(--border)', background: 'linear-gradient(to bottom, #0A0A0A, #0c0e0f)', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '700px', height: '400px', background: 'radial-gradient(ellipse, rgba(74,138,191,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ maxWidth: '860px', margin: '0 auto', padding: '120px 48px', textAlign: 'center', position: 'relative' }}>
+        <FadeIn>
+          <Eyebrow>Let's Talk</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(32px, 4.5vw, 58px)', fontWeight: 700, lineHeight: 1.06, letterSpacing: '0.01em', marginBottom: '20px', textWrap: 'balance' }}>
+            Let's talk about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your facility.</em>
+          </h2>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.7, marginBottom: '40px' }}>
+            A 30-minute conversation. We'll show you exactly what Arkim would look like for your equipment and your team.
+          </p>
+          <DemoBtn label="Request a Demo" style={{ fontSize: '16px', padding: '15px 36px' }} />
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', marginTop: '20px' }}>No pitch deck. No commitment.</p>
+        </FadeIn>
+      </div>
+    </div>
+  );
+}
+
+// ── FOOTER ────────────────────────────────────────────────────────────────────
+function Footer() {
+  return (
+    <footer style={{ borderTop: '1px solid var(--border)', padding: '48px 80px 32px', maxWidth: '1300px', margin: '0 auto' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+        <a href="Arkim Homepage.html" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+          <img src={window.__resources && window.__resources.logoMark || 'https://www.arkim.ai/logo-arkim.png'} alt="Arkim" style={{ height: 24 }} />
+          <img src={window.__resources && window.__resources.logoText || 'https://www.arkim.ai/arkim-text-logo.png'} alt="Arkim" style={{ height: 15, opacity: 0.7 }} />
+        </a>
+        <div style={{ display: 'flex', gap: 32 }}>
+          {[{ label: 'Homepage', href: 'Arkim Homepage.html' }, { label: 'Contact', href: 'https://www.arkim.ai/contact' }, { label: 'Request Demo', href: 'https://www.arkim.ai/contact?tab=demo' }].map((l, i) => (
+            <a key={i} href={l.href} style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
+            onMouseEnter={e => e.target.style.color='var(--fg)'}
+            onMouseLeave={e => e.target.style.color='var(--fg-muted)'}
+            >{l.label}</a>
+          ))}
+        </div>
+      </div>
+      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'rgba(245,242,237,0.25)' }}>© 2026 Arkim AI. All rights reserved.</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+          {[{ src: (window.__resources && window.__resources.nvidiaLogo) || 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA' }, { src: (window.__resources && window.__resources.databricksLogo) || 'https://www.arkim.ai/images/databricks-logo.svg', alt: 'Databricks' }, { src: (window.__resources && window.__resources.awsLogo) || 'https://www.arkim.ai/images/aws-activate.svg', alt: 'AWS' }].map((p, i) => (
+            <img key={i} src={p.src} alt={p.alt} style={{ height: 18, opacity: 0.2, filter: 'brightness(10)', transition: 'opacity 0.2s' }}
+            onMouseEnter={e => e.target.style.opacity='0.5'}
+            onMouseLeave={e => e.target.style.opacity='0.2'}
+            />
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// ── APP ───────────────────────────────────────────────────────────────────────
+function App() {
+  return (
+    <div>
+      <Nav />
+      <Hero />
+      <StickyAnchorNav />
+      <S01 />
+      <S02 />
+      <S03 />
+      <S04 />
+      <HowItWorks />
+      <Results />
+      <EnterpriseReady />
+      <FinalCTA />
+      <Footer />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

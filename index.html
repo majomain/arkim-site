@@ -490,7 +490,20 @@ function TheLever() {
               Arkim is the lever — any technician, on their first day, executes with the knowledge your most experienced people spent years building. The phone in their pocket is the sensor. The platform is the brain.
             </p>
             <div style={{ marginTop: '48px' }}>
-              <ImgPlaceholder label="junior tech → senior output diagram" aspectRatio="16/9" />
+              <img
+                src="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/technician-plc.webp"
+                alt="Technician operating industrial PLC panel"
+                loading="lazy"
+                decoding="async"
+                style={{
+                  width: '100%',
+                  aspectRatio: '16/9',
+                  objectFit: 'cover',
+                  borderRadius: '12px',
+                  border: '1px solid var(--border)',
+                  display: 'block',
+                }}
+              />
             </div>
           </div>
         </FadeIn>
@@ -603,6 +616,8 @@ const PERSONAS = [
   {
     role: 'Operators',
     context: 'Front-line workers on the floor',
+    image: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/industrial-operator-2.jpg',
+    imagePosition: 'center 20%',
     outcomes: [
       'Troubleshoot minor events with the AI assistant — in plain language',
       'Capture symptoms via phone: video, audio, photo in seconds',
@@ -612,6 +627,8 @@ const PERSONAS = [
   {
     role: 'Technicians',
     context: 'Maintenance teams doing the repair',
+    image: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/siemans-tech-ss.webp',
+    imagePosition: 'center 30%',
     outcomes: [
       'Receive pre-diagnosed work orders — the diagnostic work is done before you touch the machine',
       'Hands-free guidance during active repairs',
@@ -621,6 +638,8 @@ const PERSONAS = [
   {
     role: 'Management',
     context: 'Plant managers and ops leadership',
+    image: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/facility-manager.webp',
+    imagePosition: 'center 25%',
     outcomes: [
       'Equipment onboarding and OEM baseline scheduling out of the box',
       'Maintenance frequency optimization across the full asset base',
@@ -649,24 +668,48 @@ function Personas() {
         {PERSONAS.map((p, i) => (
           <FadeIn key={i} delay={i * 0.12}>
             <div style={{
-              background: 'var(--bg-card)', padding: isMobile ? '30px 24px' : '48px 40px',
+              background: 'var(--bg-card)',
               height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
               transition: 'background 0.25s',
             }}
             onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-hover)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-card)'; }}
             >
-              <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', color: 'var(--fg-muted)', textTransform: 'uppercase', marginBottom: '12px' }}>{p.context}</div>
-              <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-card)', fontWeight: 700, marginBottom: '36px', letterSpacing: '0.02em' }}>{p.role}</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                {p.outcomes.map((o, j) => (
-                  <div key={j} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <div style={{ width: 20, height: 20, borderRadius: '50%', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
-                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
+              <div style={{ position: 'relative', width: '100%', aspectRatio: '16/10', overflow: 'hidden', flexShrink: 0 }}>
+                <img
+                  src={p.image}
+                  alt={p.role}
+                  loading="lazy"
+                  decoding="async"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: p.imagePosition || 'center center',
+                    display: 'block',
+                  }}
+                />
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  background: 'linear-gradient(to top, var(--bg-card) 0%, transparent 50%)',
+                  pointerEvents: 'none',
+                }} />
+              </div>
+              <div style={{ padding: isMobile ? '0 24px 30px' : '0 40px 48px', marginTop: '-24px', position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', color: 'var(--fg-muted)', textTransform: 'uppercase', marginBottom: '12px' }}>{p.context}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-card)', fontWeight: 700, marginBottom: '28px', letterSpacing: '0.02em' }}>{p.role}</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  {p.outcomes.map((o, j) => (
+                    <div key={j} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                      <div style={{ width: 20, height: 20, borderRadius: '50%', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
+                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
+                      </div>
+                      <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.6, textWrap: 'pretty' }}>{o}</p>
                     </div>
-                    <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.6, textWrap: 'pretty' }}>{o}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </FadeIn>
@@ -932,7 +975,21 @@ function FinalCTA() {
         position: 'relative',
       }}>
         <FadeIn>
-          <ImgPlaceholder label="Tom Dickie, CEO, Arkim AI" aspectRatio="3/4" />
+          <img
+            src="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/tom-pfp-1500px.webp"
+            alt="Tom Dickie, CEO, Arkim AI"
+            loading="lazy"
+            decoding="async"
+            style={{
+              width: '100%',
+              aspectRatio: '3/4',
+              objectFit: 'cover',
+              objectPosition: 'center top',
+              borderRadius: '12px',
+              border: '1px solid var(--border)',
+              display: 'block',
+            }}
+          />
           <div style={{ marginTop: '20px', fontFamily: 'var(--sans)', fontSize: 'var(--text-caption)', color: 'var(--fg-muted)' }}>
             Tom Dickie, CEO, Arkim AI
           </div>

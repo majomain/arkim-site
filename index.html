@@ -3,14 +3,18 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#0A0A0A" />
+<meta name="theme-color" content="#F5F2EB" />
 <link rel="icon" href="uploads/favicon.png" type="image/png" sizes="16x16" />
 <script>
 (function () {
   try {
-    if (localStorage.getItem('arkim-theme') === 'light') {
+    var stored = localStorage.getItem('arkim-theme');
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (stored === 'dark') {
+      document.documentElement.removeAttribute('data-theme');
+      if (m) m.setAttribute('content', '#0A0A0A');
+    } else {
       document.documentElement.setAttribute('data-theme', 'light');
-      var m = document.querySelector('meta[name="theme-color"]');
       if (m) m.setAttribute('content', '#F5F2EB');
     }
   } catch (e) {}
@@ -99,7 +103,6 @@
   /* Type scale — hero h1 + h2 tokens live in arkim-hero.css (--title-h2-md/lg/xl); --title-display/--title-section alias those */
   --text-eyebrow-size: clamp(12px, 0.95vw, 14px);
   --text-eyebrow-tracking: 0.12em;
-  --text-lead: clamp(17px, 1.35vw, 19px);
   --text-body: 17px;
   --text-label: 15px;
   --text-caption: 14px;
@@ -462,12 +465,7 @@ function Hero() {
           </h1>
         </FadeIn>
         <FadeIn delay={0.25}>
-          <p style={{
-            fontFamily: 'var(--sans)', fontSize: 'var(--text-lead)',
-            fontWeight: 600, color: 'var(--fg-muted)',
-            lineHeight: 1.65, maxWidth: '580px', margin: '0 auto 42px',
-            textWrap: 'pretty',
-          }}>
+          <p className="hero-lead">
             Arkim gives any technician senior-level knowledge from day one — using the phone in their pocket as the diagnostic sensor.
           </p>
         </FadeIn>

@@ -40,10 +40,23 @@
  */
 .hero-cinematic {
   --hero-title: #ffffff;
+  --hero-lead-size: clamp(16px, 1.32vw, 18px);
 }
 
 .hero-cinematic .hero-h1 {
   color: var(--hero-title);
+}
+
+/* Subhead / dek under hero h1 — same scale on index + subpages; regular weight */
+.hero-cinematic .hero-lead {
+  font-family: var(--sans);
+  font-size: var(--hero-lead-size);
+  font-weight: 400;
+  color: var(--fg-muted);
+  line-height: 1.65;
+  max-width: 580px;
+  margin: 0 auto 42px;
+  text-wrap: pretty;
 }
 
 html[data-theme="light"] .hero-cinematic {

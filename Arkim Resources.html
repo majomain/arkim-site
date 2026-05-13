@@ -4,14 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Arkim AI — Resources and insights</title>
-<meta name="theme-color" content="#0A0A0A" />
+<meta name="theme-color" content="#F5F2EB" />
 <link rel="icon" href="uploads/favicon.png" type="image/png" sizes="16x16" />
 <script>
 (function () {
   try {
-    if (localStorage.getItem('arkim-theme') === 'light') {
+    var stored = localStorage.getItem('arkim-theme');
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (stored === 'dark') {
+      document.documentElement.removeAttribute('data-theme');
+      if (m) m.setAttribute('content', '#0A0A0A');
+    } else {
       document.documentElement.setAttribute('data-theme', 'light');
-      var m = document.querySelector('meta[name="theme-color"]');
       if (m) m.setAttribute('content', '#F5F2EB');
     }
   } catch (e) {}
@@ -181,23 +185,14 @@ const ANCHOR_ITEMS = [
 function Hero() {
   const narrow = useIsNarrowLayout();
   return (
-    <div className="hero-cinematic" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '120px 16px 72px' : '140px 48px 80px', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
-        <iframe
-          src="https://player.vimeo.com/video/1177525108?autoplay=1&loop=1&muted=1&background=1&title=0&byline=0&portrait=0&playsinline=1"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', objectFit: 'cover', pointerEvents: 'none' }}
-          allow="autoplay; fullscreen; picture-in-picture"
-          title="Background video"
-        />
-      </div>
-      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: '#000' }} />
+    <div className="hero-cinematic hero-cinematic--static-texture" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '120px 16px 72px' : '140px 48px 80px', overflow: 'hidden' }}>
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
           <h1 className="hero-h1">
             <span style={{ fontWeight: 700, color: '#fff', display: 'block' }}>Resources and</span>
             <span className="hero-h1-accent" style={{ display: 'block' }}>insights</span>
           </h1>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(15px, 1.3vw, 16px)', fontWeight: 600, color: 'var(--text-muted)', lineHeight: 1.65, maxWidth: '580px', margin: '0 auto 48px', textWrap: 'pretty' }}>
+          <p className="hero-lead">
             Reports, case studies, and insights from Arkim AI to help you make informed decisions.
           </p>
         </div>
@@ -311,13 +306,13 @@ function FeaturePills({ items }) {
   );
 }
 
-function Section({ id, eyebrow, headline, sub, imageLabel, imageHeight = '55vh', children }) {
+function Section({ id, eyebrow, headline, sub, imageLabel = null, imageHeight = '55vh', showDemoButton = true, children }) {
   const narrow = useIsNarrowLayout();
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
   return (
     <div id={id} style={{ borderTop: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 60px` }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px ${imageLabel || showDemoButton ? '60px' : '80px'}` }}>
         <FadeIn>
           <Eyebrow accent>{eyebrow}</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
@@ -325,14 +320,18 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageHeight = '55vh',
         </FadeIn>
         {children && <FadeIn delay={0.1}>{children}</FadeIn>}
       </div>
-      <FadeIn>
-        <SectionImg label={imageLabel} height={imageHeight} />
-      </FadeIn>
+      {imageLabel ? (
+        <FadeIn>
+          <SectionImg label={imageLabel} height={imageHeight} />
+        </FadeIn>
+      ) : null}
+      {showDemoButton ? (
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `40px ${gx}px 80px` }}>
         <FadeIn>
           <DemoBtn />
         </FadeIn>
       </div>
+      ) : null}
     </div>
   );
 }
@@ -392,7 +391,7 @@ function S01() {
       eyebrow="Report — January 6, 2025"
       headline="Arkim vs. Foundation Models: Why Domain-Specific AI Wins on the Shop Floor"
       sub="AI is changing how industries operate, but generic models aren't made for the shop floor. They hallucinate facts and fail to understand complex technical situations. Arkim is a domain-specific Industrial AI trained on proprietary engineering data. It gives technicians instant access to critical manuals, schematics, and tribal knowledge that general-purpose AI simply can't process."
-      imageLabel="industrial maintenance floor — technician with tablet, manuals and schematics motif — dark, editorial"
+      showDemoButton={false}
     />
   );
 }

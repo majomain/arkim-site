@@ -4,14 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Arkim AI — About Us</title>
-<meta name="theme-color" content="#0A0A0A" />
+<meta name="theme-color" content="#F5F2EB" />
 <link rel="icon" href="uploads/favicon.png" type="image/png" sizes="16x16" />
 <script>
 (function () {
   try {
-    if (localStorage.getItem('arkim-theme') === 'light') {
+    var stored = localStorage.getItem('arkim-theme');
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (stored === 'dark') {
+      document.documentElement.removeAttribute('data-theme');
+      if (m) m.setAttribute('content', '#0A0A0A');
+    } else {
       document.documentElement.setAttribute('data-theme', 'light');
-      var m = document.querySelector('meta[name="theme-color"]');
       if (m) m.setAttribute('content', '#F5F2EB');
     }
   } catch (e) {}

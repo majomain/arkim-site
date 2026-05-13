@@ -4,14 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Arkim AI — Contact Us</title>
-<meta name="theme-color" content="#0A0A0A" />
+<meta name="theme-color" content="#F5F2EB" />
 <link rel="icon" href="uploads/favicon.png" type="image/png" sizes="16x16" />
 <script>
 (function () {
   try {
-    if (localStorage.getItem('arkim-theme') === 'light') {
+    var stored = localStorage.getItem('arkim-theme');
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (stored === 'dark') {
+      document.documentElement.removeAttribute('data-theme');
+      if (m) m.setAttribute('content', '#0A0A0A');
+    } else {
       document.documentElement.setAttribute('data-theme', 'light');
-      var m = document.querySelector('meta[name="theme-color"]');
       if (m) m.setAttribute('content', '#F5F2EB');
     }
   } catch (e) {}
@@ -162,7 +166,7 @@ function Hero() {
           Let's talk about your{' '}
           <span className="hero-h1-accent" style={{ display: 'inline' }}>facility.</span>
         </h1>
-        <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(15px, 1.3vw, 16px)', fontWeight: 600, color: 'var(--text-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>
+        <p className="hero-lead">
           30 minutes. No pitch deck. An honest conversation about your maintenance operation and whether Arkim is the right fit.
         </p>
 

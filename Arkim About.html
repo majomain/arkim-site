@@ -119,10 +119,44 @@ function Hero() {
         </div>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s both' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', marginTop: '48px' }}>
-            {[{ name: 'Tom Dickie', role: 'CEO' }, { name: 'Jacob Ogburn', role: 'Co-founder' }].map((p, i) => (
+            {[
+              { name: 'Tom Dickie', role: 'CEO', photoSrc: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/tom-pfp-thumb.webp', linkedinUrl: 'https://www.linkedin.com/in/tom-dickie-04746a78/' },
+              { name: 'Jacob Ogburn', role: 'Co-founder', photoSrc: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/jacob-pfp-bnw.webp', linkedinUrl: 'https://www.linkedin.com/in/jacob-jotech' },
+            ].map((p, i) => (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-                <div style={{ width: 100, height: 100, borderRadius: '50%', background: 'repeating-linear-gradient(45deg, #141414 0, #141414 8px, #111 8px, #111 16px)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(245,242,237,0.2)', fontSize: '11px', fontFamily: 'monospace', textAlign: 'center', padding: '8px' }}>photo</div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 600, color: 'var(--fg)' }}>{p.name}</div>
+                <a
+                  href={p.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${p.name} on LinkedIn`}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 12,
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  <img
+                    src={p.photoSrc}
+                    alt=""
+                    width={100}
+                    height={100}
+                    loading="lazy"
+                    decoding="async"
+                    style={{
+                      width: 100,
+                      height: 100,
+                      borderRadius: '50%',
+                      border: '1px solid var(--border)',
+                      objectFit: 'cover',
+                      objectPosition: 'center top',
+                      display: 'block',
+                    }}
+                  />
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 600, color: 'var(--fg)' }}>{p.name}</div>
+                </a>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '12px', color: 'var(--fg-muted)' }}>{p.role}</div>
               </div>
             ))}
@@ -198,8 +232,20 @@ function WhatWeBuilt() {
 
 function Team() {
   const people = [
-    { name: 'Tom Dickie', role: 'CEO, Arkim AI', bio: 'Tom brings deep experience in industrial operations and enterprise software. He founded Arkim after watching facilities struggle to retain critical maintenance knowledge as their most experienced technicians retired.' },
-    { name: 'Jacob Ogburn', role: 'Co-founder, Arkim AI', bio: 'Jacob leads operational strategy and user success, focusing on the human side of AI adoption. He works hand-in-hand with frontline operators to ensure Arkim\'s platform solves the practical, daily challenges of the modern factory floor.' },
+    {
+      name: 'Tom Dickie',
+      role: 'CEO, Arkim AI',
+      photoSrc: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/tom-pfp-thumb.webp',
+      linkedinUrl: 'https://www.linkedin.com/in/tom-dickie-04746a78/',
+      bio: 'Tom brings deep experience in industrial operations and enterprise software. He founded Arkim after watching facilities struggle to retain critical maintenance knowledge as their most experienced technicians retired.',
+    },
+    {
+      name: 'Jacob Ogburn',
+      role: 'Co-founder, Arkim AI',
+      photoSrc: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/jacob-pfp-bnw.webp',
+      linkedinUrl: 'https://www.linkedin.com/in/jacob-jotech',
+      bio: 'Jacob leads operational strategy and user success, focusing on the human side of AI adoption. He works hand-in-hand with frontline operators to ensure Arkim\'s platform solves the practical, daily challenges of the modern factory floor.',
+    },
   ];
   return (
     <div style={{ borderTop: '1px solid var(--border)' }}>
@@ -215,8 +261,39 @@ function Team() {
               onMouseEnter={e => e.currentTarget.style.background='#1a1a1a'}
               onMouseLeave={e => e.currentTarget.style.background='var(--bg-card)'}
               >
-                <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'repeating-linear-gradient(45deg, #1c1c1c 0, #1c1c1c 8px, #181818 8px, #181818 16px)', border: '1px solid var(--border)', marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(245,242,237,0.15)', fontSize: '10px', fontFamily: 'monospace' }}>photo</div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '22px', fontWeight: 700, marginBottom: '6px', letterSpacing: '-0.02em' }}>{p.name}</div>
+                <a
+                  href={p.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${p.name} on LinkedIn`}
+                  style={{
+                    display: 'block',
+                    width: 'fit-content',
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  <img
+                    src={p.photoSrc}
+                    alt=""
+                    width={80}
+                    height={80}
+                    loading="lazy"
+                    decoding="async"
+                    style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: '50%',
+                      border: '1px solid var(--border)',
+                      objectFit: 'cover',
+                      objectPosition: 'center top',
+                      display: 'block',
+                      marginBottom: '24px',
+                    }}
+                  />
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: '22px', fontWeight: 700, marginBottom: '6px', letterSpacing: '-0.02em', color: 'var(--fg)' }}>{p.name}</div>
+                </a>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--accent)', fontWeight: 500, letterSpacing: '0.04em', marginBottom: '20px' }}>{p.role}</div>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--accent)', fontWeight: 500, letterSpacing: '0.04em', marginBottom: '20px' }}>{p.role}</div>
                 <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.7, textWrap: 'pretty' }}>{p.bio}</p>
               </div>

@@ -200,23 +200,38 @@ function SectionImg({ label, height = '55vh', src = null, videoSrc = null, alt =
           lineHeight: 0,
         }}
       >
-        <video
-          src={videoSrc}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-label={alt || label}
-          title={label}
+        <div
           style={{
-            width: '100%',
-            height: 'auto',
-            display: 'block',
-            verticalAlign: 'top',
-            background: '#000',
+            boxSizing: 'border-box',
+            maxWidth: '1120px',
+            margin: '0 auto',
+            padding: narrow ? '32px 16px 40px' : '48px 24px 56px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
-        />
+        >
+          <video
+            src={videoSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-label={alt || label}
+            title={label}
+            style={{
+              width: '100%',
+              maxWidth: '100%',
+              height: 'auto',
+              maxHeight: narrow ? 'min(44vh, 380px)' : 'min(50vh, 480px)',
+              objectFit: 'contain',
+              display: 'block',
+              background: '#000',
+              borderRadius: '12px',
+            }}
+          />
+        </div>
       </div>
     );
   }
@@ -783,12 +798,14 @@ function ZeroDayTechnicianDiagram() {
 }
 
 // ── SECTION WRAPPER ───────────────────────────────────────────────────────────
-function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', imageSlot = null, sideBySideGifs = null, imageBelowSplit = false, stretchSplitMediaHeight = false, splitIntroAlign = 'center', children, statNum, statLabel, statSub, afterStatContent = null, showDemoButton = true }) {
+function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', imageSlot = null, sideBySideGifs = null, imageBelowSplit = false, stretchSplitMediaHeight = false, splitMediaMatchTable = false, splitIntroAlign = 'center', children, statNum, statLabel, statSub, afterStatContent = null, showDemoButton = true }) {
   const narrow = useIsNarrowLayout();
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
   const hasSplit = Array.isArray(sideBySideGifs) && sideBySideGifs.length > 0;
   const stretchDesktop = stretchSplitMediaHeight && !narrow;
+  const matchTableHeight = splitMediaMatchTable && !narrow && hasSplit;
+  const gifsFillRow = stretchDesktop || matchTableHeight;
   const introSplitCentered = splitIntroAlign !== 'left';
 
   const introBlock = (
@@ -814,21 +831,22 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
         flexDirection: 'row',
         gap: narrow ? 10 : 14,
         justifyContent: 'center',
-        alignItems: stretchDesktop ? 'stretch' : 'center',
+        alignItems: gifsFillRow ? 'stretch' : 'center',
         width: '100%',
-        flex: stretchDesktop ? 1 : undefined,
-        minHeight: stretchDesktop ? 0 : undefined,
-        height: stretchDesktop ? '100%' : undefined,
+        flex: gifsFillRow ? 1 : undefined,
+        minHeight: gifsFillRow ? 0 : undefined,
+        height: gifsFillRow ? '100%' : undefined,
       }}
     >
       {sideBySideGifs.map((g, i) => {
         const phoneClipRadius = 'clamp(16px, 2.2vw, 26px)';
-        const imgStyle = stretchDesktop ? {
+        const fillMediaItem = stretchDesktop || (matchTableHeight && g.ingestLightFrame);
+        const imgStyle = fillMediaItem ? {
           display: 'block',
-          width: 'auto',
-          height: '100%',
-          maxHeight: '100%',
           maxWidth: '100%',
+          maxHeight: '100%',
+          width: 'auto',
+          height: 'auto',
           objectFit: 'contain',
           objectPosition: 'center',
         } : {
@@ -837,7 +855,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
           height: 'auto',
           maxHeight: narrow
             ? 'min(52vh, 420px)'
-            : (g.ingestLightFrame ? 'min(34vh, 300px)' : 'min(58vh, 520px)'),
+            : (g.ingestLightFrame ? 'min(40vh, 340px)' : 'min(58vh, 520px)'),
           objectFit: 'contain',
           objectPosition: 'center top',
           display: 'block',
@@ -857,14 +875,15 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
               key={i}
               className="arkim-ingestion-frame"
               style={{
-                flex: narrow ? '1 1 auto' : (stretchDesktop ? '1 1 auto' : '0 1 auto'),
+                flex: narrow ? '1 1 auto' : (fillMediaItem ? '1 1 0%' : '0 1 auto'),
                 minWidth: 0,
-                minHeight: stretchDesktop ? 0 : undefined,
-                height: stretchDesktop ? '100%' : undefined,
-                maxWidth: narrow ? '100%' : (stretchDesktop ? 520 : 380),
-                width: stretchDesktop ? '100%' : undefined,
+                minHeight: fillMediaItem ? 0 : undefined,
+                height: fillMediaItem ? '100%' : undefined,
+                maxWidth: narrow ? '100%' : (fillMediaItem ? 460 : 380),
+                width: fillMediaItem ? '100%' : undefined,
+                alignSelf: fillMediaItem ? 'stretch' : undefined,
                 display: 'flex',
-                alignItems: stretchDesktop ? 'stretch' : 'center',
+                alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
@@ -902,24 +921,32 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
                   display: 'flex',
                   flexDirection: narrow ? 'column' : 'row',
                   justifyContent: 'center',
-                  alignItems: narrow ? 'stretch' : (stretchDesktop ? 'stretch' : 'flex-start'),
+                  alignItems: narrow ? 'stretch' : (gifsFillRow ? 'stretch' : 'flex-start'),
                   gap: narrow ? 28 : 48,
                   width: '100%',
                 }}
               >
-                <div style={{ flex: narrow ? 'none' : (stretchDesktop ? '1 1 58%' : '0 1 520px'), minWidth: 0, maxWidth: narrow ? '100%' : (stretchDesktop ? 'none' : 560), width: narrow ? '100%' : 'auto' }}>
+                <div style={{
+                  flex: narrow ? 'none' : (stretchDesktop ? '1 1 58%' : '0 1 520px'),
+                  minWidth: 0,
+                  minHeight: narrow ? undefined : (matchTableHeight ? 0 : undefined),
+                  maxWidth: narrow ? '100%' : (stretchDesktop ? 'none' : 560),
+                  width: narrow ? '100%' : 'auto',
+                }}
+                >
                   {children}
                 </div>
                 <div style={{
-                  flex: narrow ? 'none' : (stretchDesktop ? '1 1 34%' : '0 1 auto'),
-                  minWidth: narrow ? undefined : (stretchDesktop ? 240 : 0),
-                  minHeight: stretchDesktop ? 0 : undefined,
+                  flex: narrow ? 'none' : (stretchDesktop ? '1 1 34%' : (matchTableHeight ? '1 1 0%' : '0 1 auto')),
+                  minWidth: narrow ? undefined : (stretchDesktop ? 240 : (matchTableHeight ? 0 : 0)),
+                  minHeight: narrow ? undefined : (gifsFillRow ? 0 : undefined),
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
-                  alignItems: narrow ? 'stretch' : (stretchDesktop ? 'stretch' : 'center'),
+                  alignItems: narrow ? 'stretch' : (gifsFillRow ? 'stretch' : 'center'),
                   width: narrow ? '100%' : 'auto',
-                  alignSelf: narrow ? 'stretch' : (stretchDesktop ? 'stretch' : 'flex-start'),
+                  maxWidth: narrow ? '100%' : (matchTableHeight ? 'min(40vw, 380px)' : undefined),
+                  alignSelf: narrow ? 'stretch' : (gifsFillRow ? 'stretch' : 'flex-start'),
                 }}
                 >
                   {gifsInner}
@@ -1035,6 +1062,7 @@ function S01() {
       eyebrow="01 — Diagnose Faster"
       headline="Your team already has everything they need to diagnose equipment. They just need Arkim."
       sub="The phone in your technician's pocket is a diagnostic sensor. Point it at a machine, describe what you're hearing or seeing, and Arkim tells you what's wrong — and what to do about it."
+      splitMediaMatchTable
       showDemoButton={false}
       sideBySideGifs={[
         {

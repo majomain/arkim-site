@@ -119,7 +119,9 @@ html[data-theme="light"] {
   --bg-card: #ffffff;
   --border: #e3dfd5;
   --fg: #1c1915;
-  --fg-muted: #1c1915;
+  /* Softer than body — matches arkim-theme.css subpages */
+  --fg-muted: #5e5850;
+  --text-muted: rgba(28, 25, 21, 0.72);
   --accent: #3a7aaf;
   --btn-fg: #ffffff;
   --nav-scrim: rgba(245, 242, 235, 0.94);
@@ -146,9 +148,9 @@ html[data-theme="light"] {
   --final-cta-2: #e5dfd4;
   --radial-accent: rgba(58, 122, 175, 0.12);
   --status-dot: var(--accent);
-  --partner-logo-opacity: 0.42;
-  --partner-logo-hover-opacity: 0.72;
-  --partner-logo-filter: none;
+  --partner-logo-opacity: 0.62;
+  --partner-logo-hover-opacity: 0.86;
+  --partner-logo-filter: brightness(0) saturate(100%);
   --selection: rgba(58, 122, 175, 0.22);
 }
 
@@ -170,6 +172,12 @@ body {
 @keyframes marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes marquee {
+    from, to { transform: translateX(0); }
+  }
 }
 
 /* ── Ken Burns hero bg ── */
@@ -199,6 +207,152 @@ body {
   outline-offset: 3px;
 }
 button:focus-visible { border-radius: 4px; }
+
+/* Homepage — interactive surfaces (CSS hover/focus replaces inline JS) */
+a.arkim-btn-outline {
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  color: var(--fg);
+  border: 1px solid var(--outline);
+  padding: 14px 30px;
+  border-radius: 6px;
+  text-decoration: none;
+  background: transparent;
+  text-transform: uppercase;
+  display: inline-block;
+  transition: border-color 0.2s, background 0.2s, opacity 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+a.arkim-btn-outline:hover,
+a.arkim-btn-outline:focus-visible {
+  border-color: var(--outline-hover);
+  background: var(--outline-fill);
+  opacity: 0.95;
+  transform: translateY(-2px);
+}
+
+a.arkim-btn-primary {
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--btn-fg);
+  padding: 15px 32px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  transition: opacity 0.2s, transform 0.15s;
+}
+a.arkim-btn-primary:hover,
+a.arkim-btn-primary:focus-visible {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.arkim-media-frame {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--media-bg);
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 40px 100px var(--media-shadow);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.arkim-media-frame:hover,
+.arkim-media-frame:focus-within {
+  transform: translateY(-4px) scale(1.008);
+  box-shadow: 0 48px 110px var(--media-shadow);
+}
+
+.arkim-cta-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.arkim-cta-photo:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+html[data-theme="light"] .arkim-cta-photo:hover {
+  box-shadow: 0 20px 50px var(--media-shadow);
+}
+
+.hero-trust-row {
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  list-style: none;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+.hero-trust-row > li {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.hero-trust-row > li::before {
+  content: '';
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--outline);
+  flex-shrink: 0;
+}
+.hero-trust-row > li:first-child::before {
+  display: none;
+}
+.hero-trust-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--fg-ghost);
+  font-family: var(--sans);
+  font-size: var(--text-micro);
+  transition: color 0.2s, opacity 0.2s;
+}
+.hero-trust-link:hover,
+.hero-trust-link:focus-visible {
+  color: var(--fg-muted);
+}
+.hero-trust-logo {
+  height: 22px;
+  width: auto;
+  max-width: 112px;
+  object-fit: contain;
+  opacity: var(--partner-logo-opacity);
+  filter: var(--partner-logo-filter);
+  transition: opacity 0.2s;
+}
+.hero-trust-link:hover .hero-trust-logo,
+.hero-trust-link:focus-visible .hero-trust-logo {
+  opacity: var(--partner-logo-hover-opacity);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.arkim-btn-outline:hover,
+  a.arkim-btn-outline:focus-visible,
+  a.arkim-btn-primary:hover,
+  a.arkim-btn-primary:focus-visible {
+    transform: none;
+  }
+  .arkim-media-frame:hover,
+  .arkim-media-frame:focus-within {
+    transform: none;
+  }
+}
 </style>
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/logo-arkim.png" data-resource-id="logoMark" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/arkim-text-logo.png" data-resource-id="logoText" />
@@ -291,7 +445,9 @@ function Eyebrow({ children, center = false }) {
 
 function Hero() {
   const { isMobile, isTablet } = useViewport();
+  const reducedMotion = usePrefersReducedMotion();
   const heroPad = isMobile ? '120px 20px 88px' : isTablet ? '132px 40px 96px' : '140px 48px 100px';
+  const atmoAnim = !reducedMotion;
   return (
     <div className="hero-cinematic" style={{
       position: 'relative', minHeight: '100vh',
@@ -301,6 +457,11 @@ function Hero() {
       overflow: 'hidden',
     }}>
       <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: 'var(--hero-bg)' }} />
+      <div className="hero-atmosphere" aria-hidden="true">
+        <div className={'hero-atmo-blob hero-atmo-blob--a' + (atmoAnim ? ' hero-atmo-anim-a' : '')} />
+        <div className={'hero-atmo-blob hero-atmo-blob--b' + (atmoAnim ? ' hero-atmo-anim-b' : '')} />
+        <div className={'hero-atmo-ribbon' + (atmoAnim ? ' hero-atmo-anim-ribbon' : '')} />
+      </div>
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
         <FadeIn delay={0.1}>
           <h1 className="hero-h1">
@@ -320,34 +481,29 @@ function Hero() {
         </FadeIn>
         <FadeIn delay={0.4}>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="#how-it-works" style={{
-              fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', fontWeight: 500,
-              color: 'var(--fg)', border: '1px solid var(--outline)',
-              padding: '14px 30px', borderRadius: '6px', textDecoration: 'none',
-              background: 'transparent',
-              transition: 'border-color 0.2s, background 0.2s',
-              textTransform: 'uppercase',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor='var(--outline-hover)'; e.currentTarget.style.background='var(--outline-fill)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor='var(--outline)'; e.currentTarget.style.background='transparent'; }}
-            >See how it works</a>
+            <a href="#how-it-works" className="arkim-btn-outline">See how it works</a>
           </div>
         </FadeIn>
         <FadeIn delay={0.55}>
-          <div style={{
-            marginTop: '60px', display: 'flex', alignItems: 'center',
-            justifyContent: 'center', gap: '20px', flexWrap: 'wrap',
-          }}>
-            {['Backed by NVIDIA Inception', 'Databricks Program', 'AWS Activate'].map((b, i) => (
-              <span key={i} style={{
-                fontFamily: 'var(--sans)', fontSize: 'var(--text-micro)', color: 'var(--fg-ghost)',
-                display: 'flex', alignItems: 'center', gap: 8,
-              }}>
-                {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'var(--outline)', display: 'inline-block' }}></span>}
-                {b}
-              </span>
+          <ul className="hero-trust-row">
+            {[
+              { href: 'https://www.nvidia.com/en-us/startups/', label: 'NVIDIA Inception', logo: 'https://www.arkim.ai/images/nvidia-inception.png' },
+              { href: 'https://www.databricks.com/build-and-launch/startups', label: 'Databricks for Startups', logo: 'https://www.arkim.ai/images/databricks-logo.svg' },
+              { href: 'https://aws.amazon.com/activate/', label: 'AWS Activate', logo: 'https://www.arkim.ai/images/aws-activate.svg' },
+            ].map((p) => (
+              <li key={p.label}>
+                <a
+                  href={p.href}
+                  className="hero-trust-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img className="hero-trust-logo" src={p.logo} alt="" width={112} height={22} loading="lazy" decoding="async" />
+                  <span>{p.label}</span>
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
         </FadeIn>
       </div>
     </div>
@@ -426,7 +582,17 @@ function TheLever() {
             }}>
               Arkim is the lever — any technician, on their first day, executes with the knowledge your most experienced people spent years building. The phone in their pocket is the sensor. The platform is the brain.
             </p>
-            <div style={{ marginTop: '48px' }}>
+            <div
+              style={{ marginTop: '48px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)' }}
+              onMouseEnter={e => {
+                const im = e.currentTarget.querySelector('img');
+                if (im) im.style.transform = 'scale(1.03)';
+              }}
+              onMouseLeave={e => {
+                const im = e.currentTarget.querySelector('img');
+                if (im) im.style.transform = 'none';
+              }}
+            >
               <img
                 src="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/technician-plc.webp"
                 alt="Technician operating industrial PLC panel"
@@ -437,8 +603,10 @@ function TheLever() {
                   aspectRatio: '16/9',
                   objectFit: 'cover',
                   borderRadius: '12px',
-                  border: '1px solid var(--border)',
+                  border: 'none',
                   display: 'block',
+                  transition: 'transform 0.55s cubic-bezier(0.16,1,0.3,1)',
+                  transformOrigin: 'center center',
                 }}
               />
             </div>
@@ -511,10 +679,16 @@ function Personas() {
               height: '100%',
               display: 'flex',
               flexDirection: 'column',
-              transition: 'background 0.25s',
+              transition: 'background 0.25s, box-shadow 0.4s cubic-bezier(0.16,1,0.3,1)',
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-hover)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-card)'; }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'var(--card-hover)';
+              e.currentTarget.style.boxShadow = '0 18px 40px rgba(0,0,0,0.18)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'var(--bg-card)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
             >
               <div style={{ position: 'relative', width: '100%', aspectRatio: '16/10', overflow: 'hidden', flexShrink: 0 }}>
                 <img
@@ -651,7 +825,19 @@ function TimeToValue() {
               background: col.accent ? 'var(--accent-soft)' : 'var(--bg-card)',
               border: `1px solid ${col.accent ? 'var(--accent-border)' : 'var(--border)'}`,
               borderRadius: '16px', padding: '48px 40px', height: '100%',
-            }}>
+              transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.25s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-3px)';
+              e.currentTarget.style.boxShadow = col.accent
+                ? '0 20px 48px rgba(58, 122, 175, 0.12)'
+                : '0 18px 40px rgba(0,0,0,0.14)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'none';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            >
               <div style={{
                 fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)',
                 textTransform: 'uppercase', color: col.accent ? 'var(--accent)' : 'var(--fg-muted)',
@@ -814,21 +1000,21 @@ function FinalCTA() {
         position: 'relative',
       }}>
         <FadeIn>
-          <img
-            src="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/tom-pfp-1500px.webp"
-            alt="Tom Dickie, CEO, Arkim AI"
-            loading="lazy"
-            decoding="async"
-            style={{
-              width: '100%',
-              aspectRatio: '3/4',
-              objectFit: 'cover',
-              objectPosition: 'center top',
-              borderRadius: '12px',
-              border: '1px solid var(--border)',
-              display: 'block',
-            }}
-          />
+          <div className="arkim-cta-photo">
+            <img
+              src="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/tom-pfp-1500px.webp"
+              alt="Tom Dickie, CEO, Arkim AI"
+              loading="lazy"
+              decoding="async"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center top',
+                display: 'block',
+              }}
+            />
+          </div>
           <div style={{ marginTop: '20px', fontFamily: 'var(--sans)', fontSize: 'var(--text-caption)', color: 'var(--fg-muted)' }}>
             Tom Dickie, CEO, Arkim AI
           </div>
@@ -847,17 +1033,7 @@ function FinalCTA() {
             A 30-minute conversation about your current maintenance operation, where Arkim could fit, and what a deployment would look like. No pitch deck.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start' }}>
-            <a href="https://www.arkim.ai/contact?tab=demo" style={{
-              fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', fontWeight: 600,
-              background: 'var(--accent)', color: 'var(--btn-fg)',
-              padding: '15px 32px', borderRadius: '6px', textDecoration: 'none',
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              transition: 'opacity 0.2s, transform 0.15s',
-              textTransform: 'uppercase',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
-            >Book a Consultation →</a>
+            <a href="https://www.arkim.ai/contact?tab=demo" className="arkim-btn-primary">Book a Consultation →</a>
             <span style={{
               fontFamily: 'var(--sans)', fontSize: 'var(--text-caption)',
               color: 'var(--fg-muted)',
@@ -995,13 +1171,7 @@ function ProductVideo() {
         </h2>
       </FadeIn>
       <FadeIn delay={0.15}>
-        <div style={{
-          position: 'relative', borderRadius: '16px', overflow: 'hidden',
-          border: '1px solid var(--border)',
-          background: 'var(--media-bg)',
-          aspectRatio: '16/9',
-          boxShadow: '0 40px 100px var(--media-shadow)',
-        }}>
+        <div className="arkim-media-frame">
           <iframe
             src="https://player.vimeo.com/video/1177525108?autoplay=0&title=0&byline=0&portrait=0&color=4A8ABF"
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}

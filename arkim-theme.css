@@ -6,7 +6,7 @@
   --nav-scrim: rgba(10, 10, 10, 0.94);
   --btn-fg: #000000;
   --title-h2-letter-spacing: -0.025em;
-  /* Footer partner marks: dark UI needs inverted treatment; light uses natural logo colors */
+  /* Footer partner marks: dark UI needs inverted treatment; light forces dark marks */
   --partner-logo-opacity: 0.25;
   --partner-logo-hover-opacity: 0.55;
   --partner-logo-filter: brightness(10);
@@ -25,9 +25,9 @@ html[data-theme="light"] {
   --headline-accent: #3a7aaf;
   --text-muted: rgba(28, 25, 21, 0.72);
   --card-hover: #efebe3;
-  --partner-logo-opacity: 0.42;
-  --partner-logo-hover-opacity: 0.72;
-  --partner-logo-filter: none;
+  --partner-logo-opacity: 0.62;
+  --partner-logo-hover-opacity: 0.86;
+  --partner-logo-filter: brightness(0) saturate(100%);
 }
 
 html:not([data-theme="light"]) {

@@ -34,8 +34,12 @@ function usePrefersReducedMotion() {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     const onChange = () => setReduced(mq.matches);
     onChange();
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', onChange);
+      return () => mq.removeEventListener('change', onChange);
+    }
+    mq.addListener(onChange);
+    return () => mq.removeListener(onChange);
   }, []);
 
   return reduced;

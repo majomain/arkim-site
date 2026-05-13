@@ -56,6 +56,10 @@
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script>
+  window.formspree = window.formspree || function () { (window.formspree.q = window.formspree.q || []).push(arguments); };
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer crossorigin="anonymous"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -97,6 +101,10 @@ body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webki
 .form-input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(255,107,26,0.1);
+}
+.form-input[aria-invalid="true"] {
+  border-color: #c44;
+  box-shadow: 0 0 0 1px rgba(204, 68, 68, 0.25);
 }
 .form-input::placeholder { color: var(--fg-muted); }
 textarea.form-input { resize: vertical; min-height: 140px; }
@@ -166,13 +174,21 @@ function Hero() {
 
 function ContactSection() {
   const narrow = useIsNarrowLayout();
-  const [form, setForm] = useState({ name: '', company: '', role: '', facilityType: '', message: '' });
-  const [sent, setSent] = useState(false);
+  const fsInited = useRef(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSent(true);
-  };
+  useEffect(() => {
+    if (fsInited.current) return;
+    const id = window.requestAnimationFrame(() => {
+      if (fsInited.current) return;
+      try {
+        window.formspree('initForm', { formElement: '#arkim-contact-form', formId: 'xldbnyol' });
+        fsInited.current = true;
+      } catch (err) {
+        console.error('[formspree]', err);
+      }
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, []);
 
   return (
     <div style={{ borderTop: '1px solid var(--border)' }}>
@@ -233,60 +249,66 @@ function ContactSection() {
           </FadeIn>
 
           <FadeIn delay={0.15}>
-            {sent ? (
-              <div style={{ padding: '60px 0', textAlign: 'center' }}>
+            <div>
+              <div data-fs-success style={{ textAlign: 'center', padding: '60px 0' }}>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '48px', marginBottom: '20px' }}>✓</div>
-                <h3 style={{ fontFamily: 'var(--sans)', fontSize: '28px', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '12px' }}>Message sent.</h3>
+                <h3 style={{ fontFamily: 'var(--sans)', fontSize: '28px', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '12px', color: 'var(--fg)' }}>Message sent.</h3>
                 <p style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 300, color: 'var(--fg-muted)' }}>Tom will be in touch within one business day.</p>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <form id="arkim-contact-form" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div data-fs-error="" role="alert" aria-live="polite" />
+                <input type="hidden" name="_subject" value="Arkim website — Contact form" />
                 <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '1fr 1fr', gap: '16px' }}>
                   <div>
                     <Label>Name</Label>
-                    <input className="form-input" type="text" placeholder="Your name" required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+                    <input className="form-input" type="text" name="name" data-fs-field placeholder="Your name" required autoComplete="name" />
+                    <span data-fs-error="name" />
                   </div>
                   <div>
                     <Label>Company</Label>
-                    <input className="form-input" type="text" placeholder="Company name" required value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))} />
+                    <input className="form-input" type="text" name="company" data-fs-field placeholder="Company name" required autoComplete="organization" />
+                    <span data-fs-error="company" />
                   </div>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '1fr 1fr', gap: '16px' }}>
                   <div>
                     <Label>Your Role</Label>
-                    <select className="form-input" required value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))}>
+                    <select className="form-input" name="role" data-fs-field required defaultValue="">
                       <option value="" disabled>Select role</option>
-                      <option>Plant Manager</option>
-                      <option>Maintenance Manager</option>
-                      <option>Technician</option>
-                      <option>Executive</option>
-                      <option>Other</option>
+                      <option value="Plant Manager">Plant Manager</option>
+                      <option value="Maintenance Manager">Maintenance Manager</option>
+                      <option value="Technician">Technician</option>
+                      <option value="Executive">Executive</option>
+                      <option value="Other">Other</option>
                     </select>
+                    <span data-fs-error="role" />
                   </div>
                   <div>
                     <Label>Facility Type</Label>
-                    <select className="form-input" required value={form.facilityType} onChange={e => setForm(f => ({ ...f, facilityType: e.target.value }))}>
+                    <select className="form-input" name="facility-type" data-fs-field required defaultValue="">
                       <option value="" disabled>Select type</option>
-                      <option>Pharmaceutical</option>
-                      <option>Food &amp; Beverage</option>
-                      <option>Contract Manufacturing</option>
-                      <option>Industrial OEM</option>
-                      <option>Other</option>
+                      <option value="Pharmaceutical">Pharmaceutical</option>
+                      <option value="Food & Beverage">Food &amp; Beverage</option>
+                      <option value="Contract Manufacturing">Contract Manufacturing</option>
+                      <option value="Industrial OEM">Industrial OEM</option>
+                      <option value="Other">Other</option>
                     </select>
+                    <span data-fs-error="facility-type" />
                   </div>
                 </div>
                 <div>
                   <Label>Message</Label>
-                  <textarea className="form-input" placeholder="Tell us about your facility and what you're looking to solve..." required value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
+                  <textarea className="form-input" name="message" data-fs-field placeholder="Tell us about your facility and what you're looking to solve..." required rows={6} />
+                  <span data-fs-error="message" />
                 </div>
                 <div>
-                  <button type="submit" style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: '15px 36px', borderRadius: '6px', border: 'none', cursor: 'pointer', transition: 'opacity 0.2s, transform 0.15s', display: 'inline-flex', alignItems: 'center', gap: 8, minHeight: 44, boxSizing: 'border-box' }}
-                  onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
+                  <button type="submit" data-fs-submit-btn style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: '15px 36px', borderRadius: '6px', border: 'none', cursor: 'pointer', transition: 'opacity 0.2s, transform 0.15s', display: 'inline-flex', alignItems: 'center', gap: 8, minHeight: 44, boxSizing: 'border-box' }}
+                  onMouseEnter={e => { if (!e.currentTarget.disabled) { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; } }}
                   onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
                   >Send →</button>
                 </div>
               </form>
-            )}
+            </div>
           </FadeIn>
         </div>
       </div>

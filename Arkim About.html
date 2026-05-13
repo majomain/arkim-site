@@ -124,7 +124,7 @@ function Eyebrow({ children }) {
 function Hero() {
   const narrow = useIsNarrowLayout();
   return (
-    <div className="hero-cinematic" style={{ minHeight: narrow ? 'min(85vh, 720px)' : '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '48px 20px 64px' : '160px 48px 100px', position: 'relative', overflow: 'hidden', background: '#000' }}>
+    <div className="hero-cinematic hero-cinematic--photo-bg" style={{ minHeight: narrow ? 'min(85vh, 720px)' : '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '48px 20px 64px' : '160px 48px 100px', position: 'relative', overflow: 'hidden', background: '#000' }}>
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
         <img
           src="uploads/arkim-about-hero.png"
@@ -137,7 +137,6 @@ function Hero() {
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.72) 45%, rgba(0,0,0,0.82) 100%)' }} />
       </div>
-      <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: narrow ? 'min(100%, 420px)' : '700px', height: narrow ? '280px' : '400px', background: 'radial-gradient(ellipse, rgba(255,107,26,0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 1 }} />
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '860px', width: '100%', padding: narrow ? '0 4px' : undefined }}>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
           <h1 className="hero-h1">
@@ -370,7 +369,7 @@ function CTA() {
   const narrow = useIsNarrowLayout();
   return (
     <div style={{ borderTop: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '600px', height: '350px', background: 'radial-gradient(ellipse, rgba(255,107,26,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '600px', height: '350px', background: 'radial-gradient(ellipse, var(--radial-accent-glow) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative' }}>
         <FadeIn>
           <Eyebrow>See It in Action</Eyebrow>

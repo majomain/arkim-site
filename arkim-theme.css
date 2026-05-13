@@ -6,6 +6,8 @@
   --nav-scrim: rgba(10, 10, 10, 0.94);
   --btn-fg: #000000;
   --title-h2-letter-spacing: -0.025em;
+  /* Soft radial behind headlines / CTAs (matches site accent, not legacy orange) */
+  --radial-accent-glow: rgba(74, 138, 191, 0.1);
   /* Footer partner marks: dark UI needs inverted treatment; light forces dark marks */
   --partner-logo-opacity: 0.25;
   --partner-logo-hover-opacity: 0.55;
@@ -28,6 +30,7 @@ html[data-theme="light"] {
   --partner-logo-opacity: 0.62;
   --partner-logo-hover-opacity: 0.86;
   --partner-logo-filter: brightness(0) saturate(100%);
+  --radial-accent-glow: rgba(58, 122, 175, 0.14);
 }
 
 html:not([data-theme="light"]) {

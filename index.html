@@ -445,23 +445,15 @@ function Eyebrow({ children, center = false }) {
 
 function Hero() {
   const { isMobile, isTablet } = useViewport();
-  const reducedMotion = usePrefersReducedMotion();
   const heroPad = isMobile ? '120px 20px 88px' : isTablet ? '132px 40px 96px' : '140px 48px 100px';
-  const atmoAnim = !reducedMotion;
   return (
-    <div className="hero-cinematic" style={{
+    <div className="hero-cinematic hero-cinematic--static-texture" style={{
       position: 'relative', minHeight: '100vh',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
       textAlign: 'center', padding: heroPad,
       overflow: 'hidden',
     }}>
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: 'var(--hero-bg)' }} />
-      <div className="hero-atmosphere" aria-hidden="true">
-        <div className={'hero-atmo-blob hero-atmo-blob--a' + (atmoAnim ? ' hero-atmo-anim-a' : '')} />
-        <div className={'hero-atmo-blob hero-atmo-blob--b' + (atmoAnim ? ' hero-atmo-anim-b' : '')} />
-        <div className={'hero-atmo-ribbon' + (atmoAnim ? ' hero-atmo-anim-ribbon' : '')} />
-      </div>
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
         <FadeIn delay={0.1}>
           <h1 className="hero-h1">

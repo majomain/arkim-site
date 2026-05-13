@@ -293,7 +293,6 @@ function SectionImg({ label, height = '55vh', src = null, videoSrc = null, alt =
 function Hero() {
   const narrow = useIsNarrowLayout();
   const reducedMotion = usePrefersReducedMotion();
-  const atmoAnim = !reducedMotion;
   const heroFade = (delay, children) => (
     <div style={{ animation: reducedMotion ? 'none' : `fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s both` }}>
       {children}
@@ -321,11 +320,6 @@ function Hero() {
           allowFullScreen
           title="Arkim product overview video"
         />
-      </div>
-      <div className="hero-atmosphere" aria-hidden="true">
-        <div className={'hero-atmo-blob hero-atmo-blob--a' + (atmoAnim ? ' hero-atmo-anim-a' : '')} />
-        <div className={'hero-atmo-blob hero-atmo-blob--b' + (atmoAnim ? ' hero-atmo-anim-b' : '')} />
-        <div className={'hero-atmo-ribbon' + (atmoAnim ? ' hero-atmo-anim-ribbon' : '')} />
       </div>
       {/* Scrim so headline stays legible; video remains visible */}
       <div
@@ -1035,6 +1029,8 @@ function S01() {
       eyebrow="01 — Diagnose Faster"
       headline="Your team already has everything they need to diagnose equipment. They just need Arkim."
       sub="The phone in your technician's pocket is a diagnostic sensor. Point it at a machine, describe what you're hearing or seeing, and Arkim tells you what's wrong — and what to do about it."
+      stretchSplitMediaHeight
+      showDemoButton={false}
       sideBySideGifs={[
         {
           src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/funnel-updated.png',

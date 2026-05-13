@@ -60,128 +60,54 @@ html[data-theme="light"] .hero-cinematic {
   --outline-hover: rgba(245, 242, 237, 0.42);
   --outline-fill: rgba(245, 242, 237, 0.06);
   --fg-ghost: rgba(245, 242, 237, 0.35);
+  /* Hero stays dark in light theme — partner marks must match dark UI (not page footer tokens). */
+  --partner-logo-opacity: 0.25;
+  --partner-logo-hover-opacity: 0.55;
+  --partner-logo-filter: brightness(10);
 }
 
-/* ── Hero atmosphere (soft blur + slow drift, Third Eye–style depth) ── */
-@keyframes hero-atmo-drift-a {
-  from {
-    transform: translate(0, 0) scale(1);
-  }
-  to {
-    transform: translate(-7%, 5%) scale(1.07);
-  }
+/*
+ * Heroes without a photo or video: flat hero color + subtle texture (bg-og.webp).
+ * Pages with their own full-bleed image use .hero-cinematic--photo-bg instead — no texture.
+ * Opacity is lower in light site theme so the cyan bloom does not overpower copy.
+ */
+.hero-cinematic--static-texture {
+  --hero-static-texture-image: url('https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/bg-og.webp');
+  --hero-texture-opacity: 0.44;
+  isolation: isolate;
 }
 
-@keyframes hero-atmo-drift-b {
-  from {
-    transform: translate(0, 0) scale(1);
-  }
-  to {
-    transform: translate(8%, -4%) scale(1.05);
-  }
+html[data-theme='light'] .hero-cinematic--static-texture {
+  --hero-texture-opacity: 0.34;
 }
 
-@keyframes hero-atmo-ribbon {
-  from {
-    opacity: 0.35;
-    transform: scaleX(1) translateX(0);
-  }
-  to {
-    opacity: 0.5;
-    transform: scaleX(1.04) translateX(-1.5%);
-  }
-}
-
-.hero-atmosphere {
+.hero-cinematic--static-texture::before {
+  content: '';
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
+  background-color: var(--hero-bg, #0a0a0a);
   pointer-events: none;
-  overflow: hidden;
 }
 
-.hero-atmo-blob {
+.hero-cinematic--static-texture::after {
+  content: '';
   position: absolute;
-  border-radius: 50%;
-  filter: blur(56px);
+  inset: 0;
+  z-index: 0;
+  background-image: var(--hero-static-texture-image);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: var(--hero-texture-opacity);
+  pointer-events: none;
 }
 
-.hero-atmo-blob--a {
-  width: min(58vw, 540px);
-  height: min(58vw, 540px);
-  top: -14%;
-  right: -12%;
-  background: radial-gradient(
-    circle at 38% 42%,
-    rgba(74, 138, 191, 0.42) 0%,
-    rgba(74, 138, 191, 0.08) 45%,
-    transparent 70%
-  );
-}
-
-.hero-atmo-blob--b {
-  width: min(48vw, 420px);
-  height: min(48vw, 420px);
-  bottom: -18%;
-  left: -16%;
-  background: radial-gradient(
-    circle at 55% 45%,
-    rgba(245, 242, 237, 0.14) 0%,
-    rgba(245, 242, 237, 0.04) 50%,
-    transparent 68%
-  );
-}
-
-.hero-atmo-ribbon {
-  position: absolute;
-  left: -25%;
-  right: -25%;
-  bottom: -72px;
-  height: 120px;
-  border-radius: 50%;
-  background: rgba(245, 242, 237, 0.07);
-  filter: blur(36px);
-}
-
-.hero-atmo-anim-a {
-  animation: hero-atmo-drift-a 30s ease-in-out infinite alternate;
-}
-
-.hero-atmo-anim-b {
-  animation: hero-atmo-drift-b 24s ease-in-out infinite alternate;
-}
-
-.hero-atmo-anim-ribbon {
-  animation: hero-atmo-ribbon 20s ease-in-out infinite alternate;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-atmo-anim-a,
-  .hero-atmo-anim-b,
-  .hero-atmo-anim-ribbon {
-    animation: none;
-  }
-}
-
-/* Product page: Vimeo sits under atmosphere + scrim — slightly stronger blobs read through the gradient */
-.hero-cinematic--video-bg .hero-atmo-blob--a {
-  background: radial-gradient(
-    circle at 38% 42%,
-    rgba(74, 138, 191, 0.5) 0%,
-    rgba(74, 138, 191, 0.12) 45%,
-    transparent 70%
-  );
-}
-
-.hero-cinematic--video-bg .hero-atmo-blob--b {
-  background: radial-gradient(
-    circle at 55% 45%,
-    rgba(245, 242, 237, 0.22) 0%,
-    rgba(245, 242, 237, 0.06) 50%,
-    transparent 68%
-  );
-}
-
-.hero-cinematic--video-bg .hero-atmo-ribbon {
-  background: rgba(245, 242, 237, 0.1);
+/* Photo / custom full-bleed media (About): no shared bg-og layer */
+.hero-cinematic.hero-cinematic--photo-bg::before,
+.hero-cinematic.hero-cinematic--photo-bg::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  opacity: 0 !important;
 }

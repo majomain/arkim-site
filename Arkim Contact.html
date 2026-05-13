@@ -326,7 +326,7 @@ function Footer() {
           { title: 'Partners', links: [{ label: 'NVIDIA Inception', href: 'https://www.nvidia.com/en-us/startups/' }, { label: 'Databricks', href: 'https://www.databricks.com/product/startups' }, { label: 'AWS Activate', href: 'https://aws.amazon.com/activate/' }] },
         ].map((col, i) => (
           <div key={i}>
-            <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(245,242,237,0.25)', marginBottom: '20px' }}>{col.title}</div>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: '20px' }}>{col.title}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {col.links.map((l, j) => (
                 <a key={j} href={l.href} style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
@@ -339,12 +339,17 @@ function Footer() {
         ))}
       </div>
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'rgba(245,242,237,0.25)' }}>© 2026 Arkim AI. All rights reserved.</span>
+        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)' }}>© 2026 Arkim AI. All rights reserved.</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           {[{ src: 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA' }, { src: 'https://www.arkim.ai/images/databricks-logo.svg', alt: 'Databricks' }, { src: 'https://www.arkim.ai/images/aws-activate.svg', alt: 'AWS' }].map((p, i) => (
-            <img key={i} src={p.src} alt={p.alt} style={{ height: 20, opacity: 0.25, filter: 'brightness(10)', transition: 'opacity 0.2s' }}
-            onMouseEnter={e => e.target.style.opacity='0.55'}
-            onMouseLeave={e => e.target.style.opacity='0.25'}
+            <img key={i} src={p.src} alt={p.alt} style={{
+              height: 20,
+              opacity: 'var(--partner-logo-opacity)',
+              filter: 'var(--partner-logo-filter)',
+              transition: 'opacity 0.2s',
+            }}
+            onMouseEnter={e => { e.target.style.opacity = 'var(--partner-logo-hover-opacity)'; }}
+            onMouseLeave={e => { e.target.style.opacity = 'var(--partner-logo-opacity)'; }}
             />
           ))}
         </div>

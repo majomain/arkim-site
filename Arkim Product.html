@@ -466,11 +466,12 @@ function StatBlock({ num, label, sub }) {
 }
 
 // ── SECTION WRAPPER ───────────────────────────────────────────────────────────
-function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', sideBySideGifs = null, imageBelowSplit = false, children, statNum, statLabel, statSub }) {
+function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', sideBySideGifs = null, imageBelowSplit = false, stretchSplitMediaHeight = false, children, statNum, statLabel, statSub }) {
   const narrow = useIsNarrowLayout();
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
   const hasSplit = Array.isArray(sideBySideGifs) && sideBySideGifs.length > 0;
+  const stretchDesktop = stretchSplitMediaHeight && !narrow;
 
   const introBlock = (
     <>
@@ -495,27 +496,39 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
         flexDirection: 'row',
         gap: narrow ? 10 : 14,
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: stretchDesktop ? 'stretch' : 'center',
+        width: '100%',
+        flex: stretchDesktop ? 1 : undefined,
+        minHeight: stretchDesktop ? 0 : undefined,
+        height: stretchDesktop ? '100%' : undefined,
       }}
     >
       {sideBySideGifs.map((g, i) => {
+        const phoneClipRadius = 'clamp(16px, 2.2vw, 26px)';
+        const imgStyle = stretchDesktop ? {
+          display: 'block',
+          width: 'auto',
+          height: '100%',
+          maxHeight: '100%',
+          maxWidth: '100%',
+          objectFit: 'contain',
+          objectPosition: 'center',
+        } : {
+          width: narrow ? '100%' : 'auto',
+          maxWidth: narrow ? (sideBySideGifs.length > 1 ? '50%' : '100%') : 'none',
+          height: 'auto',
+          maxHeight: narrow ? 'min(52vh, 420px)' : 'min(58vh, 520px)',
+          objectFit: 'contain',
+          objectPosition: 'center top',
+          display: 'block',
+        };
         const img = (
           <img
             src={g.src}
             alt={g.alt || ''}
             loading="lazy"
             decoding="async"
-            style={{
-              flex: narrow ? '1 1 0' : '0 1 auto',
-              minWidth: 0,
-              width: narrow ? '100%' : 'auto',
-              maxWidth: narrow ? (sideBySideGifs.length > 1 ? '50%' : '100%') : 'none',
-              height: 'auto',
-              maxHeight: narrow ? 'min(52vh, 420px)' : 'min(58vh, 520px)',
-              objectFit: 'contain',
-              objectPosition: 'center top',
-              display: 'block',
-            }}
+            style={imgStyle}
           />
         );
         if (g.ingestLightFrame) {
@@ -524,11 +537,14 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
               key={i}
               className="arkim-ingestion-frame"
               style={{
-                flex: narrow ? '1 1 auto' : '0 1 auto',
+                flex: narrow ? '1 1 auto' : (stretchDesktop ? '1 1 auto' : '0 1 auto'),
                 minWidth: 0,
-                maxWidth: narrow ? '100%' : 380,
+                minHeight: stretchDesktop ? 0 : undefined,
+                height: stretchDesktop ? '100%' : undefined,
+                maxWidth: narrow ? '100%' : (stretchDesktop ? 520 : 380),
+                width: stretchDesktop ? '100%' : undefined,
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: stretchDesktop ? 'stretch' : 'center',
                 justifyContent: 'center',
               }}
             >
@@ -536,7 +552,20 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
             </div>
           );
         }
-        return <React.Fragment key={i}>{img}</React.Fragment>;
+        return (
+          <div
+            key={i}
+            style={{
+              flex: narrow ? '1 1 0' : '0 1 auto',
+              minWidth: 0,
+              borderRadius: phoneClipRadius,
+              overflow: 'hidden',
+              lineHeight: 0,
+            }}
+          >
+            {img}
+          </div>
+        );
       })}
     </div>
   ) : null;
@@ -553,15 +582,26 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
                   display: 'flex',
                   flexDirection: narrow ? 'column' : 'row',
                   justifyContent: 'center',
-                  alignItems: narrow ? 'stretch' : 'flex-start',
+                  alignItems: narrow ? 'stretch' : (stretchDesktop ? 'stretch' : 'flex-start'),
                   gap: narrow ? 28 : 48,
                   width: '100%',
                 }}
               >
-                <div style={{ flex: narrow ? 'none' : '0 1 520px', minWidth: 0, maxWidth: narrow ? '100%' : 560, width: narrow ? '100%' : 'auto' }}>
+                <div style={{ flex: narrow ? 'none' : (stretchDesktop ? '1 1 58%' : '0 1 520px'), minWidth: 0, maxWidth: narrow ? '100%' : (stretchDesktop ? 'none' : 560), width: narrow ? '100%' : 'auto' }}>
                   {children}
                 </div>
-                <div style={{ flex: narrow ? 'none' : '0 1 auto', minWidth: 0, display: 'flex', justifyContent: 'center', width: narrow ? '100%' : 'auto', alignSelf: narrow ? 'stretch' : 'flex-start' }}>
+                <div style={{
+                  flex: narrow ? 'none' : (stretchDesktop ? '1 1 34%' : '0 1 auto'),
+                  minWidth: narrow ? undefined : (stretchDesktop ? 240 : 0),
+                  minHeight: stretchDesktop ? 0 : undefined,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  alignItems: narrow ? 'stretch' : (stretchDesktop ? 'stretch' : 'center'),
+                  width: narrow ? '100%' : 'auto',
+                  alignSelf: narrow ? 'stretch' : (stretchDesktop ? 'stretch' : 'flex-start'),
+                }}
+                >
                   {gifsInner}
                 </div>
               </div>
@@ -661,21 +701,14 @@ function S01() {
       eyebrow="01 — Diagnose Faster"
       headline="Your team already has everything they need to diagnose equipment. They just need Arkim."
       sub="The phone in your technician's pocket is a diagnostic sensor. Point it at a machine, describe what you're hearing or seeing, and Arkim tells you what's wrong — and what to do about it."
-      imageBelowSplit
+      stretchSplitMediaHeight
       sideBySideGifs={[
         {
-          src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/ingestion%20funnel.png',
+          src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/funnel-updated.png',
           alt: 'Diagram: video, audio, and chat inputs converging into Arkim data ingestion',
           ingestLightFrame: true,
         },
       ]}
-      imageSrc="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile1-media-arkim.ai.gif"
-      imageAlt="Arkim mobile app: diagnostic view with audio waveform over industrial equipment"
-      imageLabel="phone screen with audio waveform overlay against industrial equipment — dark, dramatic"
-      imageObjectFit="contain"
-      statNum="Day zero."
-      statLabel="65% of a technician's time is non-wrench time."
-      statSub="Knowledge gaps and admin burden eat the majority of every shift. Arkim eliminates the search — technicians arrive at the machine knowing exactly what to do."
     >
       <DiagnoseModalitiesTable />
     </Section>
@@ -759,12 +792,12 @@ function S04() {
                 background: 'var(--bg-card)', padding: narrow ? '18px 14px' : '28px 24px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontFamily: 'var(--sans)', fontSize: narrow ? '14px' : '16px', fontWeight: 500,
-                color: 'rgba(245,242,237,0.3)', textAlign: 'center',
+                color: 'var(--fg-muted)', textAlign: 'center',
                 transition: 'color 0.25s, background 0.25s',
                 cursor: 'default',
               }}
-              onMouseEnter={e => { e.currentTarget.style.color='var(--accent)'; e.currentTarget.style.background='#1a1a1a'; }}
-              onMouseLeave={e => { e.currentTarget.style.color='rgba(245,242,237,0.3)'; e.currentTarget.style.background='var(--bg-card)'; }}
+              onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.background = 'var(--card-hover)'; }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'var(--fg-muted)'; e.currentTarget.style.background = 'var(--bg-card)'; }}
               >{name}</div>
             ))}
           </div>
@@ -783,9 +816,6 @@ function S04() {
           alt="Animation showing Arkim connecting to maintenance software systems"
         />
       </FadeIn>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `40px ${gx}px 80px` }}>
-        <FadeIn><DemoBtn /></FadeIn>
-      </div>
     </div>
   );
 }
@@ -857,7 +887,7 @@ function EnterpriseReady() {
                 background: active === i ? 'rgba(74,138,191,0.06)' : 'transparent',
               }}>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: active === i ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, marginBottom: '6px' }}>{c.badge}</div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, color: active === i ? 'var(--fg)' : 'rgba(245,242,237,0.5)', lineHeight: 1.2, letterSpacing: '-0.01em' }}>{c.title}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, color: active === i ? 'var(--fg)' : 'var(--fg-muted)', lineHeight: 1.2, letterSpacing: '-0.01em' }}>{c.title}</div>
               </button>
             ))}
           </div>
@@ -905,8 +935,8 @@ function HowItWorks() {
               onMouseLeave={e => e.currentTarget.style.background='#111'}
               >
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.12em', color: 'var(--accent)', fontWeight: 500, marginBottom: '20px' }}>{s.num}</div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 600, marginBottom: '16px', lineHeight: 1.2, letterSpacing: '-0.01em' }}>{s.title}</div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.body}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 600, marginBottom: '16px', lineHeight: 1.2, letterSpacing: '-0.01em', color: 'rgba(245,242,237,0.96)' }}>{s.title}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'rgba(245,242,237,0.72)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.body}</div>
               </div>
             </FadeIn>
           ))}
@@ -966,17 +996,17 @@ function FinalCTA() {
   return (
     <div style={{ borderTop: '1px solid var(--border)', background: 'linear-gradient(to bottom, #0A0A0A, #0c0e0f)', position: 'relative', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '700px', height: '400px', background: 'radial-gradient(ellipse, rgba(74,138,191,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative' }}>
+      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', color: 'rgba(245,242,237,0.96)' }}>
         <FadeIn>
-          <Eyebrow>Let's Talk</Eyebrow>
+          <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(245,242,237,0.52)', marginBottom: '20px' }}>Let's Talk</div>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
             Let's talk about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your facility.</em>
           </h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.7, marginBottom: '40px' }}>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'rgba(245,242,237,0.72)', lineHeight: 1.7, marginBottom: '40px' }}>
             A 30-minute conversation. We'll show you exactly what Arkim would look like for your equipment and your team.
           </p>
           <DemoBtn label="Request a Demo" style={{ fontSize: '16px', padding: '15px 36px' }} />
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', marginTop: '20px' }}>No pitch deck. No commitment.</p>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'rgba(245,242,237,0.55)', marginTop: '20px' }}>No pitch deck. No commitment.</p>
         </FadeIn>
       </div>
     </div>
@@ -1008,12 +1038,17 @@ function Footer() {
         </div>
       </div>
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'rgba(245,242,237,0.25)' }}>© 2026 Arkim AI. All rights reserved.</span>
+        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)' }}>© 2026 Arkim AI. All rights reserved.</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           {[{ src: (window.__resources && window.__resources.nvidiaLogo) || 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA' }, { src: (window.__resources && window.__resources.databricksLogo) || 'https://www.arkim.ai/images/databricks-logo.svg', alt: 'Databricks' }, { src: (window.__resources && window.__resources.awsLogo) || 'https://www.arkim.ai/images/aws-activate.svg', alt: 'AWS' }].map((p, i) => (
-            <img key={i} src={p.src} alt={p.alt} style={{ height: 18, opacity: 0.2, filter: 'brightness(10)', transition: 'opacity 0.2s' }}
-            onMouseEnter={e => e.target.style.opacity='0.5'}
-            onMouseLeave={e => e.target.style.opacity='0.2'}
+            <img key={i} src={p.src} alt={p.alt} style={{
+              height: 18,
+              opacity: 'var(--partner-logo-opacity)',
+              filter: 'var(--partner-logo-filter)',
+              transition: 'opacity 0.2s',
+            }}
+            onMouseEnter={e => { e.target.style.opacity = 'var(--partner-logo-hover-opacity)'; }}
+            onMouseLeave={e => { e.target.style.opacity = 'var(--partner-logo-opacity)'; }}
             />
           ))}
         </div>

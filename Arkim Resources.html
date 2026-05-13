@@ -564,12 +564,17 @@ function Footer() {
         </div>
       </div>
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'rgba(245,242,237,0.25)' }}>© 2026 Arkim AI. All rights reserved.</span>
+        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)' }}>© 2026 Arkim AI. All rights reserved.</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           {[{ src: (window.__resources && window.__resources.nvidiaLogo) || 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA' }, { src: (window.__resources && window.__resources.databricksLogo) || 'https://www.arkim.ai/images/databricks-logo.svg', alt: 'Databricks' }, { src: (window.__resources && window.__resources.awsLogo) || 'https://www.arkim.ai/images/aws-activate.svg', alt: 'AWS' }].map((p, i) => (
-            <img key={i} src={p.src} alt={p.alt} style={{ height: 18, opacity: 0.2, filter: 'brightness(10)', transition: 'opacity 0.2s' }}
-            onMouseEnter={e => e.target.style.opacity='0.5'}
-            onMouseLeave={e => e.target.style.opacity='0.2'}
+            <img key={i} src={p.src} alt={p.alt} style={{
+              height: 18,
+              opacity: 'var(--partner-logo-opacity)',
+              filter: 'var(--partner-logo-filter)',
+              transition: 'opacity 0.2s',
+            }}
+            onMouseEnter={e => { e.target.style.opacity = 'var(--partner-logo-hover-opacity)'; }}
+            onMouseLeave={e => { e.target.style.opacity = 'var(--partner-logo-opacity)'; }}
             />
           ))}
         </div>

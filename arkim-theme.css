@@ -6,6 +6,10 @@
   --nav-scrim: rgba(10, 10, 10, 0.94);
   --btn-fg: #000000;
   --title-h2-letter-spacing: -0.025em;
+  /* Footer partner marks: dark UI needs inverted treatment; light uses natural logo colors */
+  --partner-logo-opacity: 0.25;
+  --partner-logo-hover-opacity: 0.55;
+  --partner-logo-filter: brightness(10);
 }
 
 html[data-theme="light"] {
@@ -20,6 +24,14 @@ html[data-theme="light"] {
   --nav-scrim: rgba(245, 242, 235, 0.94);
   --headline-accent: #3a7aaf;
   --text-muted: rgba(28, 25, 21, 0.72);
+  --card-hover: #efebe3;
+  --partner-logo-opacity: 0.42;
+  --partner-logo-hover-opacity: 0.72;
+  --partner-logo-filter: none;
+}
+
+html:not([data-theme="light"]) {
+  --card-hover: #1a1a1a;
 }
 
 /* Dark backing for transparent ingestion funnel art on light pages */

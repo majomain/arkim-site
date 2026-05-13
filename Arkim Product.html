@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Arkim AI — Maintenance solutions for every facility</title>
 <meta name="theme-color" content="#0A0A0A" />
+<link rel="icon" href="uploads/favicon.png" type="image/png" sizes="16x16" />
 <script>
 (function () {
   try {
@@ -172,8 +173,41 @@ function DemoBtn({ label = 'Request a Demo', style = {} }) {
     >{label} →</a>
   );
 }
-function SectionImg({ label, height = '55vh', src = null, alt = '', objectFit = 'cover' }) {
+function SectionImg({ label, height = '55vh', src = null, videoSrc = null, alt = '', objectFit = 'cover' }) {
   const narrow = useIsNarrowLayout();
+  if (videoSrc) {
+    return (
+      <div
+        style={{
+          width: '100%',
+          margin: 0,
+          padding: 0,
+          background: '#050505',
+          borderTop: '1px solid var(--border)',
+          borderBottom: '1px solid var(--border)',
+          lineHeight: 0,
+        }}
+      >
+        <video
+          src={videoSrc}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-label={alt || label}
+          title={label}
+          style={{
+            width: '100%',
+            height: 'auto',
+            display: 'block',
+            verticalAlign: 'top',
+            background: '#000',
+          }}
+        />
+      </div>
+    );
+  }
   if (src) {
     if (objectFit === 'contain') {
       return (
@@ -432,7 +466,7 @@ function StatBlock({ num, label, sub }) {
 }
 
 // ── SECTION WRAPPER ───────────────────────────────────────────────────────────
-function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', sideBySideGifs = null, children, statNum, statLabel, statSub }) {
+function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', sideBySideGifs = null, imageBelowSplit = false, children, statNum, statLabel, statSub }) {
   const narrow = useIsNarrowLayout();
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
@@ -442,33 +476,40 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
     <>
       <Eyebrow accent>{eyebrow}</Eyebrow>
       <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>{headline}</h2>
-      <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: hasSplit ? (narrow ? 28 : 36) : '60px' }}>{sub}</p>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>{sub}</p>
     </>
   );
 
-  const gifsRow = hasSplit ? (
-    <FadeIn delay={0.05}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: narrow ? 10 : 14,
-          justifyContent: narrow ? 'center' : 'flex-end',
-          alignItems: 'flex-start',
-          width: '100%',
-        }}
-      >
-        {sideBySideGifs.map((g, i) => (
+  const introBlockSplit = (
+    <div style={{ textAlign: 'center', marginBottom: narrow ? 32 : 44 }}>
+      <Eyebrow accent>{eyebrow}</Eyebrow>
+      <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', margin: '0 auto 24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '680px', margin: '0 auto', textWrap: 'pretty' }}>{sub}</p>
+    </div>
+  );
+
+  const gifsInner = hasSplit ? (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: narrow ? 10 : 14,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+      }}
+    >
+      {sideBySideGifs.map((g, i) => {
+        const img = (
           <img
-            key={i}
             src={g.src}
             alt={g.alt || ''}
             loading="lazy"
             decoding="async"
             style={{
-              flex: '1 1 0',
+              flex: narrow ? '1 1 0' : '0 1 auto',
               minWidth: 0,
-              width: '100%',
+              width: narrow ? '100%' : 'auto',
+              maxWidth: narrow ? (sideBySideGifs.length > 1 ? '50%' : '100%') : 'none',
               height: 'auto',
               maxHeight: narrow ? 'min(52vh, 420px)' : 'min(58vh, 520px)',
               objectFit: 'contain',
@@ -476,41 +517,64 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
               display: 'block',
             }}
           />
-        ))}
-      </div>
-    </FadeIn>
+        );
+        if (g.ingestLightFrame) {
+          return (
+            <div
+              key={i}
+              className="arkim-ingestion-frame"
+              style={{
+                flex: narrow ? '1 1 auto' : '0 1 auto',
+                minWidth: 0,
+                maxWidth: narrow ? '100%' : 380,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {img}
+            </div>
+          );
+        }
+        return <React.Fragment key={i}>{img}</React.Fragment>;
+      })}
+    </div>
   ) : null;
 
   return (
     <div id={id} style={{ borderTop: '1px solid var(--border)' }}>
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 60px` }}>
         {hasSplit ? (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: narrow ? '1fr' : 'minmax(0, 1.08fr) minmax(0, 0.92fr)',
-              gap: narrow ? 36 : 40,
-              columnGap: narrow ? 0 : 48,
-              alignItems: 'start',
-            }}
-          >
-            <div style={{ minWidth: 0 }}>
-              <FadeIn>{introBlock}</FadeIn>
-              <FadeIn delay={0.1}>{children}</FadeIn>
-            </div>
-            {!narrow && <div style={{ minWidth: 0, paddingTop: 4, alignSelf: 'center' }}>{gifsRow}</div>}
-          </div>
+          <>
+            <FadeIn>{introBlockSplit}</FadeIn>
+            <FadeIn delay={0.1}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: narrow ? 'column' : 'row',
+                  justifyContent: 'center',
+                  alignItems: narrow ? 'stretch' : 'flex-start',
+                  gap: narrow ? 28 : 48,
+                  width: '100%',
+                }}
+              >
+                <div style={{ flex: narrow ? 'none' : '0 1 520px', minWidth: 0, maxWidth: narrow ? '100%' : 560, width: narrow ? '100%' : 'auto' }}>
+                  {children}
+                </div>
+                <div style={{ flex: narrow ? 'none' : '0 1 auto', minWidth: 0, display: 'flex', justifyContent: 'center', width: narrow ? '100%' : 'auto', alignSelf: narrow ? 'stretch' : 'flex-start' }}>
+                  {gifsInner}
+                </div>
+              </div>
+            </FadeIn>
+          </>
         ) : (
           <>
             <FadeIn>{introBlock}</FadeIn>
             <FadeIn delay={0.1}>{children}</FadeIn>
           </>
         )}
-        {hasSplit && narrow && (
-          <div style={{ marginTop: 32 }}>{gifsRow}</div>
-        )}
       </div>
-      {!hasSplit && (
+      {(!hasSplit || (imageBelowSplit && imageSrc)) && (
         <FadeIn>
           <SectionImg label={imageLabel} height={imageHeight} src={imageSrc} alt={imageAlt} objectFit={imageObjectFit} />
         </FadeIn>
@@ -532,6 +596,64 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
 }
 
 // ── SECTION 01 — DIAGNOSE FASTER ─────────────────────────────────────────────
+function DiagnoseModalitiesTable() {
+  const narrow = useIsNarrowLayout();
+  const rows = [
+    { title: 'Video capture', body: 'Hold your phone up to a machine. Arkim reads smoke, cracks, vibration, and fluid leaks from the video automatically.' },
+    { title: 'Audio capture', body: 'Unusual sound from a pump? Arkim listens to the frequency and compares it to what healthy equipment should sound like.' },
+    { title: 'AI chat assistant', body: "Ask Arkim what's wrong in plain language. It pulls from the equipment manual, your past repair logs, and asset history to give you an answer in seconds." },
+    { title: 'Pre-diagnosed repair summary', body: "Before a technician touches the machine, they already know what's wrong, what part is needed, and what the manual says to do." },
+  ];
+  return (
+    <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+      <div style={{ border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', background: 'var(--bg-card)' }}>
+      <table
+        style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+          fontFamily: 'var(--sans)',
+          tableLayout: 'fixed',
+        }}
+      >
+        <tbody>
+          {rows.map((row, i) => (
+            <tr key={i}>
+              <th
+                scope="row"
+                style={{
+                  padding: narrow ? '18px 14px' : '22px 20px',
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  color: 'var(--fg)',
+                  textAlign: 'left',
+                  verticalAlign: 'top',
+                  width: narrow ? '38%' : '34%',
+                  borderBottom: i < rows.length - 1 ? '1px solid var(--border)' : 'none',
+                  borderRight: '1px solid var(--border)',
+                  background: 'var(--bg-card)',
+                }}
+              >{row.title}</th>
+              <td
+                style={{
+                  padding: narrow ? '18px 14px' : '22px 22px',
+                  fontSize: '14px',
+                  fontWeight: 300,
+                  color: 'var(--fg-muted)',
+                  lineHeight: 1.65,
+                  verticalAlign: 'top',
+                  borderBottom: i < rows.length - 1 ? '1px solid var(--border)' : 'none',
+                  background: 'var(--bg-card)',
+                }}
+              >{row.body}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  );
+}
+
 function S01() {
   return (
     <Section
@@ -539,6 +661,14 @@ function S01() {
       eyebrow="01 — Diagnose Faster"
       headline="Your team already has everything they need to diagnose equipment. They just need Arkim."
       sub="The phone in your technician's pocket is a diagnostic sensor. Point it at a machine, describe what you're hearing or seeing, and Arkim tells you what's wrong — and what to do about it."
+      imageBelowSplit
+      sideBySideGifs={[
+        {
+          src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/ingestion%20funnel.png',
+          alt: 'Diagram: video, audio, and chat inputs converging into Arkim data ingestion',
+          ingestLightFrame: true,
+        },
+      ]}
       imageSrc="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile1-media-arkim.ai.gif"
       imageAlt="Arkim mobile app: diagnostic view with audio waveform over industrial equipment"
       imageLabel="phone screen with audio waveform overlay against industrial equipment — dark, dramatic"
@@ -547,12 +677,7 @@ function S01() {
       statLabel="65% of a technician's time is non-wrench time."
       statSub="Knowledge gaps and admin burden eat the majority of every shift. Arkim eliminates the search — technicians arrive at the machine knowing exactly what to do."
     >
-      <FeaturePills items={[
-        { title: 'Video capture', body: 'Hold your phone up to a machine. Arkim reads smoke, cracks, vibration, and fluid leaks from the video automatically.' },
-        { title: 'Audio capture', body: 'Unusual sound from a pump? Arkim listens to the frequency and compares it to what healthy equipment should sound like.' },
-        { title: 'AI chat assistant', body: "Ask Arkim what's wrong in plain language. It pulls from the equipment manual, your past repair logs, and asset history to give you an answer in seconds." },
-        { title: 'Pre-diagnosed repair summary', body: "Before a technician touches the machine, they already know what's wrong, what part is needed, and what the manual says to do." },
-      ]} />
+      <DiagnoseModalitiesTable />
     </Section>
   );
 }
@@ -652,7 +777,11 @@ function S04() {
         </FadeIn>
       </div>
       <FadeIn>
-        <SectionImg label="Arkim at center, connecting lines to maintenance software logos — clean, dark" />
+        <SectionImg
+          videoSrc="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/intergrations.mp4"
+          label="Arkim at center, connecting lines to maintenance software logos — clean, dark"
+          alt="Animation showing Arkim connecting to maintenance software systems"
+        />
       </FadeIn>
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `40px ${gx}px 80px` }}>
         <FadeIn><DemoBtn /></FadeIn>

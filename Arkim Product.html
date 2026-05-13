@@ -157,8 +157,41 @@ function DemoBtn({ label = 'Request a Demo', style = {} }) {
     >{label} →</a>
   );
 }
-function SectionImg({ label, height = '55vh', src = null, alt = '' }) {
+function SectionImg({ label, height = '55vh', src = null, alt = '', objectFit = 'cover' }) {
   if (src) {
+    if (objectFit === 'contain') {
+      return (
+        <div style={{
+          width: '100%',
+          position: 'relative',
+          overflow: 'hidden',
+          background: 'var(--media-bg, var(--bg))',
+          borderTop: '1px solid var(--border)',
+          borderBottom: '1px solid var(--border)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: 'clamp(560px, 92vh, 980px)',
+          padding: 'clamp(32px, 5vw, 80px) clamp(16px, 4vw, 48px)',
+        }}>
+          <img
+            src={src}
+            alt={alt || label}
+            loading="lazy"
+            decoding="async"
+            style={{
+              display: 'block',
+              width: 'auto',
+              height: 'auto',
+              maxWidth: '100%',
+              maxHeight: 'min(90vh, 880px)',
+              objectFit: 'contain',
+              objectPosition: 'center',
+            }}
+          />
+        </div>
+      );
+    }
     return (
       <div style={{
         width: '100%', height, position: 'relative', overflow: 'hidden',
@@ -338,7 +371,7 @@ function StatBlock({ num, label, sub }) {
 }
 
 // ── SECTION WRAPPER ───────────────────────────────────────────────────────────
-function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', children, statNum, statLabel, statSub }) {
+function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', children, statNum, statLabel, statSub }) {
   return (
     <div id={id} style={{ borderTop: '1px solid var(--border)' }}>
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px 60px' }}>
@@ -350,7 +383,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
         <FadeIn delay={0.1}>{children}</FadeIn>
       </div>
       <FadeIn>
-        <SectionImg label={imageLabel} height={imageHeight} src={imageSrc} alt={imageAlt} />
+        <SectionImg label={imageLabel} height={imageHeight} src={imageSrc} alt={imageAlt} objectFit={imageObjectFit} />
       </FadeIn>
       {statNum && (
         <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 80px' }}>
@@ -379,6 +412,7 @@ function S01() {
       imageSrc="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile1-media-arkim.ai.gif"
       imageAlt="Arkim mobile app: diagnostic view with audio waveform over industrial equipment"
       imageLabel="phone screen with audio waveform overlay against industrial equipment — dark, dramatic"
+      imageObjectFit="contain"
       statNum="Day zero."
       statLabel="65% of a technician's time is non-wrench time."
       statSub="Knowledge gaps and admin burden eat the majority of every shift. Arkim eliminates the search — technicians arrive at the machine knowing exactly what to do."
@@ -401,7 +435,9 @@ function S02() {
       eyebrow="02 — Capture Knowledge Automatically"
       headline="Every repair your team does is a permanent company asset. Right now, most of it disappears when they clock out."
       sub="Arkim captures every repair, every inspection, every compliance check — automatically. When your most experienced technician retires, their knowledge stays."
-      imageLabel="technician completing a repair on one side / clean repair log card appearing on the other"
+      imageSrc="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/industrial-worker.webp"
+      imageAlt="Industrial technician in hard hat overlooking pipes and equipment at a large facility"
+      imageLabel="industrial technician in safety gear at dusk, wide facility backdrop"
       statNum="The 0-day technician."
       statLabel="Any technician, from day one."
       statSub="With Arkim, any technician can execute at a senior level on their first day — using the knowledge your best people built over years."

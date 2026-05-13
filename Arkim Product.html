@@ -124,6 +124,21 @@ function useFadeIn(threshold = 0.1) {
   }, []);
   return [ref, vis];
 }
+
+/** Viewport ≤ breakpoint: single-column grids + tighter section padding (matches nav @768) */
+function useIsNarrowLayout(breakpointPx = 768) {
+  const [narrow, setNarrow] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia(`(max-width: ${breakpointPx}px)`).matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpointPx}px)`);
+    const update = () => setNarrow(mq.matches);
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, [breakpointPx]);
+  return narrow;
+}
+
 function FadeIn({ children, delay = 0, style = {} }) {
   const [ref, vis] = useFadeIn();
   return (
@@ -158,6 +173,7 @@ function DemoBtn({ label = 'Request a Demo', style = {} }) {
   );
 }
 function SectionImg({ label, height = '55vh', src = null, alt = '', objectFit = 'cover' }) {
+  const narrow = useIsNarrowLayout();
   if (src) {
     if (objectFit === 'contain') {
       return (
@@ -171,7 +187,7 @@ function SectionImg({ label, height = '55vh', src = null, alt = '', objectFit = 
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          minHeight: 'clamp(560px, 92vh, 980px)',
+          minHeight: narrow ? 'min(72vh, 480px)' : 'clamp(560px, 92vh, 980px)',
           padding: 'clamp(32px, 5vw, 80px) clamp(16px, 4vw, 48px)',
         }}>
           <img
@@ -233,19 +249,41 @@ function SectionImg({ label, height = '55vh', src = null, alt = '', objectFit = 
 
 // ── HERO ─────────────────────────────────────────────────────────────────────
 function Hero() {
+  const narrow = useIsNarrowLayout();
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '140px 48px 80px', overflow: 'hidden' }}>
-      {/* Video bg */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+    <div className="hero-cinematic" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '120px 16px 72px' : '140px 48px 80px', overflow: 'hidden', background: '#000' }}>
+      {/* Vimeo background: 16:9 iframe scaled to cover (object-fit on iframe is unreliable) */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden', width: '100%', height: '100%' }}>
         <iframe
-          src="https://player.vimeo.com/video/1177525108?autoplay=1&loop=1&muted=1&background=1&title=0&byline=0&portrait=0"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', objectFit: 'cover', pointerEvents: 'none' }}
-          allow="autoplay; fullscreen"
-          title="bg"
+          src="https://player.vimeo.com/video/1177525108?autoplay=1&loop=1&muted=1&background=1&controls=0&title=0&byline=0&portrait=0&playsinline=1"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '100%',
+            height: '56.25vw',
+            minWidth: '177.77vh',
+            minHeight: '100%',
+            transform: 'translate(-50%, -50%)',
+            border: 'none',
+            pointerEvents: 'none',
+          }}
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+          title="Arkim product overview video"
         />
       </div>
-      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: '#000' }} />
-      <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', textAlign: 'center' }}>
+      {/* Scrim so headline stays legible; video remains visible */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: 'none',
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.28) 45%, rgba(0,0,0,0.62) 100%)',
+        }}
+      />
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
           <h1 className="hero-h1">
             <span style={{ fontWeight: 700, color: '#fff', display: 'block' }}>Maintenance solutions</span>
@@ -260,7 +298,14 @@ function Hero() {
         </div>
         {/* Anchor nav */}
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s both' }}>
-          <div style={{ display: 'inline-grid', gridTemplateColumns: 'repeat(4, 1fr)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', background: 'rgba(10,10,10,0.6)', backdropFilter: 'blur(12px)', maxWidth: '740px', margin: '0 auto' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: narrow ? '1fr' : 'repeat(4, 1fr)',
+            width: '100%',
+            maxWidth: narrow ? '100%' : '740px',
+            border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
+            background: 'rgba(10,10,10,0.6)', backdropFilter: 'blur(12px)', margin: '0 auto',
+          }}>
             {[
               { num: '01', label: 'Diagnose faster', id: 's01' },
               { num: '02', label: 'Capture knowledge', id: 's02' },
@@ -269,8 +314,9 @@ function Hero() {
             ].map((item, i) => (
               <a key={i} href={`#${item.id}`} style={{
                 display: 'flex', flexDirection: 'column', gap: 4,
-                padding: '20px 24px', textDecoration: 'none',
-                borderRight: i < 3 ? '1px solid var(--border)' : 'none',
+                padding: narrow ? '16px 18px' : '20px 24px', textDecoration: 'none',
+                borderRight: !narrow && i < 3 ? '1px solid var(--border)' : 'none',
+                borderBottom: narrow && i < 3 ? '1px solid var(--border)' : 'none',
                 transition: 'background 0.2s',
               }}
               onMouseEnter={e => e.currentTarget.style.background='rgba(74,138,191,0.08)'}
@@ -291,6 +337,7 @@ function Hero() {
 function StickyAnchorNav() {
   const [show, setShow] = useState(false);
   const [active, setActive] = useState(null);
+  const narrow = useIsNarrowLayout();
   useEffect(() => {
     const sectionIds = ['s01','s02','s03','s04'];
     const fn = () => {
@@ -313,17 +360,26 @@ function StickyAnchorNav() {
   ];
   return (
     <div style={{
-      position: 'fixed', top: 68, left: 0, right: 0, zIndex: 150,
+      position: 'fixed',
+      top: 'calc(68px + env(safe-area-inset-top, 0px))',
+      left: 0,
+      right: 0,
+      zIndex: 150,
       background: 'var(--nav-scrim)', backdropFilter: 'blur(16px)',
       borderBottom: '1px solid var(--border)',
-      display: 'flex', alignItems: 'stretch', justifyContent: 'center',
-      padding: '0 48px', height: '52px', gap: 0,
+      display: 'flex', alignItems: 'stretch',
+      justifyContent: narrow ? 'flex-start' : 'center',
+      overflowX: narrow ? 'auto' : 'visible',
+      WebkitOverflowScrolling: 'touch',
+      touchAction: 'pan-x',
+      padding: narrow ? '0 10px' : '0 48px', height: '52px', gap: 0,
       transition: 'opacity 0.3s',
     }}>
       {items.map((item, i) => (
         <a key={i} href={`#${item.id}`} style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-          padding: '0 28px', alignSelf: 'stretch', textDecoration: 'none',
+          flexShrink: 0,
+          padding: narrow ? '0 14px' : '0 28px', alignSelf: 'stretch', textDecoration: 'none',
           borderRight: i < 3 ? '1px solid var(--border)' : 'none',
           borderBottom: active === item.id ? `2px solid var(--accent)` : '2px solid transparent',
           transition: 'all 0.2s',
@@ -341,11 +397,16 @@ function StickyAnchorNav() {
 
 // ── FEATURE PILLS ─────────────────────────────────────────────────────────────
 function FeaturePills({ items }) {
+  const narrow = useIsNarrowLayout();
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: narrow ? '1fr' : '1fr 1fr',
+      gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
+    }}>
       {items.map((item, i) => (
         <div key={i} style={{
-          background: 'var(--bg-card)', padding: '32px 36px',
+          background: 'var(--bg-card)', padding: narrow ? '22px 20px' : '32px 36px',
           transition: 'background 0.2s',
         }}
         onMouseEnter={e => e.currentTarget.style.background='var(--card-hover)'}
@@ -371,28 +432,97 @@ function StatBlock({ num, label, sub }) {
 }
 
 // ── SECTION WRAPPER ───────────────────────────────────────────────────────────
-function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', children, statNum, statLabel, statSub }) {
+function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', sideBySideGifs = null, children, statNum, statLabel, statSub }) {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
+  const hasSplit = Array.isArray(sideBySideGifs) && sideBySideGifs.length > 0;
+
+  const introBlock = (
+    <>
+      <Eyebrow accent>{eyebrow}</Eyebrow>
+      <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>{headline}</h2>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: hasSplit ? (narrow ? 28 : 36) : '60px' }}>{sub}</p>
+    </>
+  );
+
+  const gifsRow = hasSplit ? (
+    <FadeIn delay={0.05}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: narrow ? 10 : 14,
+          justifyContent: narrow ? 'center' : 'flex-end',
+          alignItems: 'flex-start',
+          width: '100%',
+        }}
+      >
+        {sideBySideGifs.map((g, i) => (
+          <img
+            key={i}
+            src={g.src}
+            alt={g.alt || ''}
+            loading="lazy"
+            decoding="async"
+            style={{
+              flex: '1 1 0',
+              minWidth: 0,
+              width: '100%',
+              height: 'auto',
+              maxHeight: narrow ? 'min(52vh, 420px)' : 'min(58vh, 520px)',
+              objectFit: 'contain',
+              objectPosition: 'center top',
+              display: 'block',
+            }}
+          />
+        ))}
+      </div>
+    </FadeIn>
+  ) : null;
+
   return (
     <div id={id} style={{ borderTop: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px 60px' }}>
-        <FadeIn>
-          <Eyebrow accent>{eyebrow}</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>{headline}</h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>{sub}</p>
-        </FadeIn>
-        <FadeIn delay={0.1}>{children}</FadeIn>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 60px` }}>
+        {hasSplit ? (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: narrow ? '1fr' : 'minmax(0, 1.08fr) minmax(0, 0.92fr)',
+              gap: narrow ? 36 : 40,
+              columnGap: narrow ? 0 : 48,
+              alignItems: 'start',
+            }}
+          >
+            <div style={{ minWidth: 0 }}>
+              <FadeIn>{introBlock}</FadeIn>
+              <FadeIn delay={0.1}>{children}</FadeIn>
+            </div>
+            {!narrow && <div style={{ minWidth: 0, paddingTop: 4, alignSelf: 'center' }}>{gifsRow}</div>}
+          </div>
+        ) : (
+          <>
+            <FadeIn>{introBlock}</FadeIn>
+            <FadeIn delay={0.1}>{children}</FadeIn>
+          </>
+        )}
+        {hasSplit && narrow && (
+          <div style={{ marginTop: 32 }}>{gifsRow}</div>
+        )}
       </div>
-      <FadeIn>
-        <SectionImg label={imageLabel} height={imageHeight} src={imageSrc} alt={imageAlt} objectFit={imageObjectFit} />
-      </FadeIn>
+      {!hasSplit && (
+        <FadeIn>
+          <SectionImg label={imageLabel} height={imageHeight} src={imageSrc} alt={imageAlt} objectFit={imageObjectFit} />
+        </FadeIn>
+      )}
       {statNum && (
-        <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 80px' }}>
+        <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `0 ${gx}px` }}>
           <FadeIn delay={0.1}>
             <StatBlock num={statNum} label={statLabel} sub={statSub} />
           </FadeIn>
         </div>
       )}
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '40px 80px 80px' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `40px ${gx}px 80px` }}>
         <FadeIn>
           <DemoBtn />
         </FadeIn>
@@ -435,9 +565,10 @@ function S02() {
       eyebrow="02 — Capture Knowledge Automatically"
       headline="Every repair your team does is a permanent company asset. Right now, most of it disappears when they clock out."
       sub="Arkim captures every repair, every inspection, every compliance check — automatically. When your most experienced technician retires, their knowledge stays."
-      imageSrc="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/industrial-worker.webp"
-      imageAlt="Industrial technician in hard hat overlooking pipes and equipment at a large facility"
-      imageLabel="industrial technician in safety gear at dusk, wide facility backdrop"
+      sideBySideGifs={[
+        { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile-2.gif', alt: 'Arkim mobile capture workflow' },
+        { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile-1.gif', alt: 'Arkim mobile app on the plant floor' },
+      ]}
       statNum="The 0-day technician."
       statLabel="Any technician, from day one."
       statSub="With Arkim, any technician can execute at a senior level on their first day — using the knowledge your best people built over years."
@@ -476,9 +607,12 @@ function S03() {
 const INTEGRATIONS = ['eMaint','Fiix','UpKeep','Limble CMMS','IBM Maximo','SAP PM','MaintainX','Oracle EAM','Fleetio','Brightly'];
 
 function S04() {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
   return (
     <div id="s04" style={{ borderTop: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px 60px' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 60px` }}>
         <FadeIn>
           <Eyebrow accent>04 — Works With What You Already Have</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
@@ -490,12 +624,16 @@ function S04() {
         </FadeIn>
         {/* Integration logos */}
         <FadeIn delay={0.1}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', marginBottom: '40px' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: narrow ? 'repeat(2, minmax(0, 1fr))' : 'repeat(5, minmax(0, 1fr))',
+            gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', marginBottom: '40px',
+          }}>
             {INTEGRATIONS.map((name, i) => (
               <div key={i} style={{
-                background: 'var(--bg-card)', padding: '28px 24px',
+                background: 'var(--bg-card)', padding: narrow ? '18px 14px' : '28px 24px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 500,
+                fontFamily: 'var(--sans)', fontSize: narrow ? '14px' : '16px', fontWeight: 500,
                 color: 'rgba(245,242,237,0.3)', textAlign: 'center',
                 transition: 'color 0.25s, background 0.25s',
                 cursor: 'default',
@@ -516,7 +654,7 @@ function S04() {
       <FadeIn>
         <SectionImg label="Arkim at center, connecting lines to maintenance software logos — clean, dark" />
       </FadeIn>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '40px 80px 80px' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `40px ${gx}px 80px` }}>
         <FadeIn><DemoBtn /></FadeIn>
       </div>
     </div>
@@ -559,23 +697,30 @@ const ENTERPRISE_CARDS = [
 
 function EnterpriseReady() {
   const [active, setActive] = useState(0);
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
   const card = ENTERPRISE_CARDS[active];
   return (
     <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-card)' }}>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px` }}>
         <FadeIn style={{ marginBottom: '60px' }}>
           <Eyebrow accent>Enterprise Ready</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
             Built for regulated industries.
           </h2>
         </FadeIn>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: narrow ? '1fr' : '1fr 1.6fr',
+          gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden',
+        }}>
           {/* Tab list */}
           <div style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
             {ENTERPRISE_CARDS.map((c, i) => (
               <button key={c.id} onClick={() => setActive(i)} style={{
                 background: 'none', border: 'none', cursor: 'pointer',
-                padding: '28px 32px',
+                padding: narrow ? '18px 20px' : '28px 32px',
                 borderBottom: i < ENTERPRISE_CARDS.length - 1 ? '1px solid var(--border)' : 'none',
                 borderLeft: active === i ? '3px solid var(--accent)' : '3px solid transparent',
                 textAlign: 'left',
@@ -588,7 +733,7 @@ function EnterpriseReady() {
             ))}
           </div>
           {/* Detail panel */}
-          <div style={{ background: 'var(--bg-card)', padding: '56px 52px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ background: 'var(--bg-card)', padding: narrow ? '32px 22px' : '56px 52px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>{card.badge}</div>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(28px, 3vw, 42px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', marginBottom: '24px' }}>{card.title}</div>
             <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, textWrap: 'pretty' }}>{card.detail}</p>
@@ -601,6 +746,9 @@ function EnterpriseReady() {
 
 // ── HOW IT WORKS ──────────────────────────────────────────────────────────────
 function HowItWorks() {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
   const steps = [
     { num: '01', title: 'Connect your systems', body: 'We integrate with your existing maintenance software. No hardware to install. No IT project.' },
     { num: '02', title: 'Load your equipment', body: 'Upload your equipment manuals or point us at your asset list. Arkim builds the baseline schedule and knowledge base automatically.' },
@@ -609,17 +757,21 @@ function HowItWorks() {
   ];
   return (
     <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-card)' }}>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px' }}>
-        <FadeIn style={{ marginBottom: '80px' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px` }}>
+        <FadeIn style={{ marginBottom: narrow ? '48px' : '80px' }}>
           <Eyebrow>From Kickoff to Live</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
             Up and running in days.<br /><em style={{ fontStyle: 'normal', color: 'var(--fg-muted)' }}>Not months.</em>
           </h2>
         </FadeIn>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: narrow ? '1fr' : 'repeat(4, minmax(0, 1fr))',
+          gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
+        }}>
           {steps.map((s, i) => (
             <FadeIn key={i} delay={i * 0.1}>
-              <div style={{ background: '#111', padding: '40px 36px', height: '100%', transition: 'background 0.2s' }}
+              <div style={{ background: '#111', padding: narrow ? '28px 22px' : '40px 36px', height: '100%', transition: 'background 0.2s' }}
               onMouseEnter={e => e.currentTarget.style.background='#181818'}
               onMouseLeave={e => e.currentTarget.style.background='#111'}
               >
@@ -637,6 +789,9 @@ function HowItWorks() {
 
 // ── RESULTS ───────────────────────────────────────────────────────────────────
 function Results() {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
   const stats = [
     { num: '65%', label: "of a technician's time is non-wrench time", sub: 'Knowledge gaps and admin burden eat the majority of every shift. Arkim eliminates the search — technicians arrive at the machine knowing exactly what to do.' },
     { num: '80%', label: 'of repair knowledge is undocumented', sub: 'When your best technician leaves, their knowledge leaves with them. Arkim captures every repair in real time and builds a collective memory for every asset.' },
@@ -644,16 +799,20 @@ function Results() {
   ];
   return (
     <div style={{ borderTop: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px` }}>
         <FadeIn style={{ marginBottom: '64px' }}>
           <Eyebrow accent>What You Get</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, letterSpacing: 'var(--title-h2-letter-spacing)', lineHeight: 1.1, textWrap: 'balance' }}>Results from week one.</h2>
         </FadeIn>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: narrow ? '1fr' : 'repeat(3, minmax(0, 1fr))',
+          gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
+        }}>
           {stats.map((s, i) => (
             <FadeIn key={i} delay={i * 0.12}>
               <div style={{
-                background: 'var(--bg-card)', padding: '48px 40px', height: '100%',
+                background: 'var(--bg-card)', padding: narrow ? '32px 22px' : '48px 40px', height: '100%',
                 borderTop: '3px solid var(--accent)',
                 transition: 'background 0.2s',
               }}
@@ -674,10 +833,11 @@ function Results() {
 
 // ── FINAL CTA ─────────────────────────────────────────────────────────────────
 function FinalCTA() {
+  const narrow = useIsNarrowLayout();
   return (
     <div style={{ borderTop: '1px solid var(--border)', background: 'linear-gradient(to bottom, #0A0A0A, #0c0e0f)', position: 'relative', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '700px', height: '400px', background: 'radial-gradient(ellipse, rgba(74,138,191,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ maxWidth: '860px', margin: '0 auto', padding: '120px 48px', textAlign: 'center', position: 'relative' }}>
+      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative' }}>
         <FadeIn>
           <Eyebrow>Let's Talk</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
@@ -696,6 +856,7 @@ function FinalCTA() {
 
 // ── FOOTER ────────────────────────────────────────────────────────────────────
 function Footer() {
+  const narrow = useIsNarrowLayout();
   const isLightTheme = useArkimTheme();
   const logoLightSurface =
     (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
@@ -703,8 +864,8 @@ function Footer() {
     (window.__resources && window.__resources.logoSideBySideWht) || 'uploads/arkim-side-by-side-wht.svg';
   const footerLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
   return (
-    <footer style={{ borderTop: '1px solid var(--border)', padding: '48px 80px 32px', maxWidth: '1300px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+    <footer style={{ borderTop: '1px solid var(--border)', padding: narrow ? '40px 22px 28px' : '48px 80px 32px', maxWidth: '1300px', margin: '0 auto' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: 16 }}>
         <a href="index.html" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
           <img src={footerLogoSrc} alt="Arkim" style={{ height: 24, width: 'auto', display: 'block' }} />
         </a>
@@ -736,9 +897,10 @@ function Footer() {
 function App() {
   return (
     <div>
-      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         <ArkimNav activeLabel="Product" />
       </div>
+      <div style={{ height: 'calc(68px + env(safe-area-inset-top, 0px))' }} />
       <Hero />
       <StickyAnchorNav />
       <S01 />

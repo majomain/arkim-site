@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0A0A0A" />
 <script>
 (function () {
@@ -151,20 +151,6 @@ html[data-theme="light"] {
   --selection: rgba(58, 122, 175, 0.22);
 }
 
-/* Light theme: keep first screen cinematic (dark hero, light copy) */
-html[data-theme="light"] .hero-cinematic {
-  --hero-bg: #000000;
-  --hero-title: #ffffff;
-  --fg: #f5f2ed;
-  --fg-muted: #8a857c;
-  --accent: #4a8abf;
-  --btn-fg: #000000;
-  --outline: rgba(245, 242, 237, 0.2);
-  --outline-hover: rgba(245, 242, 237, 0.4);
-  --outline-fill: rgba(245, 242, 237, 0.04);
-  --fg-ghost: rgba(245, 242, 237, 0.3);
-}
-
 html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -303,16 +289,18 @@ function Eyebrow({ children, center = false }) {
 // ─── HERO ───────────────────────────────────────────────────────────────────
 
 function Hero() {
+  const { isMobile, isTablet } = useViewport();
+  const heroPad = isMobile ? '120px 20px 88px' : isTablet ? '132px 40px 96px' : '140px 48px 100px';
   return (
     <div className="hero-cinematic" style={{
       position: 'relative', minHeight: '100vh',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
-      textAlign: 'center', padding: '140px 48px 100px',
+      textAlign: 'center', padding: heroPad,
       overflow: 'hidden',
     }}>
       <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: 'var(--hero-bg)' }} />
-      <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', textAlign: 'center' }}>
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
         <FadeIn delay={0.1}>
           <h1 className="hero-h1">
             <span style={{ fontWeight: 700, color: 'var(--hero-title)', display: 'block' }}>Industrial maintenance,</span>
@@ -903,14 +891,14 @@ function Footer() {
           </p>
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             {[
-              { href: 'https://x.com/arkim_ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
-              { href: 'https://www.linkedin.com/company/arkim-ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
+              { href: 'https://x.com/arkim_ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width={isMobile ? 17 : 15} height={isMobile ? 17 : 15}><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
+              { href: 'https://www.linkedin.com/company/arkim-ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width={isMobile ? 17 : 15} height={isMobile ? 17 : 15}><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
             ].map(({ href, icon }, i) => (
               <a key={i} href={href} target="_blank" rel="noopener noreferrer" style={{
-                width: 36, height: 36, border: '1px solid var(--border)', borderRadius: 8,
+                width: isMobile ? 44 : 36, height: isMobile ? 44 : 36, border: '1px solid var(--border)', borderRadius: 8,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontFamily: 'var(--sans)', fontSize: 'var(--text-micro)', color: 'var(--fg-muted)',
-                textDecoration: 'none', transition: 'border-color 0.2s, color 0.2s',
+                textDecoration: 'none', transition: 'border-color 0.2s, color 0.2s', boxSizing: 'border-box',
               }}
               onMouseEnter={e => { e.currentTarget.style.borderColor='var(--fg-muted)'; e.currentTarget.style.color='var(--fg)'; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.color='var(--fg-muted)'; }}
@@ -1101,8 +1089,13 @@ function App() {
 
   return (
     <div>
-      {/* Fixed header: announcement bar + nav together so they never overlap */}
-      <div ref={headerRef} style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
+      {/* Fixed header: announcement bar + nav together so they never overlap; top inset for notched devices */}
+      <div ref={headerRef} style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+        paddingLeft: 'env(safe-area-inset-left, 0px)',
+        paddingRight: 'env(safe-area-inset-right, 0px)',
+      }}>
         {announceVisible && <AnnouncementBar onDismiss={() => setAnnounceVisible(false)} />}
         <ArkimNav />
       </div>

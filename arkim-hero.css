@@ -33,3 +33,31 @@
   color: var(--accent);
   font-size: calc(1em * var(--hero-h1-accent-scale));
 }
+
+/*
+ * Full-bleed dark heroes (photo / video / #000): body light theme still uses dark --fg
+ * for the rest of the page — scope light copy tokens to this wrapper only.
+ */
+.hero-cinematic {
+  --hero-title: #ffffff;
+}
+
+.hero-cinematic .hero-h1 {
+  color: var(--hero-title);
+}
+
+html[data-theme="light"] .hero-cinematic {
+  --hero-bg: #000000;
+  --hero-title: #ffffff;
+  --fg: #f5f2ed;
+  --fg-muted: rgba(245, 242, 237, 0.78);
+  --text-muted: rgba(245, 242, 237, 0.8);
+  --accent: #4a8abf;
+  --headline-accent: #7ab5e0;
+  --border: rgba(255, 255, 255, 0.22);
+  --btn-fg: #000000;
+  --outline: rgba(245, 242, 237, 0.22);
+  --outline-hover: rgba(245, 242, 237, 0.42);
+  --outline-fill: rgba(245, 242, 237, 0.06);
+  --fg-ghost: rgba(245, 242, 237, 0.35);
+}

@@ -96,6 +96,20 @@ function useFadeIn() {
   }, []);
   return [ref, vis];
 }
+
+function useIsNarrowLayout(breakpointPx = 768) {
+  const [narrow, setNarrow] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia(`(max-width: ${breakpointPx}px)`).matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpointPx}px)`);
+    const update = () => setNarrow(mq.matches);
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, [breakpointPx]);
+  return narrow;
+}
+
 function FadeIn({ children, delay = 0, style = {} }) {
   const [ref, vis] = useFadeIn();
   return (
@@ -107,10 +121,23 @@ function Eyebrow({ children }) {
 }
 
 function Hero() {
+  const narrow = useIsNarrowLayout();
   return (
-    <div style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '160px 48px 100px', position: 'relative', overflow: 'hidden', background: '#000' }}>
-      <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: '700px', height: '400px', background: 'radial-gradient(ellipse, rgba(255,107,26,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ position: 'relative', maxWidth: '860px' }}>
+    <div className="hero-cinematic" style={{ minHeight: narrow ? 'min(85vh, 720px)' : '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '48px 20px 64px' : '160px 48px 100px', position: 'relative', overflow: 'hidden', background: '#000' }}>
+      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+        <img
+          src="uploads/arkim-about-hero.png"
+          alt=""
+          width={1920}
+          height={823}
+          decoding="async"
+          fetchPriority="high"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center', display: 'block' }}
+        />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.72) 45%, rgba(0,0,0,0.82) 100%)' }} />
+      </div>
+      <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: narrow ? 'min(100%, 420px)' : '700px', height: narrow ? '280px' : '400px', background: 'radial-gradient(ellipse, rgba(255,107,26,0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 1 }} />
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '860px', width: '100%', padding: narrow ? '0 4px' : undefined }}>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
           <h1 className="hero-h1">
             We built Arkim because<br />the problem was{' '}
@@ -118,7 +145,15 @@ function Hero() {
           </h1>
         </div>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s both' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', marginTop: '48px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: narrow ? '32px' : '24px',
+            marginTop: narrow ? '36px' : '48px',
+            flexWrap: 'wrap',
+            flexDirection: narrow ? 'column' : 'row',
+          }}>
             {[
               { name: 'Tom Dickie', role: 'CEO', photoSrc: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/tom-pfp-thumb.webp', linkedinUrl: 'https://www.linkedin.com/in/tom-dickie-04746a78/' },
               { name: 'Jacob Ogburn', role: 'Co-founder', photoSrc: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/jacob-pfp-bnw.webp', linkedinUrl: 'https://www.linkedin.com/in/jacob-jotech' },
@@ -168,6 +203,7 @@ function Hero() {
 }
 
 function TheProblem() {
+  const narrow = useIsNarrowLayout();
   const paras = [
     "80% of repair knowledge is never written down. It lives in the heads of your most experienced people — and walks out the door when they retire.",
     "Legacy maintenance software was built for the office, not the factory floor. The people closest to the equipment have the least support.",
@@ -175,8 +211,8 @@ function TheProblem() {
   ];
   return (
     <div style={{ borderTop: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 80px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '80px', alignItems: 'start' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: narrow ? '72px 22px' : '100px 80px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '1fr 2fr', gap: narrow ? '32px' : '80px', alignItems: 'start' }}>
           <FadeIn>
             <Eyebrow>The Problem We Saw</Eyebrow>
             <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
@@ -197,6 +233,7 @@ function TheProblem() {
 }
 
 function WhatWeBuilt() {
+  const narrow = useIsNarrowLayout();
   const layers = [
     { num: '01', title: 'Diagnostic sensing', body: 'The phone as the sensor. Video, audio, and photos capture symptoms from equipment in real time — no hardware required. Any technician can diagnose like a senior from day one.' },
     { num: '02', title: 'Knowledge capture', body: 'Every repair, every compliance check, every inspection — captured automatically and made permanently searchable. The knowledge stays when the person leaves.' },
@@ -204,7 +241,7 @@ function WhatWeBuilt() {
   ];
   return (
     <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-card)' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 80px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: narrow ? '72px 22px' : '100px 80px' }}>
         <FadeIn style={{ marginBottom: '60px' }}>
           <Eyebrow>What We Built</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', maxWidth: '640px', textWrap: 'balance' }}>
@@ -215,7 +252,7 @@ function WhatWeBuilt() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
           {layers.map((l, i) => (
             <FadeIn key={i} delay={i * 0.1}>
-              <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: '40px', padding: '40px 0', borderTop: '1px solid var(--border)', alignItems: 'start' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '80px 1fr', gap: narrow ? '12px' : '40px', padding: narrow ? '28px 0' : '40px 0', borderTop: '1px solid var(--border)', alignItems: 'start' }}>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 500, letterSpacing: '0.12em', color: 'var(--accent)', paddingTop: '4px' }}>{l.num}</div>
                 <div>
                   <div style={{ fontFamily: 'var(--sans)', fontSize: '22px', fontWeight: 600, marginBottom: '12px', letterSpacing: '-0.015em' }}>{l.title}</div>
@@ -231,6 +268,7 @@ function WhatWeBuilt() {
 }
 
 function Team() {
+  const narrow = useIsNarrowLayout();
   const people = [
     {
       name: 'Tom Dickie',
@@ -249,15 +287,15 @@ function Team() {
   ];
   return (
     <div style={{ borderTop: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 80px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: narrow ? '72px 22px' : '100px 80px' }}>
         <FadeIn style={{ marginBottom: '60px' }}>
           <Eyebrow>The Team</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)' }}>Built by people who care about the problem.</h2>
         </FadeIn>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '1fr 1fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
           {people.map((p, i) => (
             <FadeIn key={i} delay={i * 0.12}>
-              <div style={{ background: 'var(--bg-card)', padding: '48px 44px', height: '100%', transition: 'background 0.2s' }}
+              <div style={{ background: 'var(--bg-card)', padding: narrow ? '28px 22px' : '48px 44px', height: '100%', transition: 'background 0.2s' }}
               onMouseEnter={e => e.currentTarget.style.background='#1a1a1a'}
               onMouseLeave={e => e.currentTarget.style.background='var(--bg-card)'}
               >
@@ -305,9 +343,10 @@ function Team() {
 }
 
 function Partners() {
+  const narrow = useIsNarrowLayout();
   return (
     <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-card)' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 80px', display: 'flex', alignItems: 'center', gap: '60px', flexWrap: 'wrap' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: narrow ? '48px 22px' : '80px 80px', display: 'flex', alignItems: 'center', gap: narrow ? '28px' : '60px', flexWrap: 'wrap' }}>
         <div style={{ fontFamily: 'var(--sans)', fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--fg-muted)', flexShrink: 0 }}>Backed & supported by</div>
         {[
           { src: 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA Inception', href: 'https://www.nvidia.com/en-us/startups/' },
@@ -327,10 +366,11 @@ function Partners() {
 }
 
 function CTA() {
+  const narrow = useIsNarrowLayout();
   return (
     <div style={{ borderTop: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '600px', height: '350px', background: 'radial-gradient(ellipse, rgba(255,107,26,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ maxWidth: '860px', margin: '0 auto', padding: '120px 48px', textAlign: 'center', position: 'relative' }}>
+      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative' }}>
         <FadeIn>
           <Eyebrow>See It in Action</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
@@ -338,7 +378,7 @@ function CTA() {
             <em style={{ fontFamily: 'var(--sans)', fontStyle: 'normal', color: 'var(--accent)', fontWeight: 600 }}>action.</em>
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.7, marginBottom: '40px' }}>A 30-minute conversation. No pitch deck.</p>
-          <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: '15px 36px', borderRadius: '6px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s' }}
+          <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: '15px 36px', borderRadius: '6px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s', minHeight: 44, boxSizing: 'border-box' }}
           onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
           onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
           >Request a Demo →</a>
@@ -349,6 +389,7 @@ function CTA() {
 }
 
 function Footer() {
+  const narrow = useIsNarrowLayout();
   const isLightTheme = useArkimTheme();
   const logoLightSurface =
     (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
@@ -356,8 +397,8 @@ function Footer() {
     (window.__resources && window.__resources.logoSideBySideWht) || 'uploads/arkim-side-by-side-wht.svg';
   const footerLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
   return (
-    <footer style={{ borderTop: '1px solid var(--border)', padding: '64px 80px 40px', maxWidth: '1300px', margin: '0 auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', gap: '60px', marginBottom: '60px' }}>
+    <footer style={{ borderTop: '1px solid var(--border)', padding: narrow ? '48px 22px 32px' : '64px 80px 40px', maxWidth: '1300px', margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '2fr 1fr 1fr 1fr 1fr', gap: narrow ? '40px' : '60px', marginBottom: '60px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <img src={footerLogoSrc} alt="Arkim" style={{ height: 26, width: 'auto', display: 'block' }} />
@@ -365,7 +406,7 @@ function Footer() {
           <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>The unified industrial nervous system. Powered by AI and real data.</p>
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             {[{ href: 'https://x.com/arkim_ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> }, { href: 'https://www.linkedin.com/company/arkim-ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> }].map(({ href, icon }, i) => (
-              <a key={i} href={href} target="_blank" rel="noopener" style={{ width: 36, height: 36, border: '1px solid var(--border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--fg-muted)', textDecoration: 'none', transition: 'border-color 0.2s, color 0.2s' }}
+              <a key={i} href={href} target="_blank" rel="noopener" style={{ width: narrow ? 44 : 36, height: narrow ? 44 : 36, border: '1px solid var(--border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--fg-muted)', textDecoration: 'none', transition: 'border-color 0.2s, color 0.2s' }}
               onMouseEnter={e => { e.currentTarget.style.borderColor='var(--fg-muted)'; e.currentTarget.style.color='var(--fg)'; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.color='var(--fg-muted)'; }}
               >{icon}</a>
@@ -391,7 +432,7 @@ function Footer() {
           </div>
         ))}
       </div>
-      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
         <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'rgba(245,242,237,0.25)' }}>© 2026 Arkim AI. All rights reserved.</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           {[{ src: 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA' }, { src: 'https://www.arkim.ai/images/databricks-logo.svg', alt: 'Databricks' }, { src: 'https://www.arkim.ai/images/aws-activate.svg', alt: 'AWS' }].map((p, i) => (
@@ -409,10 +450,10 @@ function Footer() {
 function App() {
   return (
     <div>
-      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         <ArkimNav activeLabel="About Us" />
       </div>
-      <div style={{ height: 68 }} />
+      <div style={{ height: 'calc(68px + env(safe-area-inset-top, 0px))' }} />
       <Hero />
       <TheProblem />
       <WhatWeBuilt />

@@ -51,6 +51,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="arkim-hero.css" />
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
@@ -66,27 +67,7 @@
   --headline-accent: #7AB5E0;
   --text-muted: rgba(255,255,255,0.72);
   --serif: 'Cormorant Garamond', Georgia, serif;
-  --sans: 'Inter', 'Avenir Next', 'Avenir', Helvetica, sans-serif;
-  --hero-h1-size: clamp(32px, 4.5vw, 60px);
-  --hero-h1-line-height: 1.04;
-  --hero-h1-letter-spacing: 0.01em;
-  --hero-h1-accent-scale: 1.2;
-}
-.hero-h1 {
-  font-family: var(--sans);
-  font-size: var(--hero-h1-size);
-  font-weight: 800;
-  line-height: var(--hero-h1-line-height);
-  letter-spacing: var(--hero-h1-letter-spacing);
-  text-wrap: balance;
-  margin: 0 0 32px;
-}
-.hero-h1-accent {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 600;
-  color: var(--accent);
-  font-size: calc(1em * var(--hero-h1-accent-scale));
+  --sans: 'Avenir Next', 'Avenir', Helvetica, sans-serif;
 }
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -183,10 +164,22 @@ function ContactSection() {
 
           <FadeIn>
             <div style={{ position: 'sticky', top: '100px' }}>
-              <div style={{ width: '100%', aspectRatio: '3/4', background: 'repeating-linear-gradient(45deg, #141414 0, #141414 12px, #111 12px, #111 24px)', border: '1px solid var(--border)', borderRadius: '16px', marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8, color: 'rgba(245,242,237,0.15)', fontFamily: 'monospace', fontSize: '12px' }}>
-                <div style={{ fontSize: 32, opacity: 0.2 }}>◻</div>
-                Tom Dickie photo
-              </div>
+              <img
+                src="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/tom-pfp-thumb.webp"
+                alt="Tom Dickie, CEO, Arkim AI"
+                loading="lazy"
+                decoding="async"
+                style={{
+                  width: '100%',
+                  aspectRatio: '3/4',
+                  objectFit: 'cover',
+                  objectPosition: 'center top',
+                  borderRadius: '16px',
+                  border: '1px solid var(--border)',
+                  display: 'block',
+                  marginBottom: '28px',
+                }}
+              />
               <div style={{ fontFamily: 'var(--sans)', fontSize: '20px', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '4px' }}>Tom Dickie</div>
               <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--accent)', fontWeight: 500, marginBottom: '20px' }}>CEO, Arkim AI</div>
               <a href="mailto:tom@arkim.ai" style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '15px', color: 'var(--fg-muted)', textDecoration: 'none', marginBottom: '24px', transition: 'color 0.2s' }}
@@ -196,10 +189,29 @@ function ContactSection() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 tom@arkim.ai
               </a>
-              <a href="https://calendly.com/arkim" target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: '13px 24px', borderRadius: '6px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s' }}
+              <a href="https://calendly.com/arkim" target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: '13px 24px', borderRadius: '6px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s', marginBottom: '48px' }}
               onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
               onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
               >Book a time →</a>
+
+              <img
+                src="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/jacob-pfp-bnw.webp"
+                alt="Jacob Ogburn, COO, Arkim AI"
+                loading="lazy"
+                decoding="async"
+                style={{
+                  width: '100%',
+                  aspectRatio: '3/4',
+                  objectFit: 'cover',
+                  objectPosition: 'center top',
+                  borderRadius: '16px',
+                  border: '1px solid var(--border)',
+                  display: 'block',
+                  marginBottom: '28px',
+                }}
+              />
+              <div style={{ fontFamily: 'var(--sans)', fontSize: '20px', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '4px' }}>Jacob Ogburn</div>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--accent)', fontWeight: 500, marginBottom: '0' }}>COO, Arkim AI</div>
             </div>
           </FadeIn>
 
@@ -327,9 +339,9 @@ function App() {
   return (
     <div>
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
-        <ArkimNav activeLabel="Contact Us" />
+        <ArkimNav activeLabel="Contact Us" darkHero={false} />
       </div>
-      <div style={{ height: 72 }} />
+      <div style={{ height: 68 }} />
       <Hero />
       <ContactSection />
       <Footer />

@@ -49,6 +49,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="arkim-hero.css" />
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
@@ -94,11 +95,7 @@
   --selection: rgba(74, 138, 191, 0.25);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: 'Avenir Next', 'Avenir', Helvetica, sans-serif;
-  /* Type scale — consistent steps (display → section → card → body → meta) */
-  --hero-h1-size: clamp(28px, 4vw, 54px);
-  --hero-h1-line-height: 1.04;
-  --hero-h1-letter-spacing: 0.01em;
-  --hero-h1-accent-scale: 1.2;
+  /* Type scale — consistent steps (display → section → card → body → meta); hero h1 tokens in arkim-hero.css */
   --text-eyebrow-size: clamp(12px, 0.95vw, 14px);
   --text-eyebrow-tracking: 0.12em;
   --text-lead: clamp(17px, 1.35vw, 19px);
@@ -119,7 +116,7 @@ html[data-theme="light"] {
   --bg-card: #ffffff;
   --border: #e3dfd5;
   --fg: #1c1915;
-  --fg-muted: #5e5850;
+  --fg-muted: #1c1915;
   --accent: #3a7aaf;
   --btn-fg: #ffffff;
   --nav-scrim: rgba(245, 242, 235, 0.94);
@@ -164,23 +161,6 @@ html[data-theme="light"] .hero-cinematic {
   --outline-hover: rgba(245, 242, 237, 0.4);
   --outline-fill: rgba(245, 242, 237, 0.04);
   --fg-ghost: rgba(245, 242, 237, 0.3);
-}
-
-.hero-h1 {
-  font-family: var(--sans);
-  font-size: var(--hero-h1-size);
-  font-weight: 800;
-  line-height: var(--hero-h1-line-height);
-  letter-spacing: var(--hero-h1-letter-spacing);
-  text-wrap: balance;
-  margin: 0 0 32px;
-}
-.hero-h1-accent {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 600;
-  color: var(--accent);
-  font-size: calc(1em * var(--hero-h1-accent-scale));
 }
 
 html { scroll-behavior: smooth; }
@@ -358,7 +338,7 @@ function Hero() {
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', textAlign: 'center' }}>
         <FadeIn delay={0.1}>
           <h1 className="hero-h1">
-            <span style={{ fontWeight: 800, color: 'var(--hero-title)', display: 'block' }}>Industrial maintenance,</span>
+            <span style={{ fontWeight: 600, color: 'var(--hero-title)', display: 'block' }}>Industrial maintenance,</span>
             <span className="hero-h1-accent" style={{ display: 'block' }}>re-leveraged.</span>
           </h1>
         </FadeIn>
@@ -374,22 +354,13 @@ function Hero() {
         </FadeIn>
         <FadeIn delay={0.4}>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="#cta" style={{
-              fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', fontWeight: 600,
-              background: 'var(--accent)', color: 'var(--btn-fg)',
-              padding: '14px 30px', borderRadius: '6px', textDecoration: 'none',
-              transition: 'opacity 0.2s, transform 0.15s',
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-            }}
-            onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
-            >Request a Demo →</a>
             <a href="#layers" style={{
               fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', fontWeight: 500,
               color: 'var(--fg)', border: '1px solid var(--outline)',
               padding: '14px 30px', borderRadius: '6px', textDecoration: 'none',
               background: 'transparent',
               transition: 'border-color 0.2s, background 0.2s',
+              textTransform: 'uppercase',
             }}
             onMouseEnter={e => { e.currentTarget.style.borderColor='var(--outline-hover)'; e.currentTarget.style.background='var(--outline-fill)'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor='var(--outline)'; e.currentTarget.style.background='transparent'; }}
@@ -1014,6 +985,7 @@ function FinalCTA() {
               padding: '15px 32px', borderRadius: '6px', textDecoration: 'none',
               display: 'inline-flex', alignItems: 'center', gap: 8,
               transition: 'opacity 0.2s, transform 0.15s',
+              textTransform: 'uppercase',
             }}
             onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
             onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
@@ -1233,7 +1205,7 @@ function Divider() {
 
 function App() {
   const headerRef = useRef(null);
-  const [announceVisible, setAnnounceVisible] = useState(true);
+  const [announceVisible, setAnnounceVisible] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(109);
 
   useEffect(() => {
@@ -1254,7 +1226,7 @@ function App() {
       {/* Fixed header: announcement bar + nav together so they never overlap */}
       <div ref={headerRef} style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
         {announceVisible && <AnnouncementBar onDismiss={() => setAnnounceVisible(false)} />}
-        <ArkimNav variant="home" />
+        <ArkimNav variant="home" darkHero={false} />
       </div>
       {/* Spacer so content starts below fixed header */}
       <div style={{ height: headerHeight }} />

@@ -3,7 +3,7 @@
  * Frosted scroll state inspired by premium fund sites — not a floating pill.
  */
 :root {
-  --arkim-nav-height: 72px;
+  --arkim-nav-height: 68px;
   --arkim-nav-blur: 28px;
   --arkim-nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --arkim-nav-duration: 0.5s;
@@ -95,10 +95,11 @@
 
 .arkim-site-nav__cta {
   font-family: var(--sans);
-  font-size: var(--text-caption, 13px);
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.02em;
-  padding: 10px 22px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 7px 16px;
   border-radius: 4px;
   text-decoration: none;
   transition: opacity 0.25s ease, transform 0.2s ease;
@@ -144,6 +145,27 @@
 .arkim-site-nav__theme {
   border-radius: 4px;
   box-sizing: border-box;
+  width: 36px;
+  height: 36px;
+}
+
+.arkim-site-nav__theme svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .arkim-site-nav__theme {
+    width: 44px;
+    height: 44px;
+  }
+
+  .arkim-site-nav__theme svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .arkim-site-nav__links {
@@ -155,7 +177,7 @@
 .arkim-site-nav__tools {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .arkim-site-nav__drawer {

@@ -57,7 +57,7 @@ function useArkimTheme() {
 
 function DayIcon() {
   return (
-    <svg aria-hidden viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+    <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="4" />
       <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" />
     </svg>
@@ -66,7 +66,7 @@ function DayIcon() {
 
 function NightIcon() {
   return (
-    <svg aria-hidden viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+    <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
     </svg>
   );
@@ -94,8 +94,6 @@ function ThemeToggle({ lightOnDarkHero = false }) {
         background: 'transparent',
         color: lightOnDarkHero ? 'rgba(245, 242, 237, 0.78)' : 'var(--fg-muted)',
         border: lightOnDarkHero ? '1px solid rgba(245, 242, 237, 0.35)' : '1px solid var(--border)',
-        width: 44,
-        height: 44,
         padding: 0,
         display: 'flex',
         alignItems: 'center',
@@ -110,7 +108,7 @@ function ThemeToggle({ lightOnDarkHero = false }) {
   );
 }
 
-function ArkimNav({ variant = 'internal', activeLabel = null }) {
+function ArkimNav({ variant = 'internal', activeLabel = null, darkHero = true }) {
   const isHome = variant === 'home';
   const isLightTheme = useArkimTheme();
   const { isMobile } = useViewport();
@@ -118,14 +116,6 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
     () => typeof window !== 'undefined' && window.scrollY > NAV_SCROLL_PX
   );
   const [menuOpen, setMenuOpen] = useState(false);
-  const [lightOnDarkHero, setLightOnDarkHero] = useState(() => {
-    if (!isHome || typeof window === 'undefined') return false;
-    const light = document.documentElement.getAttribute('data-theme') === 'light';
-    const vh = window.innerHeight || 800;
-    const overHero = window.scrollY < vh * 0.92;
-    const transparentBar = window.scrollY <= NAV_SCROLL_PX;
-    return light && overHero && transparentBar;
-  });
 
   const links = [
     { label: 'Product', href: 'Arkim Product.html' },
@@ -142,30 +132,10 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
   }, []);
 
   useEffect(() => {
-    if (!isHome) return;
-    const sync = () => {
-      const light = document.documentElement.getAttribute('data-theme') === 'light';
-      const vh = window.innerHeight || 800;
-      const overHero = window.scrollY < vh * 0.92;
-      const transparentBar = window.scrollY <= NAV_SCROLL_PX && !menuOpen;
-      setLightOnDarkHero(light && overHero && transparentBar);
-    };
-    sync();
-    const onScroll = () => sync();
-    const onTheme = () => sync();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    window.addEventListener('arkim-theme', onTheme);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      window.removeEventListener('arkim-theme', onTheme);
-    };
-  }, [menuOpen, isHome]);
-
-  useEffect(() => {
     if (!isMobile) setMenuOpen(false);
   }, [isMobile]);
+
+  const lightOnDarkHero = darkHero && isLightTheme && !scrolled && !menuOpen;
 
   const linkColor = (label) => {
     const isActive = activeLabel === label;
@@ -184,7 +154,7 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
     (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
   const logoDarkSurface =
     (window.__resources && window.__resources.logoSideBySideWht) || 'uploads/arkim-side-by-side-wht.svg';
-  const useLightWordmark = isLightTheme && (!isHome || !lightOnDarkHero);
+  const useLightWordmark = isLightTheme && !lightOnDarkHero;
   const navLogoSrc = useLightWordmark ? logoLightSurface : logoDarkSurface;
 
   return (
@@ -196,7 +166,7 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
       <div className="arkim-site-nav__inner">
         <a
           href="index.html"
-          style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', minHeight: 44 }}
+          style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', minHeight: 40 }}
         >
           <img src={navLogoSrc} alt="Arkim" style={{ height: 28, width: 'auto', display: 'block' }} />
         </a>
@@ -233,10 +203,6 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
         {!isMobile ? (
           <div className="arkim-site-nav__tools">
             <ThemeToggle lightOnDarkHero={lightOnDarkHero} />
-            <span className="arkim-site-nav__email" style={emailColor ? { color: emailColor } : undefined}>
-              info@arkim.ai
-            </span>
-            <span className="arkim-site-nav__rule" aria-hidden="true" />
             <a
               href="https://www.arkim.ai/contact?tab=demo"
               target="_blank"
@@ -263,9 +229,9 @@ function ArkimNav({ variant = 'internal', activeLabel = null }) {
                 background: 'transparent',
                 color: lightOnDarkHero ? '#f5f2ed' : 'var(--fg)',
                 border: lightOnDarkHero ? '1px solid rgba(245, 242, 237, 0.35)' : '1px solid var(--border)',
-                padding: '10px 12px',
-                minWidth: 44,
-                minHeight: 44,
+                padding: '8px 10px',
+                minWidth: 40,
+                minHeight: 40,
                 fontFamily: 'var(--sans)',
                 fontSize: 'var(--text-micro, 11px)',
                 fontWeight: 600,

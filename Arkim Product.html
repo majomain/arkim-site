@@ -783,12 +783,13 @@ function ZeroDayTechnicianDiagram() {
 }
 
 // ── SECTION WRAPPER ───────────────────────────────────────────────────────────
-function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', imageSlot = null, sideBySideGifs = null, imageBelowSplit = false, stretchSplitMediaHeight = false, children, statNum, statLabel, statSub, afterStatContent = null, showDemoButton = true }) {
+function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', imageSlot = null, sideBySideGifs = null, imageBelowSplit = false, stretchSplitMediaHeight = false, splitIntroAlign = 'center', children, statNum, statLabel, statSub, afterStatContent = null, showDemoButton = true }) {
   const narrow = useIsNarrowLayout();
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
   const hasSplit = Array.isArray(sideBySideGifs) && sideBySideGifs.length > 0;
   const stretchDesktop = stretchSplitMediaHeight && !narrow;
+  const introSplitCentered = splitIntroAlign !== 'left';
 
   const introBlock = (
     <>
@@ -799,10 +800,10 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
   );
 
   const introBlockSplit = (
-    <div style={{ textAlign: 'center', marginBottom: narrow ? 32 : 44 }}>
+    <div style={{ textAlign: introSplitCentered ? 'center' : 'left', marginBottom: narrow ? 32 : 44 }}>
       <Eyebrow accent>{eyebrow}</Eyebrow>
-      <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', margin: '0 auto 24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
-      <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '680px', margin: '0 auto', textWrap: 'pretty' }}>{sub}</p>
+      <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', margin: introSplitCentered ? '0 auto 24px' : '0 0 24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '680px', margin: introSplitCentered ? '0 auto' : '0', textWrap: 'pretty' }}>{sub}</p>
     </div>
   );
 
@@ -836,7 +837,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
           height: 'auto',
           maxHeight: narrow
             ? 'min(52vh, 420px)'
-            : (g.ingestLightFrame ? 'min(40vh, 340px)' : 'min(58vh, 520px)'),
+            : (g.ingestLightFrame ? 'min(34vh, 300px)' : 'min(58vh, 520px)'),
           objectFit: 'contain',
           objectPosition: 'center top',
           display: 'block',
@@ -1030,10 +1031,10 @@ function S01() {
   return (
     <Section
       id="s01"
+      splitIntroAlign="left"
       eyebrow="01 — Diagnose Faster"
       headline="Your team already has everything they need to diagnose equipment. They just need Arkim."
       sub="The phone in your technician's pocket is a diagnostic sensor. Point it at a machine, describe what you're hearing or seeing, and Arkim tells you what's wrong — and what to do about it."
-      stretchSplitMediaHeight
       showDemoButton={false}
       sideBySideGifs={[
         {
@@ -1053,6 +1054,7 @@ function S02() {
   return (
     <Section
       id="s02"
+      splitIntroAlign="left"
       eyebrow="02 — Capture Knowledge Automatically"
       headline="Every repair your team does is a permanent company asset. Right now, most of it disappears when they clock out."
       sub="Arkim captures every repair, every inspection, every compliance check — automatically. When your most experienced technician retires, their knowledge stays."

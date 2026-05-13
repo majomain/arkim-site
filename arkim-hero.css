@@ -1,6 +1,6 @@
 /**
- * Hero headline styles — shared by index and all parent HTML pages.
- * Uses each document’s :root --sans, --serif, and --accent (see arkim-theme.css + page :root).
+ * Hero + section headline tokens — shared by index and subpages (arkim-hero.css).
+ * h1: .hero-h1 / --hero-h1-size (max 48px). h2: --title-h2-md|lg|xl (all capped below h1).
  */
 :root {
   --hero-h1-size: clamp(26px, 3.5vw, 48px);
@@ -8,12 +8,18 @@
   --hero-h1-letter-spacing: 0.01em;
   /* Serif accent reads smaller than sans at 1em; scale up for optical match */
   --hero-h1-accent-scale: 1.3;
+  /*
+   * h2 scale — every step stays under hero h1 (max 48px). Use site-wide for h2; weight 700 in markup.
+   */
+  --title-h2-md: clamp(22px, 2.7vw, 36px);
+  --title-h2-lg: clamp(24px, 3vw, 40px);
+  --title-h2-xl: clamp(26px, 3.2vw, 44px);
 }
 
 .hero-h1 {
   font-family: var(--sans);
   font-size: var(--hero-h1-size);
-  font-weight: 600;
+  font-weight: 700;
   line-height: var(--hero-h1-line-height);
   letter-spacing: var(--hero-h1-letter-spacing);
   text-wrap: balance;
@@ -23,7 +29,7 @@
 .hero-h1-accent {
   font-family: var(--serif);
   font-style: italic;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--accent);
   font-size: calc(1em * var(--hero-h1-accent-scale));
 }

@@ -5,6 +5,7 @@
 :root {
   --nav-scrim: rgba(10, 10, 10, 0.94);
   --btn-fg: #000000;
+  --title-h2-letter-spacing: -0.025em;
 }
 
 html[data-theme="light"] {

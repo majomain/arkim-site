@@ -178,7 +178,7 @@ function Hero() {
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', textAlign: 'center' }}>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
           <h1 className="hero-h1">
-            <span style={{ fontWeight: 600, color: '#fff', display: 'block' }}>Resources and</span>
+            <span style={{ fontWeight: 700, color: '#fff', display: 'block' }}>Resources and</span>
             <span className="hero-h1-accent" style={{ display: 'block' }}>insights</span>
           </h1>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(15px, 1.3vw, 16px)', fontWeight: 600, color: 'var(--text-muted)', lineHeight: 1.65, maxWidth: '580px', margin: '0 auto 48px', textWrap: 'pretty' }}>
@@ -230,14 +230,14 @@ function StickyAnchorNav() {
       position: 'fixed', top: 68, left: 0, right: 0, zIndex: 150,
       background: 'var(--nav-scrim)', backdropFilter: 'blur(16px)',
       borderBottom: '1px solid var(--border)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      display: 'flex', alignItems: 'stretch', justifyContent: 'center',
       padding: '0 48px', height: '52px', gap: 0,
       transition: 'opacity 0.3s',
     }}>
       {ANCHOR_ITEMS.map((item, i) => (
         <a key={i} href={`#${item.id}`} style={{
-          display: 'flex', alignItems: 'center', gap: 10,
-          padding: '0 28px', height: '100%', textDecoration: 'none',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+          padding: '0 28px', alignSelf: 'stretch', textDecoration: 'none',
           borderRight: i < 2 ? '1px solid var(--border)' : 'none',
           borderBottom: active === item.id ? `2px solid var(--accent)` : '2px solid transparent',
           transition: 'all 0.2s',
@@ -245,8 +245,8 @@ function StickyAnchorNav() {
         onMouseEnter={e => e.currentTarget.style.background='rgba(74,138,191,0.06)'}
         onMouseLeave={e => e.currentTarget.style.background='transparent'}
         >
-          <span style={{ fontFamily: 'var(--sans)', fontSize: '11px', color: active === item.id ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, letterSpacing: '0.08em' }}>{item.num}</span>
-          <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: active === item.id ? 'var(--fg)' : 'var(--fg-muted)', fontWeight: 400 }}>{item.label}</span>
+          <span style={{ fontFamily: 'var(--sans)', fontSize: '11px', lineHeight: 1, color: active === item.id ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, letterSpacing: '0.08em' }}>{item.num}</span>
+          <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', lineHeight: 1, color: active === item.id ? 'var(--fg)' : 'var(--fg-muted)', fontWeight: 400 }}>{item.label}</span>
         </a>
       ))}
     </div>
@@ -278,7 +278,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageHeight = '55vh',
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px 60px' }}>
         <FadeIn>
           <Eyebrow accent>{eyebrow}</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(24px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em', marginBottom: '24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: children ? '60px' : '0' }}>{sub}</p>
         </FadeIn>
         {children && <FadeIn delay={0.1}>{children}</FadeIn>}
@@ -349,7 +349,7 @@ function S02() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px 40px' }}>
         <FadeIn>
           <Eyebrow accent>02 — Arkim Compared to Foundation Models</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(24px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
             See how Arkim stacks up against general-purpose models for real maintenance work.
           </h2>
         </FadeIn>
@@ -411,7 +411,7 @@ function S03() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px 60px' }}>
         <FadeIn>
           <Eyebrow accent>More Resources</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(24px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em', marginBottom: '48px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '48px', textWrap: 'balance' }}>
             Announcements and updates
           </h2>
         </FadeIn>
@@ -465,7 +465,7 @@ function FinalCTA() {
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '120px 48px', textAlign: 'center', position: 'relative' }}>
         <FadeIn>
           <Eyebrow>Let's Talk</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(32px, 4.5vw, 58px)', fontWeight: 700, lineHeight: 1.06, letterSpacing: '0.01em', marginBottom: '20px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
             Questions about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>our resources?</em>
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.7, marginBottom: '40px' }}>

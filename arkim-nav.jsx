@@ -2,11 +2,10 @@
  * Shared site navigation — loaded before page scripts.
  * Exposes window.useViewport, window.usePrefersReducedMotion, window.ArkimNav
  *
- * Full-width frosted bar (institutional / fund-site style); inner row max 1400px.
+ * All chrome is universal: appearance comes from arkim-nav.css + :root theme tokens
+ * (index.html or arkim-theme.css). Pages only pass activeLabel for the current route.
  */
-const { useState, useEffect, useRef } = React;
-
-const NAV_SCROLL_PX = 40;
+const { useState, useEffect } = React;
 
 function useViewport() {
   const getWidth = () => (typeof window !== 'undefined' ? window.innerWidth : 1440);
@@ -72,7 +71,7 @@ function NightIcon() {
   );
 }
 
-function ThemeToggle({ lightOnDarkHero = false }) {
+function ThemeToggle() {
   const [theme, setTheme] = useState(() =>
     document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'
   );
@@ -92,8 +91,8 @@ function ThemeToggle({ lightOnDarkHero = false }) {
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       style={{
         background: 'transparent',
-        color: lightOnDarkHero ? 'rgba(245, 242, 237, 0.78)' : 'var(--fg-muted)',
-        border: lightOnDarkHero ? '1px solid rgba(245, 242, 237, 0.35)' : '1px solid var(--border)',
+        color: 'var(--fg-muted)',
+        border: '1px solid var(--border)',
         padding: 0,
         display: 'flex',
         alignItems: 'center',
@@ -108,13 +107,9 @@ function ThemeToggle({ lightOnDarkHero = false }) {
   );
 }
 
-function ArkimNav({ variant = 'internal', activeLabel = null, darkHero = true }) {
-  const isHome = variant === 'home';
+function ArkimNav({ activeLabel = null }) {
   const isLightTheme = useArkimTheme();
   const { isMobile } = useViewport();
-  const [scrolled, setScrolled] = useState(
-    () => typeof window !== 'undefined' && window.scrollY > NAV_SCROLL_PX
-  );
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
@@ -125,44 +120,25 @@ function ArkimNav({ variant = 'internal', activeLabel = null, darkHero = true })
   ];
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > NAV_SCROLL_PX);
-    fn();
-    window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
-  }, []);
-
-  useEffect(() => {
     if (!isMobile) setMenuOpen(false);
   }, [isMobile]);
 
-  const lightOnDarkHero = darkHero && isLightTheme && !scrolled && !menuOpen;
-
   const linkColor = (label) => {
     const isActive = activeLabel === label;
-    if (lightOnDarkHero) {
-      return isActive ? '#f5f2ed' : 'rgba(245, 242, 237, 0.78)';
-    }
     return isActive ? 'var(--fg)' : 'var(--fg-muted)';
   };
 
   const linkWeight = (label) => (activeLabel === label ? 600 : 500);
 
-  const emailColor = lightOnDarkHero ? 'rgba(245, 242, 237, 0.72)' : undefined;
-
-  /* Brand: arkim-side-by-side.svg = light UI surfaces; arkim-side-by-side-wht.svg = dark UI (incl. dark theme). */
+  /* Brand: arkim-side-by-side.svg = light theme; arkim-side-by-side-wht.svg = dark theme. */
   const logoLightSurface =
     (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
   const logoDarkSurface =
     (window.__resources && window.__resources.logoSideBySideWht) || 'uploads/arkim-side-by-side-wht.svg';
-  const useLightWordmark = isLightTheme && !lightOnDarkHero;
-  const navLogoSrc = useLightWordmark ? logoLightSurface : logoDarkSurface;
+  const navLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
 
   return (
-    <nav
-      className="arkim-site-nav"
-      data-scrolled={scrolled ? 'true' : 'false'}
-      data-menu-open={menuOpen ? 'true' : 'false'}
-    >
+    <nav className="arkim-site-nav">
       <div className="arkim-site-nav__inner">
         <a
           href="index.html"
@@ -187,7 +163,7 @@ function ArkimNav({ variant = 'internal', activeLabel = null, darkHero = true })
                     fontWeight: linkWeight(l),
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = lightOnDarkHero ? '#f5f2ed' : 'var(--fg)';
+                    e.currentTarget.style.color = 'var(--fg)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = linkColor(l);
@@ -202,7 +178,7 @@ function ArkimNav({ variant = 'internal', activeLabel = null, darkHero = true })
 
         {!isMobile ? (
           <div className="arkim-site-nav__tools">
-            <ThemeToggle lightOnDarkHero={lightOnDarkHero} />
+            <ThemeToggle />
             <a
               href="https://www.arkim.ai/contact?tab=demo"
               target="_blank"
@@ -210,7 +186,7 @@ function ArkimNav({ variant = 'internal', activeLabel = null, darkHero = true })
               className="arkim-site-nav__cta"
               style={{
                 background: 'var(--accent)',
-                color: lightOnDarkHero ? '#000' : 'var(--btn-fg)',
+                color: 'var(--btn-fg)',
               }}
             >
               Request Demo
@@ -218,7 +194,7 @@ function ArkimNav({ variant = 'internal', activeLabel = null, darkHero = true })
           </div>
         ) : (
           <div className="arkim-site-nav__tools">
-            <ThemeToggle lightOnDarkHero={lightOnDarkHero} />
+            <ThemeToggle />
             <button
               type="button"
               className="arkim-site-nav__menu-btn"
@@ -227,8 +203,8 @@ function ArkimNav({ variant = 'internal', activeLabel = null, darkHero = true })
               onClick={() => setMenuOpen((v) => !v)}
               style={{
                 background: 'transparent',
-                color: lightOnDarkHero ? '#f5f2ed' : 'var(--fg)',
-                border: lightOnDarkHero ? '1px solid rgba(245, 242, 237, 0.35)' : '1px solid var(--border)',
+                color: 'var(--fg)',
+                border: '1px solid var(--border)',
                 padding: '8px 10px',
                 minWidth: 40,
                 minHeight: 40,

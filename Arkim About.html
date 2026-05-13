@@ -145,7 +145,7 @@ function TheProblem() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '80px', alignItems: 'start' }}>
           <FadeIn>
             <Eyebrow>The Problem We Saw</Eyebrow>
-            <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 42px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em', textWrap: 'balance' }}>
+            <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
               Why we built it.
             </h2>
           </FadeIn>
@@ -173,7 +173,7 @@ function WhatWeBuilt() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 80px' }}>
         <FadeIn style={{ marginBottom: '60px' }}>
           <Eyebrow>What We Built</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 42px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em', maxWidth: '640px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', maxWidth: '640px', textWrap: 'balance' }}>
             Three layers. Each valuable alone.<br />
             <em style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', color: 'var(--accent)', fontWeight: 600 }}>Transformative together.</em>
           </h2>
@@ -206,7 +206,7 @@ function Team() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 80px' }}>
         <FadeIn style={{ marginBottom: '60px' }}>
           <Eyebrow>The Team</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 42px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em' }}>Built by people who care about the problem.</h2>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)' }}>Built by people who care about the problem.</h2>
         </FadeIn>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
           {people.map((p, i) => (
@@ -257,7 +257,7 @@ function CTA() {
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '120px 48px', textAlign: 'center', position: 'relative' }}>
         <FadeIn>
           <Eyebrow>See It in Action</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(24px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.06, letterSpacing: '0.01em', marginBottom: '20px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
             Come see it in{' '}
             <em style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', color: 'var(--accent)', fontWeight: 600 }}>action.</em>
           </h2>
@@ -334,7 +334,7 @@ function App() {
   return (
     <div>
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
-        <ArkimNav activeLabel="About Us" darkHero={false} />
+        <ArkimNav activeLabel="About Us" />
       </div>
       <div style={{ height: 68 }} />
       <Hero />

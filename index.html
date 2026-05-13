@@ -95,7 +95,7 @@
   --selection: rgba(74, 138, 191, 0.25);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: 'Avenir Next', 'Avenir', Helvetica, sans-serif;
-  /* Type scale — consistent steps (display → section → card → body → meta); hero h1 tokens in arkim-hero.css */
+  /* Type scale — hero h1 + h2 tokens live in arkim-hero.css (--title-h2-md/lg/xl); --title-display/--title-section alias those */
   --text-eyebrow-size: clamp(12px, 0.95vw, 14px);
   --text-eyebrow-tracking: 0.12em;
   --text-lead: clamp(17px, 1.35vw, 19px);
@@ -103,9 +103,11 @@
   --text-label: 15px;
   --text-caption: 14px;
   --text-micro: 13px;
-  --title-display: clamp(30px, 3.25vw, 46px);
-  --title-section: clamp(26px, 2.75vw, 36px);
+  --title-display: var(--title-h2-lg);
+  --title-section: var(--title-h2-md);
   --title-card: clamp(21px, 2vw, 28px);
+  /* Section / display h2 — slightly negative tracking reads tighter than 0.01em on Avenir bold */
+  --title-h2-letter-spacing: -0.025em;
   --text-serif-display: clamp(18px, 1.65vw, 22px);
   --text-serif-body: clamp(17px, 1.45vw, 19px);
 }
@@ -298,31 +300,6 @@ function Eyebrow({ children, center = false }) {
   );
 }
 
-function ImgPlaceholder({ label, aspectRatio = '4/3', style = {} }) {
-  return (
-    <div style={{
-      aspectRatio,
-      background: 'repeating-linear-gradient(45deg, var(--placeholder-a) 0, var(--placeholder-a) 12px, var(--placeholder-b) 12px, var(--placeholder-b) 24px)',
-      border: '1px solid var(--border)',
-      borderRadius: '12px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      gap: 8,
-      color: 'var(--placeholder-label)',
-      fontFamily: 'monospace',
-      fontSize: '12px',
-      textAlign: 'center',
-      padding: '24px',
-      ...style,
-    }}>
-      <div style={{ fontSize: 28, opacity: 0.3 }}>◻</div>
-      <div>{label}</div>
-    </div>
-  );
-}
-
 // ─── HERO ───────────────────────────────────────────────────────────────────
 
 function Hero() {
@@ -338,7 +315,7 @@ function Hero() {
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', textAlign: 'center' }}>
         <FadeIn delay={0.1}>
           <h1 className="hero-h1">
-            <span style={{ fontWeight: 600, color: 'var(--hero-title)', display: 'block' }}>Industrial maintenance,</span>
+            <span style={{ fontWeight: 700, color: 'var(--hero-title)', display: 'block' }}>Industrial maintenance,</span>
             <span className="hero-h1-accent" style={{ display: 'block' }}>re-leveraged.</span>
           </h1>
         </FadeIn>
@@ -354,7 +331,7 @@ function Hero() {
         </FadeIn>
         <FadeIn delay={0.4}>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="#layers" style={{
+            <a href="#how-it-works" style={{
               fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', fontWeight: 500,
               color: 'var(--fg)', border: '1px solid var(--outline)',
               padding: '14px 30px', borderRadius: '6px', textDecoration: 'none',
@@ -438,7 +415,7 @@ function TheLever() {
             <Eyebrow>Why Arkim</Eyebrow>
             <h2 style={{
               fontFamily: 'var(--sans)', fontSize: 'var(--title-display)',
-              fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em',
+              fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)',
               color: 'var(--fg)', textWrap: 'balance',
             }}>
               The maintenance<br />workforce is shrinking.<br />
@@ -478,104 +455,6 @@ function TheLever() {
             </div>
           </div>
         </FadeIn>
-      </div>
-    </section>
-  );
-}
-
-// ─── THREE LAYERS ────────────────────────────────────────────────────────────
-
-const LAYERS = [
-  {
-    num: '01',
-    sub: 'The schedule learns.',
-    title: 'Evolutionary Maintenance',
-    body: 'Arkim learns from every minor 15-minute downtime event to identify the patterns that precede critical failures. Maintenance tasks are added, schedules are adjusted, and component replacement is predicted from observed runtime and acoustic patterns.',
-    visual: 'Timeline: minor events (yellow dots) clustering before major failure (red), Arkim adjusting the schedule line',
-  },
-  {
-    num: '02',
-    sub: 'The phone is the sensor.',
-    title: 'Multimodal Diagnostic Sensing',
-    body: 'Video captures visual symptoms — smoke, vibration, cracks, fluid leaks. Audio captures acoustic harmonics — pitch, tone, and frequency changes that precede failure. No hardware to install. Every facility already has the sensors deployed.',
-    visual: 'Phone screen: live audio waveform + frequency spectrum overlay on equipment',
-  },
-  {
-    num: '03',
-    sub: 'Every manual, every repair, instantly queryable.',
-    title: 'Multimodal RAG',
-    body: 'OEM manuals, wiring schematics, parts lists, technical tables, and historical repair logs — ingested and searchable. The knowledge that used to live in one senior tech\'s head now lives in the platform, available to every operator and technician on the floor.',
-    visual: 'Document fragments flowing into a unified search result card',
-  },
-];
-
-function ThreeLayers() {
-  const { isMobile, isTablet } = useViewport();
-  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
-  const colPadX = isMobile ? 20 : isTablet ? 40 : 56;
-
-  return (
-    <section id="layers" style={{ padding: `72px ${sectionPaddingX}px`, borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
-        <Eyebrow>Three Layers. One Platform.</Eyebrow>
-        <p style={{
-          fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', color: 'var(--fg-muted)', lineHeight: 1.6,
-          marginBottom: isMobile ? '28px' : '40px', textWrap: 'pretty', maxWidth: '640px',
-        }}>
-          Each layer creates value on its own. Together, they form the industrial nervous system.
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '20px' : '28px' }}>
-          {LAYERS.map((l, i) => (
-            <article
-              key={i}
-              style={{
-                border: '1px solid var(--border)',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                background: 'var(--bg-card)',
-              }}
-            >
-              <div style={{
-                display: 'flex',
-                flexDirection: isMobile ? 'column' : 'row',
-                alignItems: 'stretch',
-              }}>
-                <div style={{
-                  flex: isMobile ? 'none' : 1,
-                  minWidth: 0,
-                  padding: isMobile ? '22px 20px 18px' : `56px ${colPadX}px`,
-                  borderRight: isMobile ? 'none' : '1px solid var(--border)',
-                  borderBottom: isMobile ? '1px solid var(--border)' : 'none',
-                  display: 'flex', flexDirection: 'column', justifyContent: 'center',
-                }}>
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', color: 'var(--accent)', fontWeight: 500, marginBottom: '10px' }}>{l.num}</div>
-                  <h3 style={{
-                    fontFamily: 'var(--sans)',
-                    fontSize: 'var(--title-card)',
-                    fontWeight: 700,
-                    color: 'var(--fg)',
-                    letterSpacing: '-0.01em',
-                    lineHeight: 1.2,
-                    marginBottom: '10px',
-                  }}>{l.title}</h3>
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-label)', color: 'var(--accent)', fontStyle: 'italic', marginBottom: '12px' }}>{l.sub}</div>
-                  <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{l.body}</p>
-                </div>
-                <div style={{
-                  flex: isMobile ? 'none' : 1,
-                  minWidth: 0,
-                  padding: isMobile ? '16px' : `56px ${colPadX}px`,
-                  background: 'var(--layer-footer-bg)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <div style={{ width: '100%', maxWidth: isMobile ? 'none' : '520px' }}>
-                    <ImgPlaceholder label={l.visual} aspectRatio="4/3" />
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -629,7 +508,7 @@ function Personas() {
         <Eyebrow>Who Uses Arkim</Eyebrow>
         <h2 style={{
           fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
-          fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em',
+          fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)',
           marginBottom: '64px', textWrap: 'balance',
         }}>
           Operators. Technicians.<br />Management. One platform.
@@ -703,7 +582,7 @@ function IntegrationStrip() {
           <Eyebrow>Coexists With Your Stack</Eyebrow>
           <h2 style={{
             fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
-            fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em',
+            fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)',
             marginBottom: '16px', textWrap: 'balance',
           }}>No rip and replace.</h2>
           <p style={{
@@ -751,7 +630,7 @@ function TimeToValue() {
         <Eyebrow>Why Not Sensors</Eyebrow>
         <h2 style={{
           fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
-          fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em',
+          fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)',
           marginBottom: '64px', textWrap: 'balance',
         }}>ROI in week one.<br /><em style={{ fontStyle: 'normal', color: 'var(--fg-muted)' }}>Not month six.</em></h2>
       </FadeIn>
@@ -847,7 +726,7 @@ function ComplianceTrust() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: `0 ${sectionPaddingX}px` }}>
         <FadeIn style={{ textAlign: 'center', marginBottom: '60px' }}>
           <Eyebrow center>Enterprise Ready</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-section)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.1, textWrap: 'balance' }}>Built for regulated industries.</h2>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-section)', fontWeight: 700, letterSpacing: 'var(--title-h2-letter-spacing)', lineHeight: 1.1, textWrap: 'balance' }}>Built for regulated industries.</h2>
         </FadeIn>
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.6fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
           <div style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
@@ -898,7 +777,7 @@ function RoadmapTease() {
           <Eyebrow>What's Next</Eyebrow>
           <h2 style={{
             fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
-            fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', marginBottom: '24px', textWrap: 'balance',
+            fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', textWrap: 'balance',
           }}>Coming next:<br /><em style={{ fontStyle: 'normal' }}>agentic procurement.</em></h2>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -969,7 +848,7 @@ function FinalCTA() {
           <Eyebrow>Let's Talk</Eyebrow>
           <h2 style={{
             fontFamily: 'var(--sans)', fontSize: 'var(--title-display)',
-            fontWeight: 700, lineHeight: 1.06, letterSpacing: '0.01em',
+            fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)',
             marginBottom: '24px', textWrap: 'balance',
           }}>Tell us about<br />your facility.</h2>
           <p style={{
@@ -1116,12 +995,12 @@ function ProductVideo() {
   const { isMobile, isTablet } = useViewport();
   const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
   return (
-    <section style={{ padding: `88px ${sectionPaddingX}px`, maxWidth: '1300px', margin: '0 auto' }}>
+    <section id="how-it-works" style={{ padding: `88px ${sectionPaddingX}px`, maxWidth: '1300px', margin: '0 auto' }}>
       <FadeIn style={{ textAlign: 'center', marginBottom: '48px' }}>
         <Eyebrow center>See It In Action</Eyebrow>
         <h2 style={{
           fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
-          fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', textWrap: 'balance',
+          fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance',
         }}>
           Watch Arkim in the field.
         </h2>
@@ -1154,7 +1033,6 @@ Object.assign(window, {
   ArkimHero: Hero,
   ArkimIndustriesStrip: IndustriesStrip,
   ArkimTheLever: TheLever,
-  ArkimThreeLayers: ThreeLayers,
   ArkimPersonas: Personas,
   ArkimProductVideo: ProductVideo,
   ArkimIntegrationStrip: IntegrationStrip,
@@ -1226,7 +1104,7 @@ function App() {
       {/* Fixed header: announcement bar + nav together so they never overlap */}
       <div ref={headerRef} style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200 }}>
         {announceVisible && <AnnouncementBar onDismiss={() => setAnnounceVisible(false)} />}
-        <ArkimNav variant="home" darkHero={false} />
+        <ArkimNav />
       </div>
       {/* Spacer so content starts below fixed header */}
       <div style={{ height: headerHeight }} />
@@ -1234,8 +1112,6 @@ function App() {
       <ArkimIndustriesStrip />
       <ArkimProductVideo />
       <ArkimTheLever />
-      <Divider />
-      <ArkimThreeLayers />
       <Divider />
       <ArkimPersonas />
       <Divider />

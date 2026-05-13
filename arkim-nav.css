@@ -1,6 +1,5 @@
 /**
- * Full-width site header (edge-to-edge shell, centered inner row).
- * Frosted scroll state inspired by premium fund sites — not a floating pill.
+ * Site header shell: one frosted bar for every page, driven only by :root tokens.
  */
 :root {
   --arkim-nav-height: 68px;
@@ -9,31 +8,26 @@
   --arkim-nav-duration: 0.5s;
 }
 
+/**
+ * Single chrome rule for every page: frosted bar from :root tokens only.
+ * No scroll-based or per-page variants — change nav look here (and theme tokens on :root).
+ */
 .arkim-site-nav {
   position: relative;
   width: 100%;
   box-sizing: border-box;
   z-index: 200;
-  border-bottom: 1px solid transparent;
-  background: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  box-shadow: none;
+  background: var(--nav-scrim);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.055);
+  -webkit-backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
+  backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
   transition:
     background-color var(--arkim-nav-duration) var(--arkim-nav-ease),
     border-color var(--arkim-nav-duration) var(--arkim-nav-ease),
     box-shadow var(--arkim-nav-duration) var(--arkim-nav-ease),
     -webkit-backdrop-filter var(--arkim-nav-duration) var(--arkim-nav-ease),
     backdrop-filter var(--arkim-nav-duration) var(--arkim-nav-ease);
-}
-
-.arkim-site-nav[data-scrolled='true'],
-.arkim-site-nav[data-menu-open='true'] {
-  background: var(--nav-scrim);
-  border-bottom-color: var(--border);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.055);
-  -webkit-backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
-  backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
 }
 
 @media (prefers-reduced-motion: reduce) {

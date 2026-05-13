@@ -157,7 +157,30 @@ function DemoBtn({ label = 'Request a Demo', style = {} }) {
     >{label} →</a>
   );
 }
-function SectionImg({ label, height = '55vh' }) {
+function SectionImg({ label, height = '55vh', src = null, alt = '' }) {
+  if (src) {
+    return (
+      <div style={{
+        width: '100%', height, position: 'relative', overflow: 'hidden',
+        background: 'var(--media-bg, #000)',
+        borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
+      }}>
+        <img
+          src={src}
+          alt={alt || label}
+          loading="lazy"
+          decoding="async"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center',
+            display: 'block',
+          }}
+        />
+      </div>
+    );
+  }
   return (
     <div style={{
       width: '100%', height, position: 'relative', overflow: 'hidden',
@@ -192,9 +215,9 @@ function Hero() {
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', textAlign: 'center' }}>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
           <h1 className="hero-h1">
-            <span style={{ fontWeight: 600, color: '#fff', display: 'block' }}>Maintenance solutions</span>
+            <span style={{ fontWeight: 700, color: '#fff', display: 'block' }}>Maintenance solutions</span>
             <span style={{ display: 'block' }}>
-              <span style={{ fontFamily: 'var(--sans)', fontWeight: 600, color: '#fff', fontStyle: 'normal' }}>for </span>
+              <span style={{ fontFamily: 'var(--sans)', fontWeight: 700, color: '#fff', fontStyle: 'normal' }}>for </span>
               <span className="hero-h1-accent" style={{ display: 'inline' }}>every facility</span>
             </span>
           </h1>
@@ -260,14 +283,14 @@ function StickyAnchorNav() {
       position: 'fixed', top: 68, left: 0, right: 0, zIndex: 150,
       background: 'var(--nav-scrim)', backdropFilter: 'blur(16px)',
       borderBottom: '1px solid var(--border)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      display: 'flex', alignItems: 'stretch', justifyContent: 'center',
       padding: '0 48px', height: '52px', gap: 0,
       transition: 'opacity 0.3s',
     }}>
       {items.map((item, i) => (
         <a key={i} href={`#${item.id}`} style={{
-          display: 'flex', alignItems: 'center', gap: 10,
-          padding: '0 28px', height: '100%', textDecoration: 'none',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+          padding: '0 28px', alignSelf: 'stretch', textDecoration: 'none',
           borderRight: i < 3 ? '1px solid var(--border)' : 'none',
           borderBottom: active === item.id ? `2px solid var(--accent)` : '2px solid transparent',
           transition: 'all 0.2s',
@@ -275,8 +298,8 @@ function StickyAnchorNav() {
         onMouseEnter={e => e.currentTarget.style.background='rgba(74,138,191,0.06)'}
         onMouseLeave={e => e.currentTarget.style.background='transparent'}
         >
-          <span style={{ fontFamily: 'var(--sans)', fontSize: '11px', color: active === item.id ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, letterSpacing: '0.08em' }}>{item.num}</span>
-          <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: active === item.id ? 'var(--fg)' : 'var(--fg-muted)', fontWeight: 400 }}>{item.label}</span>
+          <span style={{ fontFamily: 'var(--sans)', fontSize: '11px', lineHeight: 1, color: active === item.id ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, letterSpacing: '0.08em' }}>{item.num}</span>
+          <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', lineHeight: 1, color: active === item.id ? 'var(--fg)' : 'var(--fg-muted)', fontWeight: 400 }}>{item.label}</span>
         </a>
       ))}
     </div>
@@ -315,19 +338,19 @@ function StatBlock({ num, label, sub }) {
 }
 
 // ── SECTION WRAPPER ───────────────────────────────────────────────────────────
-function Section({ id, eyebrow, headline, sub, imageLabel, imageHeight = '55vh', children, statNum, statLabel, statSub }) {
+function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', children, statNum, statLabel, statSub }) {
   return (
     <div id={id} style={{ borderTop: '1px solid var(--border)' }}>
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px 60px' }}>
         <FadeIn>
           <Eyebrow accent>{eyebrow}</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(24px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>{headline}</h2>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>{headline}</h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>{sub}</p>
         </FadeIn>
         <FadeIn delay={0.1}>{children}</FadeIn>
       </div>
       <FadeIn>
-        <SectionImg label={imageLabel} height={imageHeight} />
+        <SectionImg label={imageLabel} height={imageHeight} src={imageSrc} alt={imageAlt} />
       </FadeIn>
       {statNum && (
         <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '0 80px' }}>
@@ -353,6 +376,8 @@ function S01() {
       eyebrow="01 — Diagnose Faster"
       headline="Your team already has everything they need to diagnose equipment. They just need Arkim."
       sub="The phone in your technician's pocket is a diagnostic sensor. Point it at a machine, describe what you're hearing or seeing, and Arkim tells you what's wrong — and what to do about it."
+      imageSrc="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile1-media-arkim.ai.gif"
+      imageAlt="Arkim mobile app: diagnostic view with audio waveform over industrial equipment"
       imageLabel="phone screen with audio waveform overlay against industrial equipment — dark, dramatic"
       statNum="Day zero."
       statLabel="65% of a technician's time is non-wrench time."
@@ -420,7 +445,7 @@ function S04() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px 60px' }}>
         <FadeIn>
           <Eyebrow accent>04 — Works With What You Already Have</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(24px, 2.8vw, 40px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: '0.01em', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
             No rip and replace. Arkim works alongside the systems your team already uses.
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>
@@ -504,7 +529,7 @@ function EnterpriseReady() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px' }}>
         <FadeIn style={{ marginBottom: '60px' }}>
           <Eyebrow accent>Enterprise Ready</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 44px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
             Built for regulated industries.
           </h2>
         </FadeIn>
@@ -551,7 +576,7 @@ function HowItWorks() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px' }}>
         <FadeIn style={{ marginBottom: '80px' }}>
           <Eyebrow>From Kickoff to Live</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 44px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
             Up and running in days.<br /><em style={{ fontStyle: 'normal', color: 'var(--fg-muted)' }}>Not months.</em>
           </h2>
         </FadeIn>
@@ -586,7 +611,7 @@ function Results() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '100px 80px' }}>
         <FadeIn style={{ marginBottom: '64px' }}>
           <Eyebrow accent>What You Get</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(26px, 3vw, 44px)', fontWeight: 700, letterSpacing: '0.01em', lineHeight: 1.1, textWrap: 'balance' }}>Results from week one.</h2>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, letterSpacing: 'var(--title-h2-letter-spacing)', lineHeight: 1.1, textWrap: 'balance' }}>Results from week one.</h2>
         </FadeIn>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
           {stats.map((s, i) => (
@@ -619,7 +644,7 @@ function FinalCTA() {
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '120px 48px', textAlign: 'center', position: 'relative' }}>
         <FadeIn>
           <Eyebrow>Let's Talk</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(32px, 4.5vw, 58px)', fontWeight: 700, lineHeight: 1.06, letterSpacing: '0.01em', marginBottom: '20px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
             Let's talk about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your facility.</em>
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.7, marginBottom: '40px' }}>

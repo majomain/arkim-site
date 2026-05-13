@@ -113,6 +113,28 @@ body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webki
 .form-input::placeholder { color: var(--fg-muted); }
 textarea.form-input { resize: vertical; min-height: 140px; }
 select.form-input { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A857C' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+
+/* Light site theme: fields sit on a light page — use light surfaces + dark copy (not dark wells + muted tokens). */
+html[data-theme="light"] .form-input {
+  background: #ffffff;
+  border-color: var(--border);
+  color: var(--fg);
+  font-weight: 400;
+}
+html[data-theme="light"] .form-input::placeholder {
+  color: rgba(28, 25, 21, 0.48);
+}
+html[data-theme="light"] select.form-input {
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235e5850' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+html[data-theme="light"] select.form-input:required:invalid {
+  color: rgba(28, 25, 21, 0.48);
+}
+html[data-theme="light"] select.form-input option {
+  color: #1c1915;
+  background: #ffffff;
+}
 </style>
 </head>
 <body>
@@ -160,7 +182,7 @@ function Label({ children }) {
 function Hero() {
   const narrow = useIsNarrowLayout();
   return (
-    <div className="hero-cinematic hero-cinematic--static-texture" style={{ minHeight: '50vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '48px 20px 56px' : '160px 48px 80px', position: 'relative', overflow: 'hidden' }}>
+    <div className="hero-cinematic hero-cinematic--static-texture" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '120px 16px 72px' : '140px 48px 80px', overflow: 'hidden' }}>
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
         <h1 className="hero-h1">
           Let's talk about your{' '}
@@ -231,7 +253,7 @@ function ContactSection() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 tom@arkim.ai
               </a>
-              <a href="https://calendly.com/arkim" target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: narrow ? '14px 24px' : '13px 24px', borderRadius: '6px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s', minHeight: 44, boxSizing: 'border-box' }}
+              <a href="https://meetings-na2.hubspot.com/tom-dickie" target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: narrow ? '14px 24px' : '13px 24px', borderRadius: '6px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s', minHeight: 44, boxSizing: 'border-box' }}
               onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
               onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
               >Book a time →</a>

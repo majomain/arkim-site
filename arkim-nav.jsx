@@ -184,9 +184,7 @@ function ArkimNav({ activeLabel = null }) {
           <div className="arkim-site-nav__tools">
             <ThemeToggle />
             <a
-              href="https://www.arkim.ai/contact?tab=demo"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="Arkim Contact.html#arkim-contact-form"
               className="arkim-site-nav__cta"
               style={{
                 background: 'var(--accent)',
@@ -248,9 +246,7 @@ function ArkimNav({ activeLabel = null }) {
               );
             })}
             <a
-              href="https://www.arkim.ai/contact?tab=demo"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="Arkim Contact.html#arkim-contact-form"
               className="arkim-site-nav__drawer-cta"
               style={{
                 background: 'var(--accent)',

@@ -128,19 +128,7 @@ function Eyebrow({ children }) {
 function Hero() {
   const narrow = useIsNarrowLayout();
   return (
-    <div className="hero-cinematic hero-cinematic--photo-bg" style={{ minHeight: narrow ? 'min(85vh, 720px)' : '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '48px 20px 64px' : '160px 48px 100px', position: 'relative', overflow: 'hidden', background: '#000' }}>
-      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-        <img
-          src="uploads/arkim-about-hero.png"
-          alt=""
-          width={1920}
-          height={823}
-          decoding="async"
-          fetchPriority="high"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center', display: 'block' }}
-        />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.72) 45%, rgba(0,0,0,0.82) 100%)' }} />
-      </div>
+    <div className="hero-cinematic hero-cinematic--static-texture" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '120px 16px 72px' : '140px 48px 80px', overflow: 'hidden' }}>
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '860px', width: '100%', padding: narrow ? '0 4px' : undefined }}>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
           <h1 className="hero-h1">
@@ -273,6 +261,8 @@ function WhatWeBuilt() {
 
 function Team() {
   const narrow = useIsNarrowLayout();
+  const isLightTheme = useArkimTheme();
+  const [hoveredTeamIndex, setHoveredTeamIndex] = useState(null);
   const people = [
     {
       name: 'Tom Dickie',
@@ -297,11 +287,24 @@ function Team() {
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)' }}>Built by people who care about the problem.</h2>
         </FadeIn>
         <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '1fr 1fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
-          {people.map((p, i) => (
+          {people.map((p, i) => {
+            const isHovered = hoveredTeamIndex === i;
+            const hoverOnLight = isHovered && isLightTheme;
+            const nameColor = hoverOnLight ? '#F5F2ED' : 'var(--fg)';
+            const roleColor = hoverOnLight ? '#7AB5E0' : 'var(--accent)';
+            const bioColor = hoverOnLight ? 'rgba(245, 242, 237, 0.78)' : 'var(--fg-muted)';
+            const avatarBorder = hoverOnLight ? '1px solid rgba(255, 255, 255, 0.18)' : '1px solid var(--border)';
+            return (
             <FadeIn key={i} delay={i * 0.12}>
-              <div style={{ background: 'var(--bg-card)', padding: narrow ? '28px 22px' : '48px 44px', height: '100%', transition: 'background 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.background='#1a1a1a'}
-              onMouseLeave={e => e.currentTarget.style.background='var(--bg-card)'}
+              <div
+                style={{
+                  background: isHovered ? '#1a1a1a' : 'var(--bg-card)',
+                  padding: narrow ? '28px 22px' : '48px 44px',
+                  height: '100%',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={() => setHoveredTeamIndex(i)}
+                onMouseLeave={() => setHoveredTeamIndex(null)}
               >
                 <a
                   href={p.linkedinUrl}
@@ -326,20 +329,21 @@ function Team() {
                       width: 80,
                       height: 80,
                       borderRadius: '50%',
-                      border: '1px solid var(--border)',
+                      border: avatarBorder,
                       objectFit: 'cover',
                       objectPosition: 'center top',
                       display: 'block',
                       marginBottom: '24px',
                     }}
                   />
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: '22px', fontWeight: 700, marginBottom: '6px', letterSpacing: '-0.02em', color: 'var(--fg)' }}>{p.name}</div>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: '22px', fontWeight: 700, marginBottom: '6px', letterSpacing: '-0.02em', color: nameColor, transition: 'color 0.2s' }}>{p.name}</div>
                 </a>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--accent)', fontWeight: 500, letterSpacing: '0.04em', marginBottom: '20px' }}>{p.role}</div>
-                <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.7, textWrap: 'pretty' }}>{p.bio}</p>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: roleColor, fontWeight: 500, letterSpacing: '0.04em', marginBottom: '20px', transition: 'color 0.2s' }}>{p.role}</div>
+                <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: bioColor, lineHeight: 1.7, textWrap: 'pretty', transition: 'color 0.2s' }}>{p.bio}</p>
               </div>
             </FadeIn>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

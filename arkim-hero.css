@@ -116,7 +116,7 @@ html[data-theme='light'] .hero-cinematic--static-texture {
   pointer-events: none;
 }
 
-/* Photo / custom full-bleed media (About): no shared bg-og layer */
+/* Photo / custom full-bleed media: no shared bg-og layer */
 .hero-cinematic.hero-cinematic--photo-bg::before,
 .hero-cinematic.hero-cinematic--photo-bg::after {
   content: none !important;

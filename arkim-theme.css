@@ -12,6 +12,8 @@
   --partner-logo-opacity: 0.25;
   --partner-logo-hover-opacity: 0.55;
   --partner-logo-filter: brightness(10);
+  /* Body copy in <p> — black in light site theme (see html[data-theme="light"]) */
+  --p-fg: var(--fg-muted);
 }
 
 html[data-theme="light"] {
@@ -31,6 +33,13 @@ html[data-theme="light"] {
   --partner-logo-hover-opacity: 0.86;
   --partner-logo-filter: brightness(0) saturate(100%);
   --radial-accent-glow: rgba(58, 122, 175, 0.14);
+  --p-fg: #000000;
+}
+
+/* Always-dark promos (e.g. gradient #0A blocks): light paragraph copy on both site themes */
+.arkim-dark-surface {
+  --p-fg: rgba(245, 242, 237, 0.78);
+  --p-fg-soft: rgba(245, 242, 237, 0.55);
 }
 
 html:not([data-theme="light"]) {

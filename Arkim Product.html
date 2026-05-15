@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Arkim AI — Maintenance solutions for every facility</title>
 <meta name="theme-color" content="#F5F2EB" />
-<link rel="icon" href="uploads/favicon.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="uploads/favicon-32x32.png" type="image/png" sizes="32x32" />
 <script>
 (function () {
   try {
@@ -97,9 +97,9 @@ body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webki
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/arkim-text-logo.png" data-resource-id="logoText" />
 <meta name="ext-resource-dependency" content="uploads/arkim-side-by-side.svg" data-resource-id="logoSideBySide" />
 <meta name="ext-resource-dependency" content="uploads/arkim-side-by-side-wht.svg" data-resource-id="logoSideBySideWht" />
-<meta name="ext-resource-dependency" content="https://www.arkim.ai/images/nvidia-inception.png" data-resource-id="nvidiaLogo" />
-<meta name="ext-resource-dependency" content="https://www.arkim.ai/images/databricks-logo.svg" data-resource-id="databricksLogo" />
-<meta name="ext-resource-dependency" content="https://www.arkim.ai/images/aws-activate.svg" data-resource-id="awsLogo" />
+<meta name="ext-resource-dependency" content="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png" data-resource-id="nvidiaLogo" />
+<meta name="ext-resource-dependency" content="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg" data-resource-id="databricksLogo" />
+<meta name="ext-resource-dependency" content="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg" data-resource-id="awsLogo" />
 </head>
 <template id="__bundler_thumbnail" data-bg-color="#0A0A0A">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -495,7 +495,7 @@ function FeaturePills({ items }) {
         }}
         >
           <div style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{item.title}</div>
-          <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{item.body}</div>
+          <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>{item.body}</div>
         </div>
       ))}
     </div>
@@ -508,7 +508,7 @@ function StatBlock({ num, label, sub }) {
     <div style={{ padding: '48px 0', borderTop: '1px solid var(--border)' }}>
       <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(30px, 4vw, 52px)', fontWeight: 700, color: 'var(--accent)', lineHeight: 1, letterSpacing: '0.01em', marginBottom: '12px' }}>{num}</div>
       <div style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 500, color: 'var(--fg)', marginBottom: '8px' }}>{label}</div>
-      {sub && <div style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.6, maxWidth: '560px', textWrap: 'pretty' }}>{sub}</div>}
+      {sub && <div style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.6, maxWidth: '560px', textWrap: 'pretty' }}>{sub}</div>}
     </div>
   );
 }
@@ -741,7 +741,7 @@ function ZeroDayTechnicianDiagram() {
             From tribal knowledge to first-day expertise.
           </h3>
         </div>
-        <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, maxWidth: narrow ? '100%' : 360, textWrap: 'pretty' }}>
+        <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.65, maxWidth: narrow ? '100%' : 360, textWrap: 'pretty' }}>
           Arkim turns scattered maintenance experience into guided action, so a new hire can diagnose and repair with the context of your best people.
         </p>
       </div>
@@ -781,7 +781,7 @@ function ZeroDayTechnicianDiagram() {
             <div style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 700, lineHeight: 1.2, color: 'var(--fg)', marginBottom: 12, textWrap: 'balance' }}>
               {step.title}
             </div>
-            <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>
               {step.body}
             </p>
           </div>
@@ -789,7 +789,7 @@ function ZeroDayTechnicianDiagram() {
       </div>
       <div style={{ padding: narrow ? '22px 20px' : '24px 34px', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
         <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--accent)', marginTop: 8, flexShrink: 0 }} />
-        <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.7, textWrap: 'pretty', maxWidth: 760 }}>
+        <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.7, textWrap: 'pretty', maxWidth: 760 }}>
           The result is a "0-day technician": someone who can act with senior context on day one because Arkim has already synthesized the facility's history, documentation, and expert intuition.
         </p>
       </div>
@@ -812,7 +812,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
     <>
       <Eyebrow accent>{eyebrow}</Eyebrow>
       <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>{headline}</h2>
-      <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>{sub}</p>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>{sub}</p>
     </>
   );
 
@@ -820,7 +820,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
     <div style={{ textAlign: introSplitCentered ? 'center' : 'left', marginBottom: narrow ? 32 : 44 }}>
       <Eyebrow accent>{eyebrow}</Eyebrow>
       <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', margin: introSplitCentered ? '0 auto 24px' : '0 0 24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
-      <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '680px', margin: introSplitCentered ? '0 auto' : '0', textWrap: 'pretty' }}>{sub}</p>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '680px', margin: introSplitCentered ? '0 auto' : '0', textWrap: 'pretty' }}>{sub}</p>
     </div>
   );
 
@@ -1142,7 +1142,7 @@ function S04() {
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
             No rip and replace. Arkim works alongside the systems your team already uses.
           </h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>
             We connect directly to your existing maintenance software. Your data stays where it is. Your team doesn't have to change how they work.
           </p>
         </FadeIn>
@@ -1269,7 +1269,7 @@ function EnterpriseReady() {
           <div style={{ background: 'var(--bg-card)', padding: narrow ? '32px 22px' : '56px 52px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>{card.badge}</div>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(28px, 3vw, 42px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '0.01em', marginBottom: '24px' }}>{card.title}</div>
-            <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, textWrap: 'pretty' }}>{card.detail}</p>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty' }}>{card.detail}</p>
           </div>
         </div>
       </div>
@@ -1366,7 +1366,7 @@ function Results() {
               >
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(32px, 3.5vw, 52px)', fontWeight: 700, color: 'var(--accent)', lineHeight: 1.05, letterSpacing: '-0.025em', marginBottom: '16px' }}>{s.num}</div>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{s.label}</div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.sub}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.sub}</div>
               </div>
             </FadeIn>
           ))}
@@ -1380,7 +1380,7 @@ function Results() {
 function FinalCTA() {
   const narrow = useIsNarrowLayout();
   return (
-    <div style={{ borderTop: '1px solid var(--border)', background: 'linear-gradient(to bottom, #0A0A0A, #0c0e0f)', position: 'relative', overflow: 'hidden' }}>
+    <div className="arkim-dark-surface" style={{ borderTop: '1px solid var(--border)', background: 'linear-gradient(to bottom, #0A0A0A, #0c0e0f)', position: 'relative', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '700px', height: '400px', background: 'radial-gradient(ellipse, rgba(74,138,191,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', color: 'rgba(245,242,237,0.96)' }}>
         <FadeIn>
@@ -1388,11 +1388,11 @@ function FinalCTA() {
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
             Let's talk about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your facility.</em>
           </h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'rgba(245,242,237,0.72)', lineHeight: 1.7, marginBottom: '40px' }}>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
             A 30-minute conversation. We'll show you exactly what Arkim would look like for your equipment and your team.
           </p>
           <DemoBtn label="Request a Demo" style={{ fontSize: '16px', padding: '15px 36px' }} />
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'rgba(245,242,237,0.55)', marginTop: '20px' }}>No pitch deck. No commitment.</p>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--p-fg-soft)', marginTop: '20px' }}>No pitch deck. No commitment.</p>
         </FadeIn>
       </div>
     </div>
@@ -1426,7 +1426,7 @@ function Footer() {
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)' }}>© 2026 Arkim AI. All rights reserved.</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          {[{ src: (window.__resources && window.__resources.nvidiaLogo) || 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA' }, { src: (window.__resources && window.__resources.databricksLogo) || 'https://www.arkim.ai/images/databricks-logo.svg', alt: 'Databricks' }, { src: (window.__resources && window.__resources.awsLogo) || 'https://www.arkim.ai/images/aws-activate.svg', alt: 'AWS' }].map((p, i) => (
+          {[{ src: (window.__resources && window.__resources.nvidiaLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png', alt: 'NVIDIA' }, { src: (window.__resources && window.__resources.databricksLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg', alt: 'Databricks' }, { src: (window.__resources && window.__resources.awsLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg', alt: 'AWS' }].map((p, i) => (
             <img key={i} src={p.src} alt={p.alt} style={{
               height: 18,
               opacity: 'var(--partner-logo-opacity)',

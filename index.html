@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#F5F2EB" />
-<link rel="icon" href="uploads/favicon.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="uploads/favicon-32x32.png" type="image/png" sizes="32x32" />
 <script>
 (function () {
   try {
@@ -114,6 +114,7 @@
   --title-h2-letter-spacing: -0.025em;
   --text-serif-display: clamp(18px, 1.65vw, 22px);
   --text-serif-body: clamp(17px, 1.45vw, 19px);
+  --p-fg: var(--fg-muted);
 }
 
 html[data-theme="light"] {
@@ -125,6 +126,7 @@ html[data-theme="light"] {
   /* Softer than body — matches arkim-theme.css subpages */
   --fg-muted: #5e5850;
   --text-muted: rgba(28, 25, 21, 0.72);
+  --p-fg: #000000;
   --accent: #3a7aaf;
   --btn-fg: #ffffff;
   --nav-scrim: rgba(245, 242, 235, 0.94);
@@ -362,9 +364,9 @@ html[data-theme="light"] .arkim-cta-photo:hover {
 <meta name="ext-resource-dependency" content="uploads/arkim-side-by-side.svg" data-resource-id="logoSideBySide" />
 <meta name="ext-resource-dependency" content="uploads/arkim-side-by-side-wht.svg" data-resource-id="logoSideBySideWht" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/images/IX-bg-og.jpg" data-resource-id="heroBg" />
-<meta name="ext-resource-dependency" content="https://www.arkim.ai/images/nvidia-inception.png" data-resource-id="nvidiaLogo" />
-<meta name="ext-resource-dependency" content="https://www.arkim.ai/images/databricks-logo.svg" data-resource-id="databricksLogo" />
-<meta name="ext-resource-dependency" content="https://www.arkim.ai/images/aws-activate.svg" data-resource-id="awsLogo" />
+<meta name="ext-resource-dependency" content="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png" data-resource-id="nvidiaLogo" />
+<meta name="ext-resource-dependency" content="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg" data-resource-id="databricksLogo" />
+<meta name="ext-resource-dependency" content="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg" data-resource-id="awsLogo" />
 <link rel="stylesheet" href="arkim-nav.css" />
 </head>
 <template id="__bundler_thumbnail" data-bg-color="#0A0A0A">
@@ -477,9 +479,9 @@ function Hero() {
         <FadeIn delay={0.55}>
           <ul className="hero-trust-row">
             {[
-              { href: 'https://www.nvidia.com/en-us/startups/', label: 'NVIDIA Inception', logo: 'https://www.arkim.ai/images/nvidia-inception.png' },
-              { href: 'https://www.databricks.com/build-and-launch/startups', label: 'Databricks for Startups', logo: 'https://www.arkim.ai/images/databricks-logo.svg' },
-              { href: 'https://aws.amazon.com/activate/', label: 'AWS Activate', logo: 'https://www.arkim.ai/images/aws-activate.svg' },
+              { href: 'https://www.nvidia.com/en-us/startups/', label: 'NVIDIA Inception', logo: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png' },
+              { href: 'https://www.databricks.com/build-and-launch/startups', label: 'Databricks for Startups', logo: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg' },
+              { href: 'https://aws.amazon.com/activate/', label: 'AWS Activate', logo: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg' },
             ].map((p) => (
               <li key={p.label}>
                 <a
@@ -562,13 +564,13 @@ function TheLever() {
           <div style={{ paddingTop: '8px' }}>
             <p style={{
               fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
-              color: 'var(--fg-muted)', lineHeight: 1.75, marginBottom: '28px', textWrap: 'pretty',
+              color: 'var(--p-fg)', lineHeight: 1.75, marginBottom: '28px', textWrap: 'pretty',
             }}>
               Senior technicians are retiring. Tribal knowledge is walking out the door. New hires take years to reach journey-level. Meanwhile, every facility is asked to do more with less.
             </p>
             <p style={{
               fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
-              color: 'var(--fg-muted)', lineHeight: 1.75, textWrap: 'pretty',
+              color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty',
             }}>
               Arkim is the lever — any technician, on their first day, executes with the knowledge your most experienced people spent years building. The phone in their pocket is the sensor. The platform is the brain.
             </p>
@@ -709,7 +711,7 @@ function Personas() {
                       <div style={{ width: 20, height: 20, borderRadius: '50%', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
                         <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
                       </div>
-                      <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.6, textWrap: 'pretty' }}>{o}</p>
+                      <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.6, textWrap: 'pretty' }}>{o}</p>
                     </div>
                   ))}
                 </div>
@@ -740,7 +742,7 @@ function IntegrationStrip() {
           }}>No rip and replace.</h2>
           <p style={{
             fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
-            color: 'var(--fg-muted)', lineHeight: 1.7, maxWidth: '560px', textWrap: 'pretty',
+            color: 'var(--p-fg)', lineHeight: 1.7, maxWidth: '560px', textWrap: 'pretty',
           }}>
             Read/write integration with the legacy CMMS and ERP systems your team already runs. Arkim layers on top — your existing data, processes, and workflows stay intact.
           </p>
@@ -843,7 +845,7 @@ function TimeToValue() {
                     }}>{col.accent ? '✓' : '✗'}</div>
                     <p style={{
                       fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
-                      color: col.accent ? 'var(--fg)' : 'var(--fg-muted)',
+                      color: col.accent ? 'var(--fg)' : 'var(--p-fg)',
                       lineHeight: 1.6, textWrap: 'pretty',
                     }}>{text}</p>
                   </div>
@@ -922,7 +924,7 @@ function ComplianceTrust() {
           <div style={{ background: 'var(--bg-card)', padding: '52px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '320px' }}>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>{card.badge}</div>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-card)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '20px' }}>{card.title}</div>
-            <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.75, textWrap: 'pretty', maxWidth: '480px' }}>{card.body}</p>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty', maxWidth: '480px' }}>{card.body}</p>
           </div>
         </div>
       </div>
@@ -957,7 +959,7 @@ function RoadmapTease() {
         <FadeIn delay={0.15}>
           <p style={{
             fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
-            color: 'var(--fg-muted)', lineHeight: 1.75, textWrap: 'pretty',
+            color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty',
           }}>
             Once Arkim diagnoses a root cause, the next logical step is sourcing the part. Our procurement agent prototype scores replacement options on total cost of acquisition and total lifecycle value, preserves OEM warranty by routing through authorized distributors, and updates inventory in your CMMS automatically.
           </p>
@@ -1018,7 +1020,7 @@ function FinalCTA() {
           }}>Tell us about<br />your facility.</h2>
           <p style={{
             fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
-            color: 'var(--fg-muted)', lineHeight: 1.7, marginBottom: '40px', textWrap: 'pretty',
+            color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px', textWrap: 'pretty',
           }}>
             A 30-minute conversation about your current maintenance operation, where Arkim could fit, and what a deployment would look like. No pitch deck.
           </p>
@@ -1053,7 +1055,7 @@ function Footer() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <img src={footerLogoSrc} alt="Arkim" style={{ height: 26, width: 'auto', display: 'block' }} loading="lazy" decoding="async" />
           </div>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', color: 'var(--fg-muted)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', color: 'var(--p-fg)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>
             The unified industrial nervous system. Powered by AI and real data.
           </p>
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
@@ -1122,9 +1124,9 @@ function Footer() {
         <span style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-micro)', color: 'var(--fg-faint)' }}>© 2026 Arkim AI. All rights reserved.</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           {[
-            { src: (window.__resources && window.__resources.nvidiaLogo) || 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA' },
-            { src: (window.__resources && window.__resources.databricksLogo) || 'https://www.arkim.ai/images/databricks-logo.svg', alt: 'Databricks' },
-            { src: (window.__resources && window.__resources.awsLogo) || 'https://www.arkim.ai/images/aws-activate.svg', alt: 'AWS' },
+            { src: (window.__resources && window.__resources.nvidiaLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png', alt: 'NVIDIA' },
+            { src: (window.__resources && window.__resources.databricksLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg', alt: 'Databricks' },
+            { src: (window.__resources && window.__resources.awsLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg', alt: 'AWS' },
           ].map((p, i) => (
             <img key={i} src={p.src} alt={p.alt} style={{
               height: 20,

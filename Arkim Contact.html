@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Arkim AI — Contact Us</title>
 <meta name="theme-color" content="#F5F2EB" />
-<link rel="icon" href="uploads/favicon.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="uploads/favicon-32x32.png" type="image/png" sizes="32x32" />
 <script>
 (function () {
   try {
@@ -265,7 +265,7 @@ function ContactSection() {
               <div data-fs-success style={{ textAlign: 'center', padding: '60px 0' }}>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '48px', marginBottom: '20px' }}>✓</div>
                 <h3 style={{ fontFamily: 'var(--sans)', fontSize: '28px', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '12px', color: 'var(--fg)' }}>Message sent.</h3>
-                <p style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 300, color: 'var(--fg-muted)' }}>Tom will be in touch within one business day.</p>
+                <p style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 300, color: 'var(--p-fg)' }}>Tom will be in touch within one business day.</p>
               </div>
               <form id="arkim-contact-form" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 <div data-fs-error="" role="alert" aria-live="polite" />
@@ -343,7 +343,7 @@ function Footer() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <img src={footerLogoSrc} alt="Arkim" style={{ height: 26, width: 'auto', display: 'block' }} />
           </div>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>The unified industrial nervous system. Powered by AI and real data.</p>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--p-fg)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>The unified industrial nervous system. Powered by AI and real data.</p>
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             {[{ href: 'https://x.com/arkim_ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> }, { href: 'https://www.linkedin.com/company/arkim-ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> }].map(({ href, icon }, i) => (
               <a key={i} href={href} target="_blank" rel="noopener" style={{ width: narrow ? 44 : 36, height: narrow ? 44 : 36, border: '1px solid var(--border)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--fg-muted)', textDecoration: 'none', transition: 'border-color 0.2s, color 0.2s' }}
@@ -375,7 +375,7 @@ function Footer() {
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
         <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)' }}>© 2026 Arkim AI. All rights reserved.</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          {[{ src: 'https://www.arkim.ai/images/nvidia-inception.png', alt: 'NVIDIA' }, { src: 'https://www.arkim.ai/images/databricks-logo.svg', alt: 'Databricks' }, { src: 'https://www.arkim.ai/images/aws-activate.svg', alt: 'AWS' }].map((p, i) => (
+          {[{ src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png', alt: 'NVIDIA' }, { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg', alt: 'Databricks' }, { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg', alt: 'AWS' }].map((p, i) => (
             <img key={i} src={p.src} alt={p.alt} style={{
               height: 20,
               opacity: 'var(--partner-logo-opacity)',

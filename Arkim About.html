@@ -362,9 +362,16 @@ function Partners() {
           { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg', alt: 'AWS Activate', href: 'https://aws.amazon.com/activate/' },
         ].map((p, i) => (
           <a key={i} href={p.href} target="_blank" rel="noopener">
-            <img src={p.src} alt={p.alt} style={{ height: 28, opacity: 0.4, filter: 'brightness(10)', transition: 'opacity 0.2s' }}
-            onMouseEnter={e => e.target.style.opacity='0.75'}
-            onMouseLeave={e => e.target.style.opacity='0.4'}
+            <img src={p.src} alt={p.alt} style={{
+              height: 28,
+              width: 'auto',
+              display: 'block',
+              opacity: 'var(--partner-logo-opacity)',
+              filter: 'var(--partner-logo-filter)',
+              transition: 'opacity 0.2s',
+            }}
+            onMouseEnter={e => { e.target.style.opacity = 'var(--partner-logo-hover-opacity)'; }}
+            onMouseLeave={e => { e.target.style.opacity = 'var(--partner-logo-opacity)'; }}
             />
           </a>
         ))}

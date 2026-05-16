@@ -116,7 +116,9 @@ select.form-input { cursor: pointer; background-image: url("data:image/svg+xml,%
 
 /* Light site theme: fields sit on a light page — use light surfaces + dark copy (not dark wells + muted tokens). */
 html[data-theme="light"] .form-input {
-  background: #ffffff;
+  /* background-color only — avoid `background` shorthand so it does not reset
+     background-repeat / layering on select.form-input (chevron would tile). */
+  background-color: #ffffff;
   border-color: var(--border);
   color: var(--fg);
   font-weight: 400;
@@ -281,6 +283,11 @@ function ContactSection() {
                     <input className="form-input" type="text" name="company" data-fs-field placeholder="Company name" required autoComplete="organization" />
                     <span data-fs-error="company" />
                   </div>
+                </div>
+                <div>
+                  <Label>Email</Label>
+                  <input className="form-input" type="email" name="email" data-fs-field placeholder="you@company.com" required autoComplete="email" inputMode="email" />
+                  <span data-fs-error="email" />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '1fr 1fr', gap: '16px' }}>
                   <div>

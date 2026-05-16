@@ -1,0 +1,9 @@
+# Legacy filenames (spaces / old paths) → clean routes (Netlify, Cloudflare Pages, etc.)
+/Arkim%20Product        /product/     301
+/Arkim%20Product.html   /product/     301
+/Arkim%20About          /about/       301
+/Arkim%20About.html     /about/       301
+/Arkim%20Contact        /contactus/   301
+/Arkim%20Contact.html   /contactus/   301
+/Arkim%20Resources      /resources/   301
+/Arkim%20Resources.html /resources/   301

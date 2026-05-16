@@ -117,10 +117,10 @@ function ArkimNav({ activeLabel = null }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
-    { label: 'Product', href: 'Arkim Product.html' },
-    { label: 'About Us', href: 'Arkim About.html' },
-    { label: 'Resources', href: 'Arkim Resources.html' },
-    { label: 'Contact Us', href: 'Arkim Contact.html' },
+    { label: 'Product', href: '/product/' },
+    { label: 'About Us', href: '/about/' },
+    { label: 'Resources', href: '/resources/' },
+    { label: 'Contact Us', href: '/contactus/' },
   ];
 
   useEffect(() => {
@@ -136,16 +136,16 @@ function ArkimNav({ activeLabel = null }) {
 
   /* Brand: arkim-side-by-side.svg = light theme; arkim-side-by-side-wht.svg = dark theme. */
   const logoLightSurface =
-    (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
+    (window.__resources && window.__resources.logoSideBySide) || '/uploads/arkim-side-by-side.svg';
   const logoDarkSurface =
-    (window.__resources && window.__resources.logoSideBySideWht) || 'uploads/arkim-side-by-side-wht.svg';
+    (window.__resources && window.__resources.logoSideBySideWht) || '/uploads/arkim-side-by-side-wht.svg';
   const navLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
 
   return (
     <nav className="arkim-site-nav">
       <div className="arkim-site-nav__inner">
         <a
-          href="index.html"
+          href="/"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', minHeight: 40 }}
         >
           <img src={navLogoSrc} alt="Arkim" style={{ height: 28, width: 'auto', display: 'block' }} />
@@ -184,7 +184,7 @@ function ArkimNav({ activeLabel = null }) {
           <div className="arkim-site-nav__tools">
             <ThemeToggle />
             <a
-              href="Arkim Contact.html#arkim-contact-form"
+              href="/contactus/#arkim-contact-form"
               className="arkim-site-nav__cta"
               style={{
                 background: 'var(--accent)',
@@ -246,7 +246,7 @@ function ArkimNav({ activeLabel = null }) {
               );
             })}
             <a
-              href="Arkim Contact.html#arkim-contact-form"
+              href="/contactus/#arkim-contact-form"
               className="arkim-site-nav__drawer-cta"
               style={{
                 background: 'var(--accent)',

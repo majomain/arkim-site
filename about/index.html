@@ -214,7 +214,7 @@ function TheProblem() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', paddingTop: '8px' }}>
             {paras.map((p, i) => (
               <FadeIn key={i} delay={i * 0.12}>
-                <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty', paddingBottom: '32px', borderBottom: i < paras.length - 1 ? '1px solid var(--border)' : 'none' }}>{p}</p>
+                <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty', paddingBottom: '32px', borderBottom: i < paras.length - 1 ? '1px solid var(--border)' : 'none' }}>{p}</p>
               </FadeIn>
             ))}
           </div>
@@ -248,7 +248,7 @@ function WhatWeBuilt() {
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 500, letterSpacing: '0.12em', color: 'var(--accent)', paddingTop: '4px' }}>{l.num}</div>
                 <div>
                   <div style={{ fontFamily: 'var(--sans)', fontSize: '22px', fontWeight: 600, marginBottom: '12px', letterSpacing: '-0.015em' }}>{l.title}</div>
-                  <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.7, textWrap: 'pretty', maxWidth: '680px' }}>{l.body}</p>
+                  <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, textWrap: 'pretty', maxWidth: '680px' }}>{l.body}</p>
                 </div>
               </div>
             </FadeIn>
@@ -339,7 +339,7 @@ function Team() {
                   <div style={{ fontFamily: 'var(--sans)', fontSize: '22px', fontWeight: 700, marginBottom: '6px', letterSpacing: '-0.02em', color: nameColor, transition: 'color 0.2s' }}>{p.name}</div>
                 </a>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: roleColor, fontWeight: 500, letterSpacing: '0.04em', marginBottom: '20px', transition: 'color 0.2s' }}>{p.role}</div>
-                <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 300, color: bioColor, lineHeight: 1.7, textWrap: 'pretty', transition: 'color 0.2s' }}>{p.bio}</p>
+                <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 400, color: bioColor, lineHeight: 1.7, textWrap: 'pretty', transition: 'color 0.2s' }}>{p.bio}</p>
               </div>
             </FadeIn>
             );
@@ -392,7 +392,7 @@ function CTA() {
             Come see it in{' '}
             <em style={{ fontFamily: 'var(--sans)', fontStyle: 'normal', color: 'var(--accent)', fontWeight: 600 }}>action.</em>
           </h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>A 30-minute conversation. No pitch deck.</p>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>A 30-minute conversation. No pitch deck.</p>
           <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: '15px 36px', borderRadius: '6px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s', minHeight: 44, boxSizing: 'border-box' }}
           onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
           onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}

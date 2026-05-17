@@ -299,7 +299,7 @@ function FeaturePills({ items }) {
         onMouseLeave={e => e.currentTarget.style.background='var(--bg-card)'}
         >
           <div style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{item.title}</div>
-          <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>{item.body}</div>
+          <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>{item.body}</div>
         </div>
       ))}
     </div>
@@ -316,7 +316,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel = null, imageHeight = 
         <FadeIn>
           <Eyebrow accent>{eyebrow}</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: children ? '60px' : '0' }}>{sub}</p>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: children ? '60px' : '0' }}>{sub}</p>
         </FadeIn>
         {children && <FadeIn delay={0.1}>{children}</FadeIn>}
       </div>
@@ -425,10 +425,10 @@ function S02() {
         </FadeIn>
         <FadeIn delay={0.15} style={{ marginTop: '48px' }}>
           <h3 style={{ fontFamily: 'var(--sans)', fontSize: '20px', fontWeight: 600, marginBottom: '16px', letterSpacing: '-0.01em' }}>Human-in-the-Loop</h3>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '28px' }}>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '28px' }}>
             Deployed as a Co-pilot, Arkim AI assists technicians rather than replace them, ensuring safety and keeping a human-in-the-loop at all times.
           </p>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '32px' }}>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '32px' }}>
             For more information about how Arkim can transform your maintenance operations,{' '}
             <a href="/contactus/" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 500 }}>contact our team</a>
             {' '}or{' '}
@@ -488,7 +488,7 @@ function S03() {
                 Arkim Joins NVIDIA Inception Program
               </h3>
               <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', marginBottom: '20px' }}>July 18, 2025</div>
-              <p style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.7, maxWidth: '640px', textWrap: 'pretty', marginBottom: '28px' }}>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, maxWidth: '640px', textWrap: 'pretty', marginBottom: '28px' }}>
                 We're excited to announce that Arkim AI has been accepted into the prestigious NVIDIA Inception Program, accelerating our developments.
               </p>
               <a
@@ -525,7 +525,7 @@ function FinalCTA() {
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
             Questions about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>our resources?</em>
           </h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
             Reach out for the full picture on how Arkim fits your maintenance operations.
           </p>
           <DemoBtn label="Request a Demo" style={{ fontSize: '16px', padding: '15px 36px' }} />

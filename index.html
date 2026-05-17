@@ -104,6 +104,7 @@
   --text-eyebrow-size: clamp(12px, 0.95vw, 14px);
   --text-eyebrow-tracking: 0.12em;
   --text-body: 17px;
+  --text-body-weight: 400;
   --text-label: 15px;
   --text-caption: 14px;
   --text-micro: 13px;
@@ -169,6 +170,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--sans);
+  font-weight: var(--text-body-weight);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -563,13 +565,13 @@ function TheLever() {
         <FadeIn delay={0.15}>
           <div style={{ paddingTop: '8px' }}>
             <p style={{
-              fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
+              fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400,
               color: 'var(--p-fg)', lineHeight: 1.75, marginBottom: '28px', textWrap: 'pretty',
             }}>
               Senior technicians are retiring. Tribal knowledge is walking out the door. New hires take years to reach journey-level. Meanwhile, every facility is asked to do more with less.
             </p>
             <p style={{
-              fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
+              fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400,
               color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty',
             }}>
               Arkim is the lever — any technician, on their first day, executes with the knowledge your most experienced people spent years building. The phone in their pocket is the sensor. The platform is the brain.
@@ -711,7 +713,7 @@ function Personas() {
                       <div style={{ width: 20, height: 20, borderRadius: '50%', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
                         <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
                       </div>
-                      <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.6, textWrap: 'pretty' }}>{o}</p>
+                      <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.6, textWrap: 'pretty' }}>{o}</p>
                     </div>
                   ))}
                 </div>
@@ -741,7 +743,7 @@ function IntegrationStrip() {
             marginBottom: '16px', textWrap: 'balance',
           }}>No rip and replace.</h2>
           <p style={{
-            fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
+            fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400,
             color: 'var(--p-fg)', lineHeight: 1.7, maxWidth: '560px', textWrap: 'pretty',
           }}>
             Read/write integration with the legacy CMMS and ERP systems your team already runs. Arkim layers on top — your existing data, processes, and workflows stay intact.
@@ -844,7 +846,7 @@ function TimeToValue() {
                       flexShrink: 0,
                     }}>{col.accent ? '✓' : '✗'}</div>
                     <p style={{
-                      fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
+                      fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400,
                       color: col.accent ? 'var(--fg)' : 'var(--p-fg)',
                       lineHeight: 1.6, textWrap: 'pretty',
                     }}>{text}</p>
@@ -924,7 +926,7 @@ function ComplianceTrust() {
           <div style={{ background: 'var(--bg-card)', padding: '52px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '320px' }}>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>{card.badge}</div>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-card)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '20px' }}>{card.title}</div>
-            <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300, color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty', maxWidth: '480px' }}>{card.body}</p>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty', maxWidth: '480px' }}>{card.body}</p>
           </div>
         </div>
       </div>
@@ -958,7 +960,7 @@ function RoadmapTease() {
         </FadeIn>
         <FadeIn delay={0.15}>
           <p style={{
-            fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
+            fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400,
             color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty',
           }}>
             Once Arkim diagnoses a root cause, the next logical step is sourcing the part. Our procurement agent prototype scores replacement options on total cost of acquisition and total lifecycle value, preserves OEM warranty by routing through authorized distributors, and updates inventory in your CMMS automatically.
@@ -1019,7 +1021,7 @@ function FinalCTA() {
             marginBottom: '24px', textWrap: 'balance',
           }}>Tell us about<br />your facility.</h2>
           <p style={{
-            fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 300,
+            fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400,
             color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px', textWrap: 'pretty',
           }}>
             A 30-minute conversation about your current maintenance operation, where Arkim could fit, and what a deployment would look like. No pitch deck.

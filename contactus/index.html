@@ -57,7 +57,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/arkim-hero.css" />
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
@@ -85,8 +84,6 @@ body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-w
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
-
 /* Form inputs */
 .form-input {
   width: 100%;
@@ -193,24 +190,6 @@ function FadeIn({ children, delay = 0, style = {} }) {
 }
 function Label({ children }) {
   return <div style={{ fontFamily: 'var(--sans)', fontSize: '12px', fontWeight: 500, letterSpacing: '0.06em', color: 'var(--fg-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>{children}</div>;
-}
-
-function Hero() {
-  const narrow = useIsNarrowLayout();
-  return (
-    <div className="hero-cinematic hero-cinematic--static-texture" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '120px 16px 72px' : '140px 48px 80px', overflow: 'hidden' }}>
-      <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
-        <h1 className="hero-h1">
-          Let's talk about your{' '}
-          <span className="hero-h1-accent" style={{ display: 'inline' }}>facility.</span>
-        </h1>
-        <p className="hero-lead">
-          30 minutes on your maintenance operation — where Arkim fits and what deployment looks like.
-        </p>
-
-      </div>
-    </div>
-  );
 }
 
 function HubSpotMeetingsEmbed() {
@@ -388,7 +367,6 @@ function App() {
         <ArkimNav activeLabel="Contact Us" />
       </div>
       <div style={{ height: 'calc(68px + env(safe-area-inset-top, 0px))' }} />
-      <Hero />
       <ContactSection />
       <ArkimFooter />
     </div>

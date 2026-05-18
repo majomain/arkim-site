@@ -231,11 +231,134 @@ a.arkim-btn-outline {
   transition: border-color 0.2s, background 0.2s, opacity 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 a.arkim-btn-outline:hover,
-a.arkim-btn-outline:focus-visible {
+a.arkim-btn-outline:focus-visible,
+button.arkim-btn-outline:hover,
+button.arkim-btn-outline:focus-visible {
   border-color: var(--outline-hover);
   background: var(--outline-fill);
   opacity: 0.95;
   transform: translateY(-2px);
+}
+
+button.arkim-btn-outline {
+  font-family: var(--sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  color: var(--fg);
+  border: 1px solid var(--outline);
+  padding: 14px 30px;
+  border-radius: 6px;
+  background: transparent;
+  text-transform: uppercase;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+  transition: border-color 0.2s, background 0.2s, opacity 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Vimeo demo modal (hero “See how it works”) */
+.arkim-video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: arkim-modal-fade-in 0.25s ease;
+}
+
+.arkim-video-modal__dialog {
+  position: relative;
+  width: min(960px, 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  border: none;
+  background: var(--media-bg);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 40px 100px rgba(0, 0, 0, 0.55);
+}
+
+.arkim-video-modal__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.arkim-video-modal__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.arkim-video-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.72);
+  color: #f5f2ed;
+  font-family: var(--sans);
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.arkim-video-modal__close:hover,
+.arkim-video-modal__close:focus-visible {
+  background: rgba(0, 0, 0, 0.88);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .arkim-video-modal {
+    padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+    align-items: center;
+  }
+  .arkim-video-modal__dialog {
+    width: 100%;
+    max-height: calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+  .arkim-video-modal__frame {
+    max-height: calc(100dvh - 88px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+  .arkim-video-modal__close {
+    top: 8px;
+    right: 8px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@keyframes arkim-modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arkim-video-modal {
+    animation: none;
+  }
 }
 
 a.arkim-btn-primary {
@@ -257,22 +380,6 @@ a.arkim-btn-primary:hover,
 a.arkim-btn-primary:focus-visible {
   opacity: 0.88;
   transform: translateY(-1px);
-}
-
-.arkim-media-frame {
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--media-bg);
-  aspect-ratio: 16 / 9;
-  box-shadow: 0 40px 100px var(--media-shadow);
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.arkim-media-frame:hover,
-.arkim-media-frame:focus-within {
-  transform: translateY(-4px) scale(1.008);
-  box-shadow: 0 48px 110px var(--media-shadow);
 }
 
 .arkim-cta-photo {
@@ -351,12 +458,10 @@ html[data-theme="light"] .arkim-cta-photo:hover {
 @media (prefers-reduced-motion: reduce) {
   a.arkim-btn-outline:hover,
   a.arkim-btn-outline:focus-visible,
+  button.arkim-btn-outline:hover,
+  button.arkim-btn-outline:focus-visible,
   a.arkim-btn-primary:hover,
   a.arkim-btn-primary:focus-visible {
-    transform: none;
-  }
-  .arkim-media-frame:hover,
-  .arkim-media-frame:focus-within {
     transform: none;
   }
 }
@@ -449,11 +554,67 @@ function Eyebrow({ children, center = false }) {
   );
 }
 
+// ─── DEMO VIDEO MODAL ───────────────────────────────────────────────────────
+
+const VIMEO_DEMO_ID = '1177525108';
+const vimeoDemoEmbedUrl = (autoplay) =>
+  `https://player.vimeo.com/video/${VIMEO_DEMO_ID}?autoplay=${autoplay ? 1 : 0}&playsinline=1&title=0&byline=0&portrait=0&color=4A8ABF`;
+
+function DemoVideoModal({ open, onClose }) {
+  const closeRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    const id = requestAnimationFrame(() => closeRef.current?.focus());
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', onKey);
+      cancelAnimationFrame(id);
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return ReactDOM.createPortal(
+    <div className="arkim-video-modal" onClick={onClose}>
+      <div
+        className="arkim-video-modal__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Arkim product demo video"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          ref={closeRef}
+          type="button"
+          className="arkim-video-modal__close"
+          onClick={onClose}
+          aria-label="Close video"
+        >×</button>
+        <div className="arkim-video-modal__frame">
+          <iframe
+            src={vimeoDemoEmbedUrl(true)}
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            title="Arkim AI Product Demo"
+          />
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 // ─── HERO ───────────────────────────────────────────────────────────────────
 
 function Hero() {
   const { isMobile, isTablet } = useViewport();
   const reducedMotion = usePrefersReducedMotion();
+  const [demoOpen, setDemoOpen] = useState(false);
   const heroPad = isMobile ? '120px 20px 88px' : isTablet ? '132px 40px 96px' : '140px 48px 100px';
   return (
     <div className="hero-cinematic hero-cinematic--video-bg" style={{
@@ -478,7 +639,9 @@ function Hero() {
         </FadeIn>
         <FadeIn delay={0.4}>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="#how-it-works" className="arkim-btn-outline">See how it works</a>
+            <button type="button" className="arkim-btn-outline" onClick={() => setDemoOpen(true)}>
+              See how it works
+            </button>
           </div>
         </FadeIn>
         <FadeIn delay={0.55}>
@@ -503,6 +666,7 @@ function Hero() {
           </ul>
         </FadeIn>
       </div>
+      <DemoVideoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   );
 }
@@ -1226,38 +1390,6 @@ function Footer() {
   );
 }
 
-// ─── PRODUCT VIDEO ──────────────────────────────────────────────────────────
-
-function ProductVideo() {
-  const { isMobile, isTablet } = useViewport();
-  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
-  return (
-    <section id="how-it-works" style={{ padding: `88px ${sectionPaddingX}px`, maxWidth: '1300px', margin: '0 auto' }}>
-      <FadeIn style={{ textAlign: 'center', marginBottom: '48px' }}>
-        <Eyebrow center>See It In Action</Eyebrow>
-        <h2 style={{
-          fontFamily: 'var(--sans)', fontSize: 'var(--title-section)',
-          fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance',
-        }}>
-          Watch Arkim in the field.
-        </h2>
-      </FadeIn>
-      <FadeIn delay={0.15}>
-        <div className="arkim-media-frame">
-          <iframe
-            src="https://player.vimeo.com/video/1177525108?autoplay=0&title=0&byline=0&portrait=0&color=4A8ABF"
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
-            allow="autoplay; fullscreen; picture-in-picture"
-            allowFullScreen
-            loading="lazy"
-            title="Arkim AI Product Demo"
-          />
-        </div>
-      </FadeIn>
-    </section>
-  );
-}
-
 // ─── EXPORT ──────────────────────────────────────────────────────────────────
 
 Object.assign(window, {
@@ -1265,7 +1397,6 @@ Object.assign(window, {
   ArkimIndustriesStrip: IndustriesStrip,
   ArkimTheLever: TheLever,
   ArkimPersonas: Personas,
-  ArkimProductVideo: ProductVideo,
   ArkimIntegrationStrip: IntegrationStrip,
   ArkimTimeToValue: TimeToValue,
   ArkimComplianceTrust: ComplianceTrust,
@@ -1346,7 +1477,6 @@ function App() {
       <div style={{ height: headerHeight }} />
       <ArkimHero />
       <ArkimIndustriesStrip />
-      <ArkimProductVideo />
       <ArkimTheLever />
       <Divider />
       <ArkimPersonas />

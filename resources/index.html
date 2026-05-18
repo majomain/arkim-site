@@ -72,8 +72,17 @@
   --accent: #4A8ABF;
   --headline-accent: #7AB5E0;
   --text-muted: rgba(255,255,255,0.72);
+  --final-cta-1: #0a0a0a;
+  --final-cta-2: #0f0d0b;
+  --p-fg: var(--fg-muted);
+  --p-fg-soft: rgba(245, 242, 237, 0.55);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans: 'Avenir Next', 'Avenir', Helvetica, sans-serif;
+}
+html[data-theme="light"] {
+  --final-cta-1: #f0ebe3;
+  --final-cta-2: #e5dfd4;
+  --p-fg-soft: rgba(28, 25, 21, 0.55);
 }
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -247,7 +256,7 @@ function DemoBtn({ label = 'Request a Demo', style = {} }) {
     <a href="/contactus/" style={{
       display: 'inline-flex', alignItems: 'center', gap: 8,
       fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600,
-      background: 'var(--accent)', color: '#000',
+      background: 'var(--accent)', color: 'var(--btn-fg)',
       padding: '13px 28px', borderRadius: '6px', textDecoration: 'none',
       transition: 'opacity 0.2s, transform 0.15s',
       ...style,
@@ -279,7 +288,6 @@ const ANCHOR_ITEMS = [
   { num: '01', label: 'Featured report', id: 's01' },
   { num: '02', label: 'Comparison', id: 's02' },
   { num: '03', label: 'Industry impact', id: 's03' },
-  { num: '04', label: 'More resources', id: 's04' },
 ];
 
 function Hero() {
@@ -322,7 +330,7 @@ function Hero() {
         {heroFade(0.38, (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: narrow ? '1fr' : 'repeat(4, 1fr)',
+            gridTemplateColumns: narrow ? '1fr' : `repeat(${ANCHOR_ITEMS.length}, 1fr)`,
             width: '100%',
             maxWidth: narrow ? '100%' : '720px',
             border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
@@ -332,8 +340,8 @@ function Hero() {
               <a key={i} href={`#${item.id}`} style={{
                 display: 'flex', flexDirection: 'column', gap: 4,
                 padding: narrow ? '16px 18px' : '20px 24px', textDecoration: 'none',
-                borderRight: !narrow && i < 3 ? '1px solid var(--border)' : 'none',
-                borderBottom: narrow && i < 3 ? '1px solid var(--border)' : 'none',
+                borderRight: !narrow && i < ANCHOR_ITEMS.length - 1 ? '1px solid var(--border)' : 'none',
+                borderBottom: narrow && i < ANCHOR_ITEMS.length - 1 ? '1px solid var(--border)' : 'none',
                 transition: 'background 0.2s',
               }}
               onMouseEnter={e => e.currentTarget.style.background='rgba(74,138,191,0.08)'}
@@ -386,7 +394,7 @@ function StickyAnchorNav() {
   const [active, setActive] = useState(null);
   const narrow = useIsNarrowLayout();
   useEffect(() => {
-    const sectionIds = ['s01','s02','s03','s04'];
+    const sectionIds = ['s01','s02','s03'];
     const fn = () => {
       setShow(window.scrollY > window.innerHeight * 0.7);
       const found = sectionIds.slice().reverse().find(id => {
@@ -421,7 +429,7 @@ function StickyAnchorNav() {
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
           flexShrink: 0,
           padding: narrow ? '0 14px' : '0 28px', alignSelf: 'stretch', textDecoration: 'none',
-          borderRight: i < 3 ? '1px solid var(--border)' : 'none',
+          borderRight: i < ANCHOR_ITEMS.length - 1 ? '1px solid var(--border)' : 'none',
           borderBottom: active === item.id ? `2px solid var(--accent)` : '2px solid transparent',
           transition: 'all 0.2s',
         }}
@@ -778,75 +786,31 @@ function S03() {
   );
 }
 
-function S04() {
-  const narrow = useIsNarrowLayout();
-  const gx = narrow ? 22 : 80;
-  const pt = narrow ? 64 : 100;
-  return (
-    <div id="s04" style={{ borderTop: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 60px` }}>
-        <FadeIn>
-          <Eyebrow accent>More Resources</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '48px', textWrap: 'balance' }}>
-            Announcements and updates
-          </h2>
-        </FadeIn>
-        <FadeIn delay={0.08}>
-          <div style={{
-            border: '1px solid var(--border)',
-            borderRadius: '12px',
-            overflow: 'hidden',
-            background: 'var(--bg-card)',
-          }}
-          >
-            <div style={{ padding: narrow ? '28px 22px' : '40px 44px' }}>
-              <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>Announcement</div>
-              <h3 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(20px, 2vw, 28px)', fontWeight: 700, lineHeight: 1.15, marginBottom: '12px', letterSpacing: '-0.02em' }}>
-                Arkim Joins NVIDIA Inception Program
-              </h3>
-              <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', marginBottom: '20px' }}>July 18, 2025</div>
-              <p style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, maxWidth: '640px', textWrap: 'pretty', marginBottom: '28px' }}>
-                We're excited to announce that Arkim AI has been accepted into the prestigious NVIDIA Inception Program, accelerating our developments.
-              </p>
-              <a
-                href="https://www.arkim.ai/resources/nvidia-inception-program"
-                target="_blank"
-                rel="noopener"
-                style={{
-                  fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, color: 'var(--accent)', textDecoration: 'none',
-                  display: 'inline-flex', alignItems: 'center', gap: 6,
-                }}
-              >Read More →</a>
-            </div>
-          </div>
-        </FadeIn>
-      </div>
-      <FadeIn>
-        <SectionImg label="NVIDIA partnership / program badge — dark, subtle" height="42vh" />
-      </FadeIn>
-      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `40px ${gx}px 80px` }}>
-        <FadeIn><DemoBtn /></FadeIn>
-      </div>
-    </div>
-  );
-}
-
 function FinalCTA() {
   const narrow = useIsNarrowLayout();
   return (
-    <div className="arkim-dark-surface" style={{ borderTop: '1px solid var(--border)', background: 'linear-gradient(to bottom, #0A0A0A, #0c0e0f)', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '700px', height: '400px', background: 'radial-gradient(ellipse, rgba(74,138,191,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative' }}>
+    <div style={{
+      borderTop: '1px solid var(--border)',
+      background: 'linear-gradient(to bottom, var(--final-cta-1), var(--final-cta-2))',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+        width: '700px', height: '400px',
+        background: 'radial-gradient(ellipse, var(--radial-accent-glow) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', color: 'var(--fg)' }}>
         <FadeIn>
           <Eyebrow>Ready when you are</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--fg)' }}>
             Turn industry proof into<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your plant&apos;s performance.</em>
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
             You have the benchmarks. See how Arkim puts 30% more proficiency and 50% more uptime within reach for your team—starting with one demo on your equipment.
           </p>
           <DemoBtn label="Book your demo" style={{ fontSize: '16px', padding: '15px 36px' }} />
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--p-fg-soft)', marginTop: '20px' }}>No pitch deck. No commitment.</p>
         </FadeIn>
       </div>
     </div>
@@ -866,7 +830,6 @@ function App() {
       <S01 />
       <S02 />
       <S03 />
-      <S04 />
       <FinalCTA />
       <ArkimFooter />
     </div>

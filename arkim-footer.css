@@ -1,0 +1,74 @@
+/**
+ * Shared footer chrome — partner marks use :root / html[data-theme] tokens
+ * from arkim-theme.css (subpages) or index.html :root (homepage).
+ */
+.arkim-footer-partner-link {
+  display: block;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.arkim-footer-partner-link img {
+  height: 20px;
+  width: auto;
+  max-width: 140px;
+  display: block;
+  object-fit: contain;
+  opacity: var(--partner-logo-opacity);
+  filter: var(--partner-logo-filter);
+  transition: opacity 0.2s, filter 0.2s;
+}
+
+.arkim-footer-partner-link:hover img,
+.arkim-footer-partner-link:focus-visible img {
+  opacity: var(--partner-logo-hover-opacity);
+}
+
+.arkim-footer-col-link {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.arkim-footer-col-link:hover,
+.arkim-footer-col-link:focus-visible {
+  color: var(--fg);
+}
+
+.arkim-footer-social-link {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+  box-sizing: border-box;
+}
+
+.arkim-footer-social-link:hover,
+.arkim-footer-social-link:focus-visible {
+  border-color: var(--fg-muted);
+  color: var(--fg);
+}
+
+.arkim-footer-social-link--narrow {
+  width: 44px;
+  height: 44px;
+}
+
+.arkim-footer-social-link--wide {
+  width: 36px;
+  height: 36px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arkim-footer-partner-link img,
+  .arkim-footer-col-link,
+  .arkim-footer-social-link {
+    transition: none;
+  }
+}

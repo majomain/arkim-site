@@ -1,6 +1,6 @@
 /**
  * Shared site navigation — loaded before page scripts.
- * Exposes window.useViewport, window.usePrefersReducedMotion, window.HeroBgVideo, window.ArkimNav
+ * Exposes window.useViewport, window.usePrefersReducedMotion, window.useArkimTheme, window.HeroBgVideo, window.ArkimNav
  *
  * All chrome is universal: appearance comes from arkim-nav.css + :root theme tokens
  * (index.html or arkim-theme.css). Pages only pass activeLabel for the current route.

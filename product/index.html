@@ -39,6 +39,7 @@
 </script>
 <link rel="stylesheet" href="/arkim-theme.css" />
 <link rel="stylesheet" href="/arkim-nav.css" />
+<link rel="stylesheet" href="/arkim-footer.css" />
 <style>
 @font-face {
   font-family: 'Avenir Next';
@@ -116,9 +117,11 @@ body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webki
 <body>
 <div id="root"></div>
 <script type="text/babel" src="/arkim-nav.jsx"></script>
+<script type="text/babel" src="/arkim-footer.jsx"></script>
 <script type="text/babel">
 const { useState, useEffect, useRef } = React;
 const ArkimNav = window.ArkimNav;
+const ArkimFooter = window.ArkimFooter;
 const useArkimTheme = window.useArkimTheme;
 const usePrefersReducedMotion = window.usePrefersReducedMotion;
 const HeroBgVideo = window.HeroBgVideo;
@@ -173,7 +176,7 @@ function Eyebrow({ children, accent = false }) {
 }
 function DemoBtn({ label = 'Request a Demo', style = {} }) {
   return (
-    <a href="https://www.arkim.ai/contact?tab=demo" target="_blank" rel="noopener" style={{
+    <a href="/contactus/" style={{
       display: 'inline-flex', alignItems: 'center', gap: 8,
       fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600,
       background: 'var(--accent)', color: '#000',
@@ -1371,49 +1374,6 @@ function FinalCTA() {
 }
 
 // ── FOOTER ────────────────────────────────────────────────────────────────────
-function Footer() {
-  const narrow = useIsNarrowLayout();
-  const isLightTheme = useArkimTheme();
-  const logoLightSurface =
-    (window.__resources && window.__resources.logoSideBySide) || '/uploads/arkim-side-by-side.svg';
-  const logoDarkSurface =
-    (window.__resources && window.__resources.logoSideBySideWht) || '/uploads/arkim-side-by-side-wht.svg';
-  const footerLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
-  return (
-    <footer style={{ borderTop: '1px solid var(--border)', padding: narrow ? '40px 22px 28px' : '48px 80px 32px', maxWidth: '1300px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: 16 }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <img src={footerLogoSrc} alt="Arkim" style={{ height: 24, width: 'auto', display: 'block' }} />
-        </a>
-        <div style={{ display: 'flex', gap: 32 }}>
-          {[{ label: 'Homepage', href: '/' }, { label: 'Contact', href: 'https://www.arkim.ai/contact' }, { label: 'Request Demo', href: 'https://www.arkim.ai/contact?tab=demo' }].map((l, i) => (
-            <a key={i} href={l.href} style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
-            onMouseEnter={e => e.target.style.color='var(--fg)'}
-            onMouseLeave={e => e.target.style.color='var(--fg-muted)'}
-            >{l.label}</a>
-          ))}
-        </div>
-      </div>
-      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)' }}>© 2026 Arkim AI. All rights reserved.</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          {[{ src: (window.__resources && window.__resources.nvidiaLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png', alt: 'NVIDIA' }, { src: (window.__resources && window.__resources.databricksLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg', alt: 'Databricks' }, { src: (window.__resources && window.__resources.awsLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg', alt: 'AWS' }].map((p, i) => (
-            <img key={i} src={p.src} alt={p.alt} style={{
-              height: 18,
-              opacity: 'var(--partner-logo-opacity)',
-              filter: 'var(--partner-logo-filter)',
-              transition: 'opacity 0.2s',
-            }}
-            onMouseEnter={e => { e.target.style.opacity = 'var(--partner-logo-hover-opacity)'; }}
-            onMouseLeave={e => { e.target.style.opacity = 'var(--partner-logo-opacity)'; }}
-            />
-          ))}
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 // ── APP ───────────────────────────────────────────────────────────────────────
 function App() {
   return (
@@ -1432,7 +1392,7 @@ function App() {
       <Results />
       <EnterpriseReady />
       <FinalCTA />
-      <Footer />
+      <ArkimFooter />
     </div>
   );
 }

@@ -475,6 +475,7 @@ html[data-theme="light"] .arkim-cta-photo:hover {
 <meta name="ext-resource-dependency" content="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg" data-resource-id="databricksLogo" />
 <meta name="ext-resource-dependency" content="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg" data-resource-id="awsLogo" />
 <link rel="stylesheet" href="arkim-nav.css" />
+<link rel="stylesheet" href="arkim-footer.css" />
 </head>
 <template id="__bundler_thumbnail" data-bg-color="#0A0A0A">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -493,6 +494,7 @@ html[data-theme="light"] .arkim-cta-photo:hover {
 <div id="root"></div>
 
 <script type="text/babel" src="arkim-nav.jsx"></script>
+<script type="text/babel" src="arkim-footer.jsx"></script>
 
 <!-- Section components (inlined) -->
 <script type="text/babel">
@@ -1269,7 +1271,7 @@ function FinalCTA() {
             A 30-minute conversation about your current maintenance operation, where Arkim could fit, and what a deployment would look like. No pitch deck.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start' }}>
-            <a href="https://meetings-na2.hubspot.com/tom-dickie" target="_blank" rel="noopener" className="arkim-btn-primary">Book a Consultation →</a>
+            <a href="/contactus/" className="arkim-btn-primary">Book a Consultation →</a>
             <span style={{
               fontFamily: 'var(--sans)', fontSize: 'var(--text-caption)',
               color: 'var(--fg-muted)',
@@ -1278,115 +1280,6 @@ function FinalCTA() {
         </FadeIn>
       </div>
     </div>
-  );
-}
-
-// ─── FOOTER ──────────────────────────────────────────────────────────────────
-
-function Footer() {
-  const { isMobile, isTablet } = useViewport();
-  const isLightTheme = useArkimTheme();
-  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
-  const logoLightSurface =
-    (window.__resources && window.__resources.logoSideBySide) || 'uploads/arkim-side-by-side.svg';
-  const logoDarkSurface =
-    (window.__resources && window.__resources.logoSideBySideWht) || 'uploads/arkim-side-by-side-wht.svg';
-  const footerLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
-  return (
-    <footer style={{ borderTop: '1px solid var(--border)', padding: `64px ${sectionPaddingX}px 40px`, maxWidth: '1300px', margin: '0 auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : isTablet ? '1.5fr 1fr 1fr' : '2fr 1fr 1fr 1fr 1fr', gap: '40px', marginBottom: '60px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src={footerLogoSrc} alt="Arkim" style={{ height: 26, width: 'auto', display: 'block' }} loading="lazy" decoding="async" />
-          </div>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', color: 'var(--p-fg)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>
-            The unified industrial nervous system. Powered by AI and real data.
-          </p>
-          <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
-            {[
-              { href: 'https://x.com/arkim_ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width={isMobile ? 17 : 15} height={isMobile ? 17 : 15}><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
-              { href: 'https://www.linkedin.com/company/arkim-ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width={isMobile ? 17 : 15} height={isMobile ? 17 : 15}><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
-            ].map(({ href, icon }, i) => (
-              <a key={i} href={href} target="_blank" rel="noopener noreferrer" style={{
-                width: isMobile ? 44 : 36, height: isMobile ? 44 : 36, border: '1px solid var(--border)', borderRadius: 8,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--sans)', fontSize: 'var(--text-micro)', color: 'var(--fg-muted)',
-                textDecoration: 'none', transition: 'border-color 0.2s, color 0.2s', boxSizing: 'border-box',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='var(--fg-muted)'; e.currentTarget.style.color='var(--fg)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.color='var(--fg-muted)'; }}
-              >{icon}</a>
-            ))}
-          </div>
-        </div>
-        {[
-          {
-            title: 'Product',
-            links: [
-              { label: 'Product Overview', href: '/product/' },
-              { label: 'Request a Demo', href: 'https://www.arkim.ai/contact?tab=demo' },
-            ],
-          },
-          {
-            title: 'Resources',
-            links: [
-              { label: 'Resources', href: '/resources/' },
-              { label: 'Case Studies', href: 'https://www.arkim.ai/resources/case-studies' },
-              { label: 'Testimonials', href: 'https://www.arkim.ai/resources/testimonials' },
-            ],
-          },
-          {
-            title: 'Company',
-            links: [
-              { label: 'Contact', href: 'https://www.arkim.ai/contact' },
-              { label: 'Request a Demo', href: 'https://www.arkim.ai/contact?tab=demo' },
-            ],
-          },
-          {
-            title: 'Partners',
-            links: [
-              { label: 'NVIDIA Inception', href: 'https://www.nvidia.com/en-us/startups/' },
-              { label: 'Databricks', href: 'https://www.databricks.com/product/startups' },
-              { label: 'AWS Activate', href: 'https://aws.amazon.com/activate/' },
-            ],
-          },
-        ].map((col, i) => (
-          <div key={i}>
-            <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 600, letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--fg-faint)', marginBottom: '20px' }}>{col.title}</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {col.links.map((l, j) => (
-                <a key={j} href={l.href} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-caption)', color: 'var(--fg-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
-                onMouseEnter={e => e.target.style.color='var(--fg)'}
-                onMouseLeave={e => e.target.style.color='var(--fg-muted)'}
-                >{l.label}</a>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 20 : 0, justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'center' }}>
-        <span style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-micro)', color: 'var(--fg-faint)' }}>© 2026 Arkim AI. All rights reserved.</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          {[
-            { src: (window.__resources && window.__resources.nvidiaLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png', alt: 'NVIDIA' },
-            { src: (window.__resources && window.__resources.databricksLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg', alt: 'Databricks' },
-            { src: (window.__resources && window.__resources.awsLogo) || 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg', alt: 'AWS' },
-          ].map((p, i) => (
-            <img key={i} src={p.src} alt={p.alt} style={{
-              height: 20,
-              opacity: 'var(--partner-logo-opacity)',
-              filter: 'var(--partner-logo-filter)',
-              transition: 'opacity 0.2s',
-            }}
-            loading="lazy"
-            decoding="async"
-            onMouseEnter={e => { e.target.style.opacity = 'var(--partner-logo-hover-opacity)'; }}
-            onMouseLeave={e => { e.target.style.opacity = 'var(--partner-logo-opacity)'; }}
-            />
-          ))}
-        </div>
-      </div>
-    </footer>
   );
 }
 
@@ -1402,7 +1295,6 @@ Object.assign(window, {
   ArkimComplianceTrust: ComplianceTrust,
   ArkimRoadmapTease: RoadmapTease,
   ArkimFinalCTA: FinalCTA,
-  ArkimFooter: Footer,
 });
 
 </script>
@@ -1410,7 +1302,7 @@ Object.assign(window, {
 <!-- App -->
 <script type="text/babel">
 const { useState, useEffect, useRef } = React;
-const { useViewport, ArkimNav } = window;
+const { useViewport, ArkimNav, ArkimFooter } = window;
 
 function AnnouncementBar({ onDismiss }) {
   const { isMobile } = useViewport();

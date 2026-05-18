@@ -1,0 +1,118 @@
+/**
+ * Shared site footer — loaded after arkim-nav.jsx on every page.
+ * Exposes window.ArkimFooter
+ */
+const useViewport = window.useViewport;
+const useArkimTheme = window.useArkimTheme;
+
+const FOOTER_COLUMNS = [
+  {
+    title: 'Product',
+    links: [
+      { label: 'Product Overview', href: '/product/' },
+      { label: 'Request a Demo', href: '/contactus/' },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Resources', href: '/resources/' },
+      { label: 'Case Studies', href: 'https://www.arkim.ai/resources/case-studies' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About Us', href: '/about/' },
+      { label: 'Contact Us', href: '/contactus/' },
+    ],
+  },
+];
+
+const PARTNER_MARKS = [
+  {
+    alt: 'NVIDIA Inception',
+    href: 'https://www.nvidia.com/en-us/startups/',
+    fallback: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png',
+    resourceKey: 'nvidiaLogo',
+  },
+  {
+    alt: 'Databricks',
+    href: 'https://www.databricks.com/product/startups',
+    fallback: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg',
+    resourceKey: 'databricksLogo',
+  },
+  {
+    alt: 'AWS Activate',
+    href: 'https://aws.amazon.com/activate/',
+    fallback: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg',
+    resourceKey: 'awsLogo',
+  },
+];
+
+function partnerLogoSrc(resourceKey, fallback) {
+  const resources = window.__resources;
+  return (resources && resources[resourceKey]) || fallback;
+}
+
+function ArkimFooter() {
+  const { isMobile } = useViewport();
+  const narrow = isMobile;
+  const isLightTheme = useArkimTheme();
+  const logoLightSurface =
+    (window.__resources && window.__resources.logoSideBySide) || '/uploads/arkim-side-by-side.svg';
+  const logoDarkSurface =
+    (window.__resources && window.__resources.logoSideBySideWht) || '/uploads/arkim-side-by-side-wht.svg';
+  const footerLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
+
+  return (
+    <footer style={{ borderTop: '1px solid var(--border)', padding: narrow ? '48px 22px 32px' : '64px 80px 40px', maxWidth: '1300px', margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '2fr 1fr 1fr 1fr', gap: narrow ? '40px' : '60px', marginBottom: '60px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <img src={footerLogoSrc} alt="Arkim" style={{ height: 26, width: 'auto', display: 'block' }} loading="lazy" decoding="async" />
+          </div>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--p-fg)', lineHeight: 1.65, maxWidth: '240px', textWrap: 'pretty' }}>
+            The unified industrial nervous system. Powered by AI and real data.
+          </p>
+          <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
+            {[
+              { href: 'https://x.com/arkim_ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
+              { href: 'https://www.linkedin.com/company/arkim-ai', icon: <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
+            ].map(({ href, icon }, i) => (
+              <a
+                key={i}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`arkim-footer-social-link ${narrow ? 'arkim-footer-social-link--narrow' : 'arkim-footer-social-link--wide'}`}
+              >{icon}</a>
+            ))}
+          </div>
+        </div>
+        {FOOTER_COLUMNS.map((col, i) => (
+          <div key={i}>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: '20px' }}>{col.title}</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {col.links.map((l, j) => (
+                <a key={j} href={l.href} className="arkim-footer-col-link">{l.label}</a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+        <span style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)' }}>© 2026 Arkim AI. All rights reserved.</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          {PARTNER_MARKS.map((p, i) => (
+            <a key={i} href={p.href} target="_blank" rel="noopener noreferrer" className="arkim-footer-partner-link">
+              <img src={partnerLogoSrc(p.resourceKey, p.fallback)} alt={p.alt} loading="lazy" decoding="async" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+window.ArkimFooter = ArkimFooter;

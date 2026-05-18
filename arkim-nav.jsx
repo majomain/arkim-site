@@ -7,11 +7,18 @@
  */
 const { useState, useEffect, useRef } = React;
 
-const HERO_BG_VIDEO_SRC = 'https://arkim.ai/ARKIM-Main-Edit-NO-COPY-NO-AUDIO.mp4';
+const HERO_BG_VIDEO_SRC = 'https://assets.arkim.ai/ARKIM-Main-Edit-NO-COPY-NO-AUDIO.mp4';
 
 /** Full-bleed muted loop for cinematic heroes (index, product). Respects reduced motion. */
 function HeroBgVideo({ reducedMotion = false }) {
   const videoRef = useRef(null);
+
+  const tryPlay = () => {
+    const v = videoRef.current;
+    if (!v || reducedMotion) return;
+    v.muted = true;
+    v.play().catch(() => {});
+  };
 
   useEffect(() => {
     const v = videoRef.current;
@@ -19,11 +26,15 @@ function HeroBgVideo({ reducedMotion = false }) {
     if (reducedMotion) {
       v.pause();
       try { v.currentTime = 0; } catch (e) {}
-    } else {
-      const play = () => v.play().catch(() => {});
-      if (v.readyState >= 2) play();
-      else v.addEventListener('loadeddata', play, { once: true });
+      return;
     }
+    tryPlay();
+    v.addEventListener('loadeddata', tryPlay, { once: true });
+    v.addEventListener('canplay', tryPlay, { once: true });
+    return () => {
+      v.removeEventListener('loadeddata', tryPlay);
+      v.removeEventListener('canplay', tryPlay);
+    };
   }, [reducedMotion]);
 
   return (
@@ -36,9 +47,10 @@ function HeroBgVideo({ reducedMotion = false }) {
           muted
           loop
           playsInline
-          autoPlay={!reducedMotion}
+          autoPlay
           preload={reducedMotion ? 'metadata' : 'auto'}
           tabIndex={-1}
+          onCanPlay={tryPlay}
         />
       </div>
       <div className="hero-cinematic-scrim" aria-hidden="true" />

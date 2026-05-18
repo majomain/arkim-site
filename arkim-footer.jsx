@@ -17,7 +17,6 @@ const FOOTER_COLUMNS = [
     title: 'Resources',
     links: [
       { label: 'Resources', href: '/resources/' },
-      { label: 'Case Studies', href: 'https://www.arkim.ai/resources/case-studies' },
     ],
   },
   {

@@ -400,6 +400,7 @@ const { useState, useEffect, useRef } = React;
 const useViewport = window.useViewport;
 const usePrefersReducedMotion = window.usePrefersReducedMotion;
 const useArkimTheme = window.useArkimTheme;
+const HeroBgVideo = window.HeroBgVideo;
 
 // ─── UTILS ──────────────────────────────────────────────────────────────────
 
@@ -452,15 +453,17 @@ function Eyebrow({ children, center = false }) {
 
 function Hero() {
   const { isMobile, isTablet } = useViewport();
+  const reducedMotion = usePrefersReducedMotion();
   const heroPad = isMobile ? '120px 20px 88px' : isTablet ? '132px 40px 96px' : '140px 48px 100px';
   return (
-    <div className="hero-cinematic hero-cinematic--static-texture" style={{
+    <div className="hero-cinematic hero-cinematic--video-bg" style={{
       position: 'relative', minHeight: '100vh',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
       textAlign: 'center', padding: heroPad,
       overflow: 'hidden',
     }}>
+      <HeroBgVideo reducedMotion={reducedMotion} />
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
         <FadeIn delay={0.1}>
           <h1 className="hero-h1">

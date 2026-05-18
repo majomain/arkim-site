@@ -1,11 +1,50 @@
 /**
  * Shared site navigation — loaded before page scripts.
- * Exposes window.useViewport, window.usePrefersReducedMotion, window.ArkimNav
+ * Exposes window.useViewport, window.usePrefersReducedMotion, window.HeroBgVideo, window.ArkimNav
  *
  * All chrome is universal: appearance comes from arkim-nav.css + :root theme tokens
  * (index.html or arkim-theme.css). Pages only pass activeLabel for the current route.
  */
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
+
+const HERO_BG_VIDEO_SRC = 'https://arkim.ai/ARKIM-Main-Edit-NO-COPY-NO-AUDIO.mp4';
+
+/** Full-bleed muted loop for cinematic heroes (index, product). Respects reduced motion. */
+function HeroBgVideo({ reducedMotion = false }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (reducedMotion) {
+      v.pause();
+      try { v.currentTime = 0; } catch (e) {}
+    } else {
+      const play = () => v.play().catch(() => {});
+      if (v.readyState >= 2) play();
+      else v.addEventListener('loadeddata', play, { once: true });
+    }
+  }, [reducedMotion]);
+
+  return (
+    <>
+      <div className="hero-bg-video-wrap" aria-hidden="true">
+        <video
+          ref={videoRef}
+          className="hero-bg-video"
+          src={HERO_BG_VIDEO_SRC}
+          muted
+          loop
+          playsInline
+          autoPlay={!reducedMotion}
+          preload={reducedMotion ? 'metadata' : 'auto'}
+          tabIndex={-1}
+        />
+      </div>
+      <div className="hero-cinematic-scrim" aria-hidden="true" />
+    </>
+  );
+}
 
 function useViewport() {
   const getWidth = () => (typeof window !== 'undefined' ? window.innerWidth : 1440);
@@ -265,4 +304,5 @@ function ArkimNav({ activeLabel = null }) {
 window.useViewport = useViewport;
 window.usePrefersReducedMotion = usePrefersReducedMotion;
 window.useArkimTheme = useArkimTheme;
+window.HeroBgVideo = HeroBgVideo;
 window.ArkimNav = ArkimNav;

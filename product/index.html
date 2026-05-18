@@ -121,6 +121,7 @@ const { useState, useEffect, useRef } = React;
 const ArkimNav = window.ArkimNav;
 const useArkimTheme = window.useArkimTheme;
 const usePrefersReducedMotion = window.usePrefersReducedMotion;
+const HeroBgVideo = window.HeroBgVideo;
 
 // ── Shared helpers ────────────────────────────────────────────────────────────
 function useFadeIn(threshold = 0.1) {
@@ -318,39 +319,9 @@ function Hero() {
     </div>
   );
   return (
-    <div className="hero-cinematic hero-cinematic--video-bg" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '120px 16px 72px' : '140px 48px 80px', overflow: 'hidden', background: '#000' }}>
-      {/* Vimeo background: 16:9 iframe scaled to cover (object-fit on iframe is unreliable) */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden', width: '100%', height: '100%' }}>
-        <iframe
-          src="https://player.vimeo.com/video/1177525108?autoplay=1&loop=1&muted=1&background=1&controls=0&title=0&byline=0&portrait=0&playsinline=1"
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '100%',
-            height: '56.25vw',
-            minWidth: '177.77vh',
-            minHeight: '100%',
-            transform: 'translate(-50%, -50%)',
-            border: 'none',
-            pointerEvents: 'none',
-          }}
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowFullScreen
-          title="Arkim product overview video"
-        />
-      </div>
-      {/* Scrim so headline stays legible; video remains visible */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 2,
-          pointerEvents: 'none',
-          background: 'linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.28) 45%, rgba(0,0,0,0.62) 100%)',
-        }}
-      />
-      <div style={{ position: 'relative', zIndex: 3, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
+    <div className="hero-cinematic hero-cinematic--video-bg" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '120px 16px 72px' : '140px 48px 80px', overflow: 'hidden' }}>
+      <HeroBgVideo reducedMotion={reducedMotion} />
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
         {heroFade(0.1, (
           <>
             <h1 className="hero-h1">

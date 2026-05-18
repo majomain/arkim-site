@@ -135,6 +135,20 @@ html[data-theme="light"] select.form-input option {
   color: #1c1915;
   background: #ffffff;
 }
+
+.meetings-iframe-container {
+  width: 100%;
+  min-height: 560px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-top: 8px;
+}
+.meetings-iframe-container iframe {
+  width: 100% !important;
+  min-height: 560px;
+  border: none;
+}
 </style>
 </head>
 <body>
@@ -189,11 +203,32 @@ function Hero() {
           <span className="hero-h1-accent" style={{ display: 'inline' }}>facility.</span>
         </h1>
         <p className="hero-lead">
-          30 minutes. No pitch deck. An honest conversation about your maintenance operation and whether Arkim is the right fit.
+          30 minutes on your maintenance operation — where Arkim fits and what deployment looks like.
         </p>
 
       </div>
     </div>
+  );
+}
+
+function HubSpotMeetingsEmbed() {
+  useEffect(() => {
+    const src = 'https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js';
+    const existing = document.querySelector(`script[src="${src}"]`);
+    if (existing) return;
+
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = src;
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  return (
+    <div
+      className="meetings-iframe-container"
+      data-src="https://meetings-na2.hubspot.com/tom-dickie?embed=true"
+    />
   );
 }
 
@@ -253,10 +288,7 @@ function ContactSection() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 tom@arkim.ai
               </a>
-              <a href="https://meetings-na2.hubspot.com/tom-dickie" target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, background: 'var(--accent)', color: '#000', padding: narrow ? '14px 24px' : '13px 24px', borderRadius: '6px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s', minHeight: 44, boxSizing: 'border-box' }}
-              onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
-              onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
-              >Book a time →</a>
+              <HubSpotMeetingsEmbed />
             </div>
           </FadeIn>
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Arkim AI — Resources and insights</title>
+<title>Arkim AI — Resources, research, and proof for industrial maintenance</title>
 <meta name="theme-color" content="#F5F2EB" />
 <link rel="icon" href="/uploads/favicon-32x32.png" type="image/png" sizes="32x32" />
 <script>
@@ -84,6 +84,95 @@ body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webki
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: none; }
 }
+.resources-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto 36px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--border);
+}
+@media (max-width: 640px) {
+  .resources-hero-stats { grid-template-columns: 1fr; }
+}
+.resources-hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(14px);
+  padding: 22px 16px 20px;
+  text-align: center;
+}
+.resources-hero-stat-value {
+  font-family: var(--sans);
+  font-size: clamp(32px, 4.5vw, 44px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  flex-shrink: 0;
+}
+.resources-hero-stat-label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 2.9em;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg-muted);
+  line-height: 1.45;
+  margin-top: 8px;
+  text-wrap: pretty;
+}
+.resources-hero-stat-source {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 12px;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+.resources-proof-strip {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(90deg, rgba(74, 138, 191, 0.06) 0%, transparent 50%, rgba(74, 138, 191, 0.06) 100%);
+}
+.resources-arkim-bridge {
+  margin-top: 20px;
+  padding: 16px 18px;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+  background: rgba(74, 138, 191, 0.08);
+}
+.resources-arkim-bridge-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.resources-arkim-bridge p {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fg);
+  line-height: 1.6;
+  margin: 0;
+  text-wrap: pretty;
+}
 </style>
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/logo-arkim.png" data-resource-id="logoMark" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/arkim-text-logo.png" data-resource-id="logoText" />
@@ -100,6 +189,13 @@ body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webki
 const { useState, useEffect, useRef } = React;
 const ArkimNav = window.ArkimNav;
 const useArkimTheme = window.useArkimTheme;
+const usePrefersReducedMotion = window.usePrefersReducedMotion;
+
+const HERO_IMPACT_STATS = [
+  { value: '50%', label: 'Increase in equipment uptime', source: 'Deloitte Insights' },
+  { value: '30%', label: 'Increase in technician proficiency', source: 'Boston Consulting Group' },
+  { value: '0', label: 'Your data used to train public models', source: 'Arkim guarantee', displayValue: 'Zero' },
+];
 
 function useFadeIn(threshold = 0.1) {
   const ref = useRef(null);
@@ -179,29 +275,58 @@ function SectionImg({ label, height = '55vh' }) {
 const ANCHOR_ITEMS = [
   { num: '01', label: 'Featured report', id: 's01' },
   { num: '02', label: 'Comparison', id: 's02' },
-  { num: '03', label: 'More resources', id: 's03' },
+  { num: '03', label: 'Industry impact', id: 's03' },
+  { num: '04', label: 'More resources', id: 's04' },
 ];
 
 function Hero() {
   const narrow = useIsNarrowLayout();
+  const reducedMotion = usePrefersReducedMotion ? usePrefersReducedMotion() : false;
+  const heroFade = (delay, children) => (
+    <div style={{ animation: reducedMotion ? 'none' : `fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s both` }}>
+      {children}
+    </div>
+  );
   return (
     <div className="hero-cinematic hero-cinematic--static-texture" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '120px 16px 72px' : '140px 48px 80px', overflow: 'hidden' }}>
-      <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
-        <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
-          <h1 className="hero-h1">
-            <span style={{ fontWeight: 700, color: '#fff', display: 'block' }}>Resources and</span>
-            <span className="hero-h1-accent" style={{ display: 'block' }}>insights</span>
-          </h1>
-          <p className="hero-lead">
-            Reports, case studies, and insights from Arkim AI to help you make informed decisions.
-          </p>
-        </div>
-        <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s both' }}>
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '820px', width: '100%', textAlign: 'center' }}>
+        {heroFade(0.08, (
+          <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '20px' }}>
+            Industry insights
+          </div>
+        ))}
+        {heroFade(0.14, (
+          <>
+            <h1 className="hero-h1">
+              <span style={{ fontWeight: 700, color: '#fff', display: 'block' }}>The proof is on</span>
+              <span className="hero-h1-accent" style={{ display: 'block' }}>the shop floor.</span>
+            </h1>
+            <p className="hero-lead" style={{ maxWidth: '640px' }}>
+              GenAI drives uptime, technician proficiency, and margin. Arkim is the domain-specific copilot that turns those numbers into daily wins—with your manuals, schematics, and tribal knowledge, never the public internet.
+            </p>
+          </>
+        ))}
+        {heroFade(0.28, (
+          <div className="resources-hero-stats" role="list" aria-label="Industry impact highlights">
+            {HERO_IMPACT_STATS.map((stat, i) => (
+              <div
+                key={i}
+                className="resources-hero-stat"
+                role="listitem"
+              >
+                <div className="resources-hero-stat-value">{stat.displayValue || stat.value}</div>
+                <div className="resources-hero-stat-label">{stat.label}</div>
+                <div className="resources-hero-stat-source">{stat.source}</div>
+              </div>
+            ))}
+          </div>
+        ))}
+        {heroFade(0.38, (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: narrow ? '1fr' : 'repeat(3, 1fr)',
+            gridTemplateColumns: narrow ? '1fr' : 'repeat(4, 1fr)',
             width: '100%',
-            maxWidth: narrow ? '100%' : '640px',
+            maxWidth: narrow ? '100%' : '720px',
             border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
             background: 'rgba(10,10,10,0.6)', backdropFilter: 'blur(12px)', margin: '0 auto',
           }}>
@@ -209,8 +334,8 @@ function Hero() {
               <a key={i} href={`#${item.id}`} style={{
                 display: 'flex', flexDirection: 'column', gap: 4,
                 padding: narrow ? '16px 18px' : '20px 24px', textDecoration: 'none',
-                borderRight: !narrow && i < 2 ? '1px solid var(--border)' : 'none',
-                borderBottom: narrow && i < 2 ? '1px solid var(--border)' : 'none',
+                borderRight: !narrow && i < 3 ? '1px solid var(--border)' : 'none',
+                borderBottom: narrow && i < 3 ? '1px solid var(--border)' : 'none',
                 transition: 'background 0.2s',
               }}
               onMouseEnter={e => e.currentTarget.style.background='rgba(74,138,191,0.08)'}
@@ -221,9 +346,40 @@ function Hero() {
               </a>
             ))}
           </div>
-        </div>
+        ))}
       </div>
     </div>
+  );
+}
+
+function ValueProofStrip() {
+  const narrow = useIsNarrowLayout();
+  const pillars = [
+    { title: 'Purpose-built for maintenance', body: 'Not a chatbot. Arkim reads schematics, wiring diagrams, and OEM manuals—the work general AI cannot do reliably.' },
+    { title: 'Senior expertise on day one', body: 'Every technician gets instant access to tribal knowledge and procedures your best people already know.' },
+    { title: 'ROI from week one', body: 'Costs less than an hour of technician time. Pays back in fewer escalations, shorter downtime, and faster ramp.' },
+  ];
+  return (
+    <section className="resources-proof-strip" aria-label="Why Arkim">
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: narrow ? '48px 22px' : '64px 80px' }}>
+        <FadeIn>
+          <Eyebrow accent>The Arkim difference</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-md)', fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '36px', maxWidth: '720px', textWrap: 'balance' }}>
+            Research proves the upside. Arkim is how you capture it.
+          </h2>
+        </FadeIn>
+        <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : 'repeat(3, 1fr)', gap: narrow ? '20px' : '28px' }}>
+          {pillars.map((p, i) => (
+            <FadeIn key={p.title} delay={0.06 * i}>
+              <div>
+                <h3 style={{ fontFamily: 'var(--sans)', fontSize: '17px', fontWeight: 700, color: 'var(--fg)', marginBottom: '10px', letterSpacing: '-0.01em' }}>{p.title}</h3>
+                <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, margin: 0, textWrap: 'pretty' }}>{p.body}</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -232,7 +388,7 @@ function StickyAnchorNav() {
   const [active, setActive] = useState(null);
   const narrow = useIsNarrowLayout();
   useEffect(() => {
-    const sectionIds = ['s01','s02','s03'];
+    const sectionIds = ['s01','s02','s03','s04'];
     const fn = () => {
       setShow(window.scrollY > window.innerHeight * 0.7);
       const found = sectionIds.slice().reverse().find(id => {
@@ -267,7 +423,7 @@ function StickyAnchorNav() {
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
           flexShrink: 0,
           padding: narrow ? '0 14px' : '0 28px', alignSelf: 'stretch', textDecoration: 'none',
-          borderRight: i < 2 ? '1px solid var(--border)' : 'none',
+          borderRight: i < 3 ? '1px solid var(--border)' : 'none',
           borderBottom: active === item.id ? `2px solid var(--accent)` : '2px solid transparent',
           transition: 'all 0.2s',
         }}
@@ -336,6 +492,110 @@ function Section({ id, eyebrow, headline, sub, imageLabel = null, imageHeight = 
   );
 }
 
+const INDUSTRY_RESEARCH = [
+  {
+    source: 'Deloitte Insights',
+    tag: 'Position paper',
+    title: 'Predictive Maintenance',
+    href: 'https://assets.arkim.ai/Deloitte_Predictive-Maintenance_PositionPaper.pdf',
+    stat: '50%',
+    statLabel: 'increase in equipment uptime',
+    insights: [
+      'Predictive maintenance shifts teams from reactive firefighting to data-driven planning.',
+      'Sensor and analytics programs reduce unplanned downtime and extend asset life.',
+      'Organizations that invest early see compounding gains in reliability and throughput.',
+    ],
+    arkimTake: 'Arkim surfaces failure patterns from your equipment history and manuals before downtime hits—giving technicians the context to act, not just alerts to ignore.',
+  },
+  {
+    source: 'Boston Consulting Group',
+    tag: 'Executive perspectives',
+    title: 'Driving Sustainable Cost Advantage with AI',
+    href: 'https://assets.arkim.ai/bcg-executive-perspectives-driving-sustainable-cost-adv-with-ai-ep15-20may2025.pdf',
+    stat: null,
+    statLabel: null,
+    insights: [
+      'Industrial leaders use AI to unlock durable cost advantages—not one-off savings.',
+      'Scaled AI programs tie directly to operational efficiency and margin improvement.',
+      'Sustainable gains come from embedding AI in core workflows, not pilot projects alone.',
+    ],
+    arkimTake: 'Arkim embeds in daily maintenance workflows—search, diagnose, document—so AI savings compound shift over shift instead of stalling in a pilot.',
+  },
+  {
+    source: 'Boston Consulting Group',
+    tag: 'Report',
+    title: 'How AI Is Paying Off in the Tech Function',
+    href: 'https://assets.arkim.ai/how-ai-is-paying-off-in-the-tech-function.pdf',
+    stat: '30%',
+    statLabel: 'increase in technician proficiency',
+    insights: [
+      'AI copilots help technicians resolve issues faster with fewer escalations.',
+      'Upskilling accelerates when experts’ knowledge is captured and searchable at scale.',
+      'Tech-function AI investments translate into measurable productivity on the shop floor.',
+    ],
+    arkimTake: 'Arkim is that copilot for industrial techs—senior-level answers from your schematics and tribal knowledge, on the device they already carry.',
+  },
+];
+
+function ResearchArticleCard({ article, narrow }) {
+  return (
+    <article style={{
+      border: '1px solid var(--border)',
+      borderRadius: '12px',
+      overflow: 'hidden',
+      background: 'var(--bg-card)',
+    }}
+    >
+      <div style={{ padding: narrow ? '28px 22px' : '36px 40px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: '20px 28px', marginBottom: '20px' }}>
+          <div>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '10px' }}>{article.tag}</div>
+            <h3 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(20px, 2vw, 26px)', fontWeight: 700, lineHeight: 1.15, marginBottom: '8px', letterSpacing: '-0.02em', maxWidth: '520px' }}>{article.title}</h3>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg-muted)' }}>{article.source}</div>
+          </div>
+          {article.stat ? (
+            <div style={{
+              flexShrink: 0,
+              padding: '16px 22px',
+              borderRadius: '10px',
+              background: 'rgba(74, 138, 191, 0.08)',
+              border: '1px solid var(--border)',
+              textAlign: 'center',
+              minWidth: narrow ? '100%' : '160px',
+            }}>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(36px, 4vw, 48px)', fontWeight: 700, color: 'var(--accent)', lineHeight: 1, letterSpacing: '-0.03em' }}>{article.stat}</div>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: 'var(--fg-muted)', marginTop: '8px', lineHeight: 1.4 }}>{article.statLabel}</div>
+            </div>
+          ) : null}
+        </div>
+        <ul style={{ listStyle: 'none', margin: '0 0 24px', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {article.insights.map((point, i) => (
+            <li key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+              <span style={{ flexShrink: 0, width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', marginTop: '8px' }} aria-hidden="true" />
+              <span style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>{point}</span>
+            </li>
+          ))}
+        </ul>
+        <a
+          href={article.href}
+          target="_blank"
+          rel="noopener"
+          style={{
+            fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600, color: 'var(--accent)', textDecoration: 'none',
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+          }}
+        >Read full paper (PDF) →</a>
+        {article.arkimTake ? (
+          <div className="resources-arkim-bridge">
+            <div className="resources-arkim-bridge-label">How Arkim delivers this</div>
+            <p>{article.arkimTake}</p>
+          </div>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
 function ComparisonTable() {
   const narrow = useIsNarrowLayout();
   const rows = [
@@ -388,10 +648,10 @@ function S01() {
   return (
     <Section
       id="s01"
-      eyebrow="Report — January 6, 2025"
-      headline="Arkim vs. Foundation Models: Why Domain-Specific AI Wins on the Shop Floor"
-      sub="AI is changing how industries operate, but generic models aren't made for the shop floor. They hallucinate facts and fail to understand complex technical situations. Arkim is a domain-specific Industrial AI trained on proprietary engineering data. It gives technicians instant access to critical manuals, schematics, and tribal knowledge that general-purpose AI simply can't process."
-      showDemoButton={false}
+      eyebrow="Report"
+      headline="Why generic AI fails on the shop floor—and why Arkim doesn't"
+      sub="ChatGPT and Gemini weren't built for your plant. They hallucinate specs, can't read wiring diagrams, and may train on your data. Arkim is industrial AI purpose-built for maintenance: unlimited OEM manuals, schematics, tribal knowledge, and audio diagnostics—in a private copilot that keeps humans in control. This is the evidence your leadership team needs."
+      showDemoButton={true}
     />
   );
 }
@@ -406,8 +666,11 @@ function S02() {
         <FadeIn>
           <Eyebrow accent>02 — Arkim Compared to Foundation Models</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
-            See how Arkim stacks up against general-purpose models for real maintenance work.
+            The only AI your technicians should trust with a live machine.
           </h2>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '40px' }}>
+            Side-by-side: what foundation models can and cannot do when a line is down and every minute counts.
+          </p>
         </FadeIn>
         <FadeIn delay={0.05}>
           <ComparisonTable />
@@ -417,10 +680,10 @@ function S02() {
         </FadeIn>
         <FadeIn delay={0.12}>
           <FeaturePills items={[
-            { title: 'Capture tribal knowledge', body: 'Preserve the expertise of senior techs before they retire.' },
-            { title: 'Total data privacy', body: 'Company data is totally private and never used to train public models.' },
-            { title: 'Instant ROI', body: "Costs less than one hour of a technician's pay." },
-            { title: 'Scale operations', body: 'Ramp up new hires faster and complete more jobs per day, making scaling your operations that much easier.' },
+            { title: 'Capture tribal knowledge', body: 'Lock in decades of expertise before it walks out the door—searchable by every tech, every shift.' },
+            { title: 'Total data privacy', body: 'Your manuals, SOPs, and diagnostics never train someone else\'s model. Full stop.' },
+            { title: 'Instant ROI', body: "Less than one hour of technician pay. One avoided escalation pays for the month." },
+            { title: 'Scale without adding headcount', body: 'New hires perform like veterans on day one. Your best people handle harder work, not repeat questions.' },
           ]} />
         </FadeIn>
         <FadeIn delay={0.15} style={{ marginTop: '48px' }}>
@@ -464,6 +727,69 @@ function S03() {
   const pt = narrow ? 64 : 100;
   return (
     <div id="s03" style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 80px` }}>
+        <FadeIn>
+          <Eyebrow accent>Industry Impact</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 1.08, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '16px', maxWidth: '900px', textWrap: 'balance' }}>
+            What leading research says about AI in maintenance
+          </h2>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '32px' }}>
+            Deloitte and BCG put numbers on the opportunity. Arkim is how maintenance teams actually capture it—on the floor, with your assets, this quarter.
+          </p>
+        </FadeIn>
+        <FadeIn delay={0.05}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: narrow ? '1fr' : 'repeat(2, 1fr)',
+            gap: '16px',
+            marginBottom: '40px',
+            maxWidth: '560px',
+          }}>
+            {[
+              { stat: '50%', label: 'Equipment uptime', cite: 'Deloitte' },
+              { stat: '30%', label: 'Technician proficiency', cite: 'BCG' },
+            ].map((item) => (
+              <div key={item.label} style={{
+                padding: '20px 22px',
+                borderRadius: '10px',
+                border: '1px solid rgba(74,138,191,0.3)',
+                background: 'rgba(74,138,191,0.08)',
+              }}>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '32px', fontWeight: 700, color: 'var(--accent)', lineHeight: 1 }}>{item.stat}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--fg)', marginTop: '8px', fontWeight: 500 }}>{item.label}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', color: 'var(--fg-muted)', marginTop: '4px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{item.cite}</div>
+              </div>
+            ))}
+          </div>
+        </FadeIn>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {INDUSTRY_RESEARCH.map((article, i) => (
+            <FadeIn key={article.href} delay={0.06 * (i + 1)}>
+              <ResearchArticleCard article={article} narrow={narrow} />
+            </FadeIn>
+          ))}
+        </div>
+
+        <FadeIn delay={0.25} style={{ marginTop: '48px', padding: narrow ? '28px 22px' : '36px 40px', borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--bg-card)', textAlign: narrow ? 'left' : 'center' }}>
+          <h3 style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(20px, 2.2vw, 24px)', fontWeight: 700, marginBottom: '12px', letterSpacing: '-0.02em' }}>
+            The research sets the bar. Arkim helps you clear it.
+          </h3>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: '16px', color: 'var(--p-fg)', lineHeight: 1.7, maxWidth: '600px', margin: narrow ? '0 0 24px' : '0 auto 24px', textWrap: 'pretty' }}>
+            Stop benchmarking generic AI. Put a maintenance copilot in your technicians&apos; hands that reads your plant&apos;s reality—not the internet&apos;s guess.
+          </p>
+          <DemoBtn label="Request a demo" />
+        </FadeIn>
+      </div>
+    </div>
+  );
+}
+
+function S04() {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
+  return (
+    <div id="s04" style={{ borderTop: '1px solid var(--border)' }}>
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 60px` }}>
         <FadeIn>
           <Eyebrow accent>More Resources</Eyebrow>
@@ -477,10 +803,7 @@ function S03() {
             borderRadius: '12px',
             overflow: 'hidden',
             background: 'var(--bg-card)',
-            transition: 'background 0.2s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.background='#1a1a1a'; }}
-          onMouseLeave={e => { e.currentTarget.style.background='var(--bg-card)'; }}
           >
             <div style={{ padding: narrow ? '28px 22px' : '40px 44px' }}>
               <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>Announcement</div>
@@ -521,14 +844,14 @@ function FinalCTA() {
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '700px', height: '400px', background: 'radial-gradient(ellipse, rgba(74,138,191,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative' }}>
         <FadeIn>
-          <Eyebrow>Let's Talk</Eyebrow>
+          <Eyebrow>Ready when you are</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
-            Questions about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>our resources?</em>
+            Turn industry proof into<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your plant&apos;s performance.</em>
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
-            Reach out for the full picture on how Arkim fits your maintenance operations.
+            You have the benchmarks. See how Arkim puts 30% more proficiency and 50% more uptime within reach for your team—starting with one demo on your equipment.
           </p>
-          <DemoBtn label="Request a Demo" style={{ fontSize: '16px', padding: '15px 36px' }} />
+          <DemoBtn label="Book your demo" style={{ fontSize: '16px', padding: '15px 36px' }} />
           <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'var(--p-fg-soft)', marginTop: '20px' }}>No pitch deck. No commitment.</p>
         </FadeIn>
       </div>
@@ -587,10 +910,12 @@ function App() {
       </div>
       <div style={{ height: 'calc(68px + env(safe-area-inset-top, 0px))' }} />
       <Hero />
+      <ValueProofStrip />
       <StickyAnchorNav />
       <S01 />
       <S02 />
       <S03 />
+      <S04 />
       <FinalCTA />
       <Footer />
     </div>

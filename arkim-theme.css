@@ -13,7 +13,8 @@
   --partner-logo-hover-opacity: 0.55;
   --partner-logo-filter: brightness(10);
   /* Body copy in <p> — black in light site theme (see html[data-theme="light"]) */
-  --p-fg: var(--fg-muted);
+  --p-fg: rgba(245, 242, 237, 0.84);
+  --p-fg-soft: rgba(245, 242, 237, 0.68);
   --text-body-weight: 400;
 }
 
@@ -51,6 +52,10 @@ html[data-theme="light"] {
 
 html:not([data-theme="light"]) {
   --card-hover: #1a1a1a;
+  /* Muted / secondary copy — brighter than legacy #8A857C for WCAG on #0A0A0A */
+  --fg-muted: #b5b0a6;
+  --fg-faint: rgba(245, 242, 237, 0.48);
+  --fg-ghost: rgba(245, 242, 237, 0.58);
 }
 
 /* Dark backing for transparent ingestion funnel art on light pages */

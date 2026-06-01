@@ -40,23 +40,9 @@
 <link rel="stylesheet" href="/arkim-theme.css" />
 <link rel="stylesheet" href="/arkim-nav.css" />
 <link rel="stylesheet" href="/arkim-footer.css" />
-<style>
-@font-face {
-  font-family: 'Avenir Next';
-  src: url('/uploads/Avenir Next.ttc') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Avenir Next';
-  src: url('/uploads/Avenir Next.ttc') format('truetype');
-  font-weight: 100 900;
-  font-style: italic;
-}
-</style>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/arkim-hero.css" />
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -68,12 +54,11 @@
   --bg-card: #141414;
   --border: #2A2A2A;
   --fg: #F5F2ED;
-  --fg-muted: #8A857C;
+  --fg-muted: #B5B0A6;
   --accent: #4A8ABF;
   --headline-accent: #7AB5E0;
   --text-muted: rgba(255,255,255,0.72);
-  --serif: 'Cormorant Garamond', Georgia, serif;
-  --sans: 'Avenir Next', 'Avenir', Helvetica, sans-serif;
+  --sans: 'IBM Plex Sans', Helvetica, sans-serif;
 }
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -90,7 +75,7 @@ body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webki
 <script type="text/babel" src="/arkim-footer.jsx"></script>
 <script type="text/babel">
 const { useState, useEffect, useRef } = React;
-const ArkimNav = window.ArkimNav;
+const { ArkimFixedHeader } = window;
 const ArkimFooter = window.ArkimFooter;
 const useArkimTheme = window.useArkimTheme;
 
@@ -131,7 +116,7 @@ function Eyebrow({ children }) {
 function Hero() {
   const narrow = useIsNarrowLayout();
   return (
-    <div className="hero-cinematic hero-cinematic--static-texture" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? '120px 16px 72px' : '140px 48px 80px', overflow: 'hidden' }}>
+    <div className="hero-cinematic hero-cinematic--static-texture" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? 'calc(120px + var(--arkim-nav-offset)) 16px 72px' : 'calc(140px + var(--arkim-nav-offset)) 48px 80px', overflow: 'hidden' }}>
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '860px', width: '100%', padding: narrow ? '0 4px' : undefined }}>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
           <h1 className="hero-h1">
@@ -409,10 +394,7 @@ function CTA() {
 function App() {
   return (
     <div>
-      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, paddingTop: 'env(safe-area-inset-top, 0px)' }}>
-        <ArkimNav activeLabel="About Us" />
-      </div>
-      <div style={{ height: 'calc(68px + env(safe-area-inset-top, 0px))' }} />
+      <ArkimFixedHeader activeLabel="About Us" heroOverlay />
       <Hero />
       <TheProblem />
       <WhatWeBuilt />

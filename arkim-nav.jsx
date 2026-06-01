@@ -2,15 +2,13 @@
  * Shared site navigation — loaded before page scripts.
  * Exposes window.useViewport, window.usePrefersReducedMotion, window.useArkimTheme, window.HeroBgVideo, window.ArkimNav
  *
- * All chrome is universal: appearance comes from arkim-nav.css + :root theme tokens
- * (index.html or arkim-theme.css). Pages only pass activeLabel for the current route.
+ * Chrome: transparent over heroes, frosted scrim on scroll (arkim-nav.css + :root tokens).
+ * Pass heroOverlay on cinematic hero pages; use ArkimFixedHeader for the fixed shell + spacer.
  */
 const { useState, useEffect, useRef } = React;
 
-const HERO_BG_VIDEO_SRC = 'https://assets.arkim.ai/ARKIM-Main-Edit-NO-COPY-NO-AUDIO.mp4';
-
 /** Full-bleed muted loop for cinematic heroes (index, product). Respects reduced motion. */
-function HeroBgVideo({ reducedMotion = false }) {
+function HeroBgVideo({ src, reducedMotion = false }) {
   const videoRef = useRef(null);
 
   const tryPlay = () => {
@@ -43,7 +41,7 @@ function HeroBgVideo({ reducedMotion = false }) {
         <video
           ref={videoRef}
           className="hero-bg-video"
-          src={HERO_BG_VIDEO_SRC}
+          src={src}
           muted
           loop
           playsInline
@@ -109,6 +107,17 @@ function useArkimTheme() {
   return isLight;
 }
 
+function useNavScrolled(threshold = 12) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > threshold);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [threshold]);
+  return scrolled;
+}
+
 function DayIcon() {
   return (
     <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
@@ -126,7 +135,7 @@ function NightIcon() {
   );
 }
 
-function ThemeToggle() {
+function ThemeToggle({ overlay = false }) {
   const [theme, setTheme] = useState(() =>
     document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'
   );
@@ -146,8 +155,8 @@ function ThemeToggle() {
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       style={{
         background: 'transparent',
-        color: 'var(--fg-muted)',
-        border: '1px solid var(--border)',
+        color: overlay ? 'var(--nav-overlay-muted)' : 'var(--fg-muted)',
+        border: overlay ? '1px solid var(--nav-overlay-border)' : '1px solid var(--border)',
         padding: 0,
         display: 'flex',
         alignItems: 'center',
@@ -162,10 +171,13 @@ function ThemeToggle() {
   );
 }
 
-function ArkimNav({ activeLabel = null }) {
+function ArkimNav({ activeLabel = null, heroOverlay = false }) {
   const isLightTheme = useArkimTheme();
   const { isMobile } = useViewport();
   const [menuOpen, setMenuOpen] = useState(false);
+  const scrolled = useNavScrolled();
+  const isSolid = scrolled || menuOpen;
+  const isOverlay = heroOverlay && !isSolid;
 
   const links = [
     { label: 'Product', href: '/product/' },
@@ -179,21 +191,31 @@ function ArkimNav({ activeLabel = null }) {
   }, [isMobile]);
 
   const linkColor = (label) => {
-    const isActive = activeLabel === label;
-    return isActive ? 'var(--fg)' : 'var(--fg-muted)';
+    if (isOverlay) {
+      return activeLabel === label ? 'var(--nav-overlay-fg)' : 'var(--nav-overlay-muted)';
+    }
+    return activeLabel === label ? 'var(--fg)' : 'var(--fg-muted)';
   };
 
   const linkWeight = (label) => (activeLabel === label ? 600 : 500);
 
-  /* Brand: arkim-side-by-side.svg = light theme; arkim-side-by-side-wht.svg = dark theme. */
+  /* Brand: arkim-side-by-side.svg = light theme; arkim-side-by-side-wht.svg = dark theme / hero overlay. */
   const logoLightSurface =
     (window.__resources && window.__resources.logoSideBySide) || '/uploads/arkim-side-by-side.svg';
   const logoDarkSurface =
     (window.__resources && window.__resources.logoSideBySideWht) || '/uploads/arkim-side-by-side-wht.svg';
-  const navLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
+  const navLogoSrc = isOverlay || !isLightTheme ? logoDarkSurface : logoLightSurface;
+
+  const navClassName = [
+    'arkim-site-nav',
+    isSolid ? 'arkim-site-nav--scrolled' : '',
+    isOverlay ? 'arkim-site-nav--overlay' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <nav className="arkim-site-nav">
+    <nav className={navClassName}>
       <div className="arkim-site-nav__inner">
         <a
           href="/"
@@ -212,13 +234,15 @@ function ArkimNav({ activeLabel = null }) {
                   href={href}
                   target={isExternal ? '_blank' : undefined}
                   rel={isExternal ? 'noopener noreferrer' : undefined}
-                  className="arkim-site-nav__link"
+                  className={
+                    'arkim-site-nav__link' + (activeLabel === l ? ' arkim-site-nav__link--active' : '')
+                  }
                   style={{
                     color: linkColor(l),
                     fontWeight: linkWeight(l),
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = 'var(--fg)';
+                    e.currentTarget.style.color = isOverlay ? 'var(--nav-overlay-fg)' : 'var(--fg)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = linkColor(l);
@@ -233,7 +257,7 @@ function ArkimNav({ activeLabel = null }) {
 
         {!isMobile ? (
           <div className="arkim-site-nav__tools">
-            <ThemeToggle />
+            <ThemeToggle overlay={isOverlay} />
             <a
               href="/contactus/#arkim-contact-form"
               className="arkim-site-nav__cta"
@@ -247,7 +271,7 @@ function ArkimNav({ activeLabel = null }) {
           </div>
         ) : (
           <div className="arkim-site-nav__tools">
-            <ThemeToggle />
+            <ThemeToggle overlay={isOverlay} />
             <button
               type="button"
               className="arkim-site-nav__menu-btn"
@@ -256,8 +280,8 @@ function ArkimNav({ activeLabel = null }) {
               onClick={() => setMenuOpen((v) => !v)}
               style={{
                 background: 'transparent',
-                color: 'var(--fg)',
-                border: '1px solid var(--border)',
+                color: isOverlay ? 'var(--nav-overlay-fg)' : 'var(--fg)',
+                border: isOverlay ? '1px solid var(--nav-overlay-border)' : '1px solid var(--border)',
                 padding: '8px 10px',
                 minWidth: 40,
                 minHeight: 40,
@@ -313,8 +337,23 @@ function ArkimNav({ activeLabel = null }) {
   );
 }
 
+/** Fixed header shell — pass heroOverlay on cinematic hero pages (no spacer; hero clears nav via padding). */
+function ArkimFixedHeader({ activeLabel = null, heroOverlay = false, children = null }) {
+  return (
+    <>
+      <div className="arkim-fixed-header">
+        {children}
+        <ArkimNav activeLabel={activeLabel} heroOverlay={heroOverlay} />
+      </div>
+      {!heroOverlay && <div className="arkim-fixed-header__spacer" aria-hidden="true" />}
+    </>
+  );
+}
+
 window.useViewport = useViewport;
+window.useNavScrolled = useNavScrolled;
 window.usePrefersReducedMotion = usePrefersReducedMotion;
 window.useArkimTheme = useArkimTheme;
 window.HeroBgVideo = HeroBgVideo;
 window.ArkimNav = ArkimNav;
+window.ArkimFixedHeader = ArkimFixedHeader;

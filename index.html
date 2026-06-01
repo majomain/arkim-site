@@ -37,23 +37,9 @@
 })();
 </script>
 <title>Arkim AI — Industrial Maintenance, Re-leveraged.</title>
-<style>
-@font-face {
-  font-family: 'Avenir Next';
-  src: url('uploads/Avenir Next.ttc') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Avenir Next';
-  src: url('uploads/Avenir Next.ttc') format('truetype');
-  font-weight: 100 900;
-  font-style: italic;
-}
-</style>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="arkim-hero.css" />
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -67,14 +53,14 @@
   --bg-card: #141414;
   --border: #2A2A2A;
   --fg: #F5F2ED;
-  --fg-muted: #8A857C;
+  --fg-muted: #B5B0A6;
   --accent: #4A8ABF;
   --btn-fg: #000000;
   --nav-scrim: rgba(10, 10, 10, 0.94);
   --hero-bg: #000000;
   --hero-title: #ffffff;
-  --fg-faint: rgba(245, 242, 237, 0.25);
-  --fg-ghost: rgba(245, 242, 237, 0.3);
+  --fg-faint: rgba(245, 242, 237, 0.48);
+  --fg-ghost: rgba(245, 242, 237, 0.58);
   --fg-dimmer: rgba(245, 242, 237, 0.35);
   --outline: rgba(245, 242, 237, 0.2);
   --outline-hover: rgba(245, 242, 237, 0.4);
@@ -98,8 +84,7 @@
   --partner-logo-hover-opacity: 0.55;
   --partner-logo-filter: brightness(10);
   --selection: rgba(74, 138, 191, 0.25);
-  --serif: 'Cormorant Garamond', Georgia, serif;
-  --sans: 'Avenir Next', 'Avenir', Helvetica, sans-serif;
+  --sans: 'IBM Plex Sans', Helvetica, sans-serif;
   /* Type scale — hero h1 + h2 tokens live in arkim-hero.css (--title-h2-md/lg/xl); --title-display/--title-section alias those */
   --text-eyebrow-size: clamp(12px, 0.95vw, 14px);
   --text-eyebrow-tracking: 0.12em;
@@ -111,11 +96,9 @@
   --title-display: var(--title-h2-lg);
   --title-section: var(--title-h2-md);
   --title-card: clamp(21px, 2vw, 28px);
-  /* Section / display h2 — slightly negative tracking reads tighter than 0.01em on Avenir bold */
+  /* Section / display h2 — slightly negative tracking reads tighter than 0.01em on bold sans */
   --title-h2-letter-spacing: -0.025em;
-  --text-serif-display: clamp(18px, 1.65vw, 22px);
-  --text-serif-body: clamp(17px, 1.45vw, 19px);
-  --p-fg: var(--fg-muted);
+  --p-fg: rgba(245, 242, 237, 0.84);
 }
 
 html[data-theme="light"] {
@@ -493,7 +476,7 @@ a.arkim-btn-primary:focus-visible {
 
 // Arkim Homepage — Section Components
 // Exports all sections to window for use in main HTML file
-// Typography: Avenir Next + Cormorant Garamond (accent); sizes from :root tokens (--title-display, --title-section, --title-card, --text-body, …).
+// Typography: IBM Plex Sans; accent via --accent color; sizes from :root tokens (--title-display, --title-section, --title-card, --text-body, …).
 
 const { useState, useEffect, useRef } = React;
 const useViewport = window.useViewport;
@@ -609,7 +592,11 @@ function Hero() {
   const { isMobile, isTablet } = useViewport();
   const reducedMotion = usePrefersReducedMotion();
   const [demoOpen, setDemoOpen] = useState(false);
-  const heroPad = isMobile ? '120px 20px 88px' : isTablet ? '132px 40px 96px' : '140px 48px 100px';
+  const heroPad = isMobile
+    ? 'calc(120px + var(--arkim-nav-offset)) 20px 88px'
+    : isTablet
+      ? 'calc(132px + var(--arkim-nav-offset)) 40px 96px'
+      : 'calc(140px + var(--arkim-nav-offset)) 48px 100px';
   return (
     <div className="hero-cinematic hero-cinematic--video-bg" style={{
       position: 'relative', minHeight: '100vh',
@@ -618,7 +605,7 @@ function Hero() {
       textAlign: 'center', padding: heroPad,
       overflow: 'hidden',
     }}>
-      <HeroBgVideo reducedMotion={reducedMotion} />
+      <HeroBgVideo src="https://assets.arkim.ai/arkim-banner-video-home.mp4" reducedMotion={reducedMotion} />
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
         <FadeIn delay={0.1}>
           <h1 className="hero-h1">
@@ -673,7 +660,7 @@ function IndustriesStrip() {
   const all = [...items, ...items, ...items];
   return (
     <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '40px 0', overflow: 'hidden' }}>
-      <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--fg-faint)', textAlign: 'center', marginBottom: '24px' }}>Built For</div>
+      <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--accent)', textAlign: 'center', marginBottom: '24px' }}>Built For</div>
       {reducedMotion ? (
         <div style={{
           display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
@@ -681,9 +668,8 @@ function IndustriesStrip() {
         }}>
           {items.map((item, i) => (
             <span key={i} style={{
-              fontFamily: 'var(--serif)', fontSize: 'var(--text-serif-display)', fontWeight: 400,
+              fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400,
               color: 'var(--fg-muted)', textAlign: 'center',
-              fontStyle: i % 3 === 1 ? 'italic' : 'normal',
             }}>{item}</span>
           ))}
         </div>
@@ -691,9 +677,8 @@ function IndustriesStrip() {
       <div style={{ display: 'flex', gap: '48px', width: 'max-content', animation: 'marquee 50s linear infinite' }}>
         {all.map((item, i) => (
           <span key={i} style={{
-            fontFamily: 'var(--serif)', fontSize: 'var(--text-serif-display)', fontWeight: 400,
+            fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400,
             color: 'var(--fg-muted)', whiteSpace: 'nowrap', flexShrink: 0,
-            fontStyle: i % 3 === 1 ? 'italic' : 'normal',
           }}>{item}</span>
         ))}
       </div>
@@ -997,7 +982,7 @@ function IntegrationStrip() {
               <div key={i} style={{
                 background: 'var(--bg-card)', padding: '32px 20px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--serif)', fontSize: 'var(--text-serif-body)', fontWeight: 400,
+                fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400,
                 color: 'var(--fg-ghost)', textAlign: 'center',
                 transition: 'color 0.25s, background 0.25s', cursor: 'default',
               }}
@@ -1055,19 +1040,7 @@ function TimeToValue() {
               background: col.accent ? 'var(--accent-soft)' : 'var(--bg-card)',
               border: `1px solid ${col.accent ? 'var(--accent-border)' : 'var(--border)'}`,
               borderRadius: '16px', padding: '48px 40px', height: '100%',
-              transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.25s',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform = 'translateY(-3px)';
-              e.currentTarget.style.boxShadow = col.accent
-                ? '0 20px 48px rgba(58, 122, 175, 0.12)'
-                : '0 18px 40px rgba(0,0,0,0.14)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = 'none';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-            >
+            }}>
               <div style={{
                 fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)',
                 textTransform: 'uppercase', color: col.accent ? 'var(--accent)' : 'var(--fg-muted)',
@@ -1077,13 +1050,13 @@ function TimeToValue() {
                 {col.items.map(([text, good], ii) => (
                   <div key={ii} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                     <div style={{
-                      fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', lineHeight: 1, marginTop: '2px',
-                      color: col.accent && good ? 'var(--accent)' : 'var(--border)',
+                      fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 600, lineHeight: 1, marginTop: '2px',
+                      color: col.accent && good ? 'var(--accent)' : '#e85d5d',
                       flexShrink: 0,
-                    }}>{col.accent ? '✓' : '✗'}</div>
+                    }} aria-hidden="true">{col.accent ? '✓' : '✗'}</div>
                     <p style={{
                       fontFamily: 'var(--sans)', fontSize: 'var(--text-body)', fontWeight: 400,
-                      color: col.accent ? 'var(--fg)' : 'var(--p-fg)',
+                      color: 'var(--fg)',
                       lineHeight: 1.6, textWrap: 'pretty',
                     }}>{text}</p>
                   </div>
@@ -1330,11 +1303,16 @@ function Divider() {
 function App() {
   const headerRef = useRef(null);
   const [announceVisible, setAnnounceVisible] = useState(false);
-  const [headerHeight, setHeaderHeight] = useState(109);
+  const [announceHeight, setAnnounceHeight] = useState(0);
 
   useEffect(() => {
-    if (!headerRef.current) return;
-    const readHeight = () => setHeaderHeight(headerRef.current ? headerRef.current.getBoundingClientRect().height : 109);
+    if (!announceVisible || !headerRef.current) {
+      setAnnounceHeight(0);
+      return;
+    }
+    const readHeight = () => {
+      setAnnounceHeight(headerRef.current ? headerRef.current.getBoundingClientRect().height : 0);
+    };
     readHeight();
     const observer = new ResizeObserver(readHeight);
     observer.observe(headerRef.current);
@@ -1347,18 +1325,13 @@ function App() {
 
   return (
     <div>
-      {/* Fixed header: announcement bar + nav together so they never overlap; top inset for notched devices */}
-      <div ref={headerRef} style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
-        paddingTop: 'env(safe-area-inset-top, 0px)',
-        paddingLeft: 'env(safe-area-inset-left, 0px)',
-        paddingRight: 'env(safe-area-inset-right, 0px)',
-      }}>
+      <div ref={headerRef} className="arkim-fixed-header">
         {announceVisible && <AnnouncementBar onDismiss={() => setAnnounceVisible(false)} />}
-        <ArkimNav />
+        <ArkimNav heroOverlay={!announceVisible} />
       </div>
-      {/* Spacer so content starts below fixed header */}
-      <div style={{ height: headerHeight }} />
+      {announceVisible && announceHeight > 0 && (
+        <div style={{ height: announceHeight }} aria-hidden="true" />
+      )}
       <ArkimHero />
       <ArkimIndustriesStrip />
       <ArkimTheLever />

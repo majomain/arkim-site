@@ -3,31 +3,66 @@
  */
 :root {
   --arkim-nav-height: 68px;
+  --arkim-nav-offset: calc(var(--arkim-nav-height) + env(safe-area-inset-top, 0px));
   --arkim-nav-blur: 28px;
   --arkim-nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --arkim-nav-duration: 0.5s;
+  --nav-overlay-fg: #f5f2ed;
+  --nav-overlay-muted: rgba(245, 242, 237, 0.72);
+  --nav-overlay-border: rgba(255, 255, 255, 0.22);
 }
 
 /**
- * Single chrome rule for every page: frosted bar from :root tokens only.
- * No scroll-based or per-page variants — change nav look here (and theme tokens on :root).
+ * Default: transparent bar over hero/media. Scroll or open mobile menu → frosted scrim.
  */
 .arkim-site-nav {
   position: relative;
   width: 100%;
   box-sizing: border-box;
   z-index: 200;
-  background: var(--nav-scrim);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.055);
-  -webkit-backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
-  backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   transition:
     background-color var(--arkim-nav-duration) var(--arkim-nav-ease),
     border-color var(--arkim-nav-duration) var(--arkim-nav-ease),
     box-shadow var(--arkim-nav-duration) var(--arkim-nav-ease),
     -webkit-backdrop-filter var(--arkim-nav-duration) var(--arkim-nav-ease),
     backdrop-filter var(--arkim-nav-duration) var(--arkim-nav-ease);
+}
+
+.arkim-site-nav--scrolled {
+  background: var(--nav-scrim);
+  border-bottom-color: var(--border);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.055);
+  -webkit-backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
+  backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
+}
+
+.arkim-site-nav--overlay .arkim-site-nav__link {
+  color: var(--nav-overlay-muted);
+}
+
+.arkim-site-nav--overlay .arkim-site-nav__link:hover,
+.arkim-site-nav--overlay .arkim-site-nav__link:focus-visible {
+  color: var(--nav-overlay-fg);
+}
+
+.arkim-site-nav--overlay .arkim-site-nav__link--active {
+  color: var(--nav-overlay-fg);
+}
+
+.arkim-site-nav--overlay .arkim-site-nav__theme,
+.arkim-site-nav--overlay .arkim-site-nav__menu-btn {
+  color: var(--nav-overlay-fg);
+  border-color: var(--nav-overlay-border);
+}
+
+.arkim-fixed-header__spacer {
+  height: var(--arkim-nav-offset);
+  flex-shrink: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -180,4 +215,15 @@
   -webkit-backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
   backdrop-filter: blur(var(--arkim-nav-blur)) saturate(1.35);
   padding: 8px clamp(16px, 4vw, 48px) 20px;
+}
+
+.arkim-fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
 }

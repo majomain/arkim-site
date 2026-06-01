@@ -116,7 +116,22 @@ function Eyebrow({ children }) {
 function Hero() {
   const narrow = useIsNarrowLayout();
   return (
-    <div className="hero-cinematic hero-cinematic--static-texture" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? 'calc(120px + var(--arkim-nav-offset)) 16px 72px' : 'calc(140px + var(--arkim-nav-offset)) 48px 80px', overflow: 'hidden' }}>
+    <div
+      className="hero-cinematic hero-cinematic--static-texture"
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        padding: narrow ? 'calc(120px + var(--arkim-nav-offset)) 16px 72px' : 'calc(140px + var(--arkim-nav-offset)) 48px 80px',
+        overflow: 'hidden',
+        '--hero-static-texture-image': "url('https://assets.arkim.ai/about-us-banner.webp')",
+        '--hero-texture-opacity': 0.55,
+      }}
+    >
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '860px', width: '100%', padding: narrow ? '0 4px' : undefined }}>
         <div style={{ animation: 'fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}>
           <h1 className="hero-h1">
@@ -284,51 +299,46 @@ function Team() {
             const avatarBorder = hoverOnLight ? '1px solid rgba(255, 255, 255, 0.18)' : '1px solid var(--border)';
             return (
             <FadeIn key={i} delay={i * 0.12}>
-              <div
+              <a
+                href={p.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${p.name} on LinkedIn`}
                 style={{
+                  display: 'block',
                   background: isHovered ? '#1a1a1a' : 'var(--bg-card)',
                   padding: narrow ? '28px 22px' : '48px 44px',
                   height: '100%',
-                  transition: 'background 0.2s',
+                  transition: 'background 0.2s, color 0.2s',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
                 }}
                 onMouseEnter={() => setHoveredTeamIndex(i)}
                 onMouseLeave={() => setHoveredTeamIndex(null)}
               >
-                <a
-                  href={p.linkedinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${p.name} on LinkedIn`}
+                <img
+                  src={p.photoSrc}
+                  alt=""
+                  width={80}
+                  height={80}
+                  loading="lazy"
+                  decoding="async"
                   style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: '50%',
+                    border: avatarBorder,
+                    objectFit: 'cover',
+                    objectPosition: 'center top',
                     display: 'block',
-                    width: 'fit-content',
-                    textDecoration: 'none',
-                    color: 'inherit',
+                    marginBottom: '24px',
                   }}
-                >
-                  <img
-                    src={p.photoSrc}
-                    alt=""
-                    width={80}
-                    height={80}
-                    loading="lazy"
-                    decoding="async"
-                    style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: '50%',
-                      border: avatarBorder,
-                      objectFit: 'cover',
-                      objectPosition: 'center top',
-                      display: 'block',
-                      marginBottom: '24px',
-                    }}
-                  />
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: '22px', fontWeight: 700, marginBottom: '6px', letterSpacing: '-0.02em', color: nameColor, transition: 'color 0.2s' }}>{p.name}</div>
-                </a>
+                />
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '22px', fontWeight: 700, marginBottom: '6px', letterSpacing: '-0.02em', color: nameColor, transition: 'color 0.2s' }}>{p.name}</div>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: roleColor, fontWeight: 500, letterSpacing: '0.04em', marginBottom: '20px', transition: 'color 0.2s' }}>{p.role}</div>
-                <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 400, color: bioColor, lineHeight: 1.7, textWrap: 'pretty', transition: 'color 0.2s' }}>{p.bio}</p>
-              </div>
+                <p style={{ fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 400, color: bioColor, lineHeight: 1.7, textWrap: 'pretty', margin: 0, transition: 'color 0.2s' }}>{p.bio}</p>
+              </a>
             </FadeIn>
             );
           })}

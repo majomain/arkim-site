@@ -472,180 +472,298 @@ function StatBlock({ num, label, sub }) {
   );
 }
 
-/** Full-bleed diagram: baseline evenly-spaced maintenance vs schedule shifted after observed events */
-function AdaptiveMaintenanceTimelineDiagram() {
+/** Per-asset baseline diagram — width matches Section (1300px + page gutters) */
+function BaselineCaptureDiagram() {
   const narrow = useIsNarrowLayout();
-  const [adapted, setAdapted] = useState(false);
+  const gx = narrow ? 22 : 80;
+  const [captured, setCaptured] = useState(false);
   useEffect(() => {
-    const t = setInterval(() => setAdapted((v) => !v), 4500);
+    const t = setInterval(() => setCaptured((v) => !v), 5000);
     return () => clearInterval(t);
   }, []);
 
-  const baselinePct = [10, 30, 50, 70, 90];
-  const adaptedPct = [10, 22, 44, 63, 88];
-  const eventPct = [35, 58];
+  const paperParams = [
+    { label: 'Operating temp', value: '180–220 °F' },
+    { label: 'Service interval', value: 'Every 6 months' },
+    { label: 'Vibration limit', value: 'Per ISO class' },
+  ];
+  const assetParams = [
+    { label: 'Operating temp', value: '195 °F steady' },
+    { label: 'Oil change rhythm', value: 'Every 11 weeks' },
+    { label: 'Startup quirk', value: '2 min purge before load' },
+  ];
+  const chatLines = [
+    { who: 'operator', text: 'Compressor 7 always runs about 195 — never hits manual max.' },
+    { who: 'arkim', text: 'Logged as normal operating temp for asset #247.' },
+    { who: 'operator', text: 'We change oil every 11 weeks, not quarterly like the book says.' },
+  ];
+  const downstream = ['Drift detection', 'Diagnostic agent', 'Predictive maintenance', 'Agentic prioritization'];
 
   return (
     <div
       role="img"
-      aria-label="Diagram: evenly spaced maintenance markers on a timeline shift after observed events"
+      aria-label="Diagram: operator conversation builds a per-asset baseline that anchors drift detection and maintenance intelligence"
       style={{
         width: '100%',
-        minHeight: narrow ? 'min(52vh, 420px)' : 'clamp(300px, 48vh, 520px)',
-        position: 'relative',
-        overflow: 'hidden',
-        background: 'repeating-linear-gradient(45deg, var(--bg-card) 0, var(--bg-card) 14px, var(--bg) 14px, var(--bg) 28px)',
+        background: 'var(--bg)',
         borderTop: '1px solid var(--border)',
         borderBottom: '1px solid var(--border)',
       }}
     >
       <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'radial-gradient(ellipse 80% 70% at 50% 45%, rgba(74, 138, 191, 0.06) 0%, transparent 65%)',
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'relative',
-        zIndex: 1,
-        height: '100%',
-        minHeight: narrow ? 360 : 420,
-        padding: narrow ? '28px 20px 32px' : '40px clamp(24px, 5vw, 56px) 44px',
+        maxWidth: '1300px',
+        margin: '0 auto',
+        width: '100%',
+        padding: narrow ? `28px ${gx}px 32px` : `40px ${gx}px 44px`,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        gap: narrow ? 8 : 12,
+        gap: narrow ? 20 : 28,
       }}>
-        <div style={{
-          fontFamily: 'var(--sans)',
-          fontSize: '11px',
-          fontWeight: 600,
-          letterSpacing: '0.16em',
-          textTransform: 'uppercase',
-          color: 'var(--accent)',
-        }}>
-          Adaptive schedule
-        </div>
-        <p style={{
-          fontFamily: 'var(--sans)',
-          fontSize: narrow ? '15px' : '17px',
-          fontWeight: 500,
-          color: 'var(--fg)',
-          maxWidth: 520,
-          lineHeight: 1.35,
-          textWrap: 'balance',
-        }}>
-          Evenly spaced manufacturer intervals give way to task timing that follows what your equipment actually did.
-        </p>
-
-        <div style={{ marginTop: narrow ? 20 : 28, position: 'relative' }}>
+        <div>
           <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 10,
-            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-            fontSize: '10px',
-            letterSpacing: '0.06em',
+            fontFamily: 'var(--sans)',
+            fontSize: '11px',
+            fontWeight: 600,
+            letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            color: 'var(--fg-muted)',
+            color: 'var(--accent)',
+            marginBottom: 10,
           }}>
-            <span>Time →</span>
-            <span style={{ opacity: adapted ? 1 : 0.55, transition: 'opacity 0.6s' }}>
-              {adapted ? 'After observed events' : 'Manufacturer baseline'}
-            </span>
+            Baseline capture
           </div>
+          <p style={{
+            fontFamily: 'var(--sans)',
+            fontSize: narrow ? '15px' : '17px',
+            fontWeight: 500,
+            color: 'var(--fg)',
+            lineHeight: 1.4,
+            textWrap: 'balance',
+          }}>
+            Natural-language conversations with the people who run your equipment define what normal looks like for each asset — not just what the manual says for the class.
+          </p>
+        </div>
 
-          <div style={{ position: 'relative', height: 56, marginBottom: 6 }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: narrow ? '1fr' : '1fr 1fr',
+          gap: narrow ? 12 : 16,
+        }}>
+          <div style={{
+            border: '1px solid var(--border)',
+            borderRadius: 12,
+            background: 'var(--bg-card)',
+            padding: narrow ? '16px 14px' : '20px 18px',
+            opacity: captured ? 0.55 : 1,
+            transition: 'opacity 0.7s ease',
+          }}>
             <div style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              top: '50%',
-              height: 2,
-              marginTop: -1,
-              background: 'var(--border)',
-              borderRadius: 1,
-            }} />
-            {baselinePct.map((pct, i) => (
-              <div
-                key={`ghost-${i}`}
-                style={{
-                  position: 'absolute',
-                  left: `${pct}%`,
-                  top: '50%',
-                  width: 5,
-                  height: 5,
-                  marginLeft: -2.5,
-                  marginTop: -2.5,
-                  borderRadius: '50%',
-                  background: 'var(--fg-muted)',
-                  opacity: adapted ? 0.45 : 0.12,
-                  transition: 'opacity 0.8s ease',
-                }}
-              />
-            ))}
-            {baselinePct.map((pct, i) => {
-              const target = adapted ? adaptedPct[i] : baselinePct[i];
-              return (
-                <div
-                  key={`m-${i}`}
-                  style={{
-                    position: 'absolute',
-                    left: `${target}%`,
-                    top: '50%',
-                    width: 12,
-                    height: 12,
-                    marginLeft: -6,
-                    marginTop: -6,
-                    borderRadius: '50%',
-                    border: '2px solid var(--accent)',
-                    background: 'var(--bg-card)',
-                    boxShadow: adapted ? '0 0 0 4px rgba(74, 138, 191, 0.12)' : 'none',
-                    transition: 'left 2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.8s ease',
-                  }}
-                />
-              );
-            })}
-            {eventPct.map((pct, j) => (
-              <div
-                key={`ev-${j}`}
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  left: `${pct}%`,
-                  top: '50%',
-                  marginLeft: -5,
-                  marginTop: -20,
-                  width: 10,
-                  height: 10,
-                  border: '1px solid var(--accent)',
-                  background: 'rgba(74, 138, 191, 0.15)',
-                  transform: 'rotate(45deg)',
-                  opacity: adapted ? 1 : 0,
-                  transformOrigin: 'center',
-                  transition: 'opacity 0.7s ease, transform 0.7s ease',
-                  pointerEvents: 'none',
-                }}
-              />
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--fg-muted)',
+              marginBottom: 14,
+            }}>
+              Asset class on paper
+            </div>
+            {paperParams.map((p) => (
+              <div key={p.label} style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: 12,
+                padding: '10px 0',
+                borderTop: '1px solid var(--border)',
+                fontFamily: 'var(--sans)',
+                fontSize: '13px',
+              }}>
+                <span style={{ color: 'var(--fg-muted)' }}>{p.label}</span>
+                <span style={{ color: 'var(--fg)', fontWeight: 500, textAlign: 'right' }}>{p.value}</span>
+              </div>
             ))}
           </div>
 
           <div style={{
-            display: 'flex',
-            flexDirection: narrow ? 'column' : 'row',
-            justifyContent: 'space-between',
-            gap: narrow ? 6 : 12,
-            marginTop: 4,
-            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-            fontSize: '10px',
-            color: 'var(--fg-muted)',
-            opacity: 0.85,
+            border: `1px solid ${captured ? 'var(--accent)' : 'var(--border)'}`,
+            borderRadius: 12,
+            background: captured ? 'rgba(74, 138, 191, 0.08)' : 'var(--bg-card)',
+            padding: narrow ? '16px 14px' : '20px 18px',
+            boxShadow: captured ? '0 0 0 1px rgba(74, 138, 191, 0.2)' : 'none',
+            transition: 'border-color 0.7s, background 0.7s, box-shadow 0.7s, opacity 0.7s',
+            opacity: captured ? 1 : 0.72,
           }}>
-            <span>Tasks follow manual cadence at first</span>
-            <span style={{ textAlign: narrow ? 'left' : 'right' }}>Real events pull the next tasks earlier or later</span>
+            <div style={{
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: captured ? 'var(--accent)' : 'var(--fg-muted)',
+              marginBottom: 14,
+              transition: 'color 0.7s',
+            }}>
+              This asset&apos;s baseline
+            </div>
+            {assetParams.map((p) => (
+              <div key={p.label} style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: 12,
+                padding: '10px 0',
+                borderTop: '1px solid var(--border)',
+                fontFamily: 'var(--sans)',
+                fontSize: '13px',
+              }}>
+                <span style={{ color: 'var(--fg-muted)' }}>{p.label}</span>
+                <span style={{ color: 'var(--accent)', fontWeight: 600, textAlign: 'right' }}>{p.value}</span>
+              </div>
+            ))}
           </div>
         </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: narrow ? '1fr' : 'minmax(0, 1.1fr) minmax(0, 0.9fr)',
+          gap: narrow ? 16 : 20,
+          alignItems: 'stretch',
+        }}>
+          <div style={{
+            border: '1px solid var(--border)',
+            borderRadius: 12,
+            background: 'var(--bg-card)',
+            padding: narrow ? '14px 12px' : '16px 16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+          }}>
+            <div style={{
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--fg-muted)',
+            }}>
+              Floor conversation → captured knowledge
+            </div>
+            {chatLines.map((line, i) => (
+              <div
+                key={i}
+                style={{
+                  alignSelf: line.who === 'operator' ? 'flex-start' : 'flex-end',
+                  maxWidth: '92%',
+                  padding: '10px 12px',
+                  borderRadius: line.who === 'operator' ? '10px 10px 10px 4px' : '10px 10px 4px 10px',
+                  background: line.who === 'operator' ? 'var(--bg)' : 'rgba(74, 138, 191, 0.14)',
+                  border: `1px solid ${line.who === 'operator' ? 'var(--border)' : 'rgba(74, 138, 191, 0.35)'}`,
+                  fontFamily: 'var(--sans)',
+                  fontSize: '12px',
+                  lineHeight: 1.5,
+                  color: 'var(--fg)',
+                  opacity: captured || i < 2 ? 1 : 0.35,
+                  transition: 'opacity 0.6s ease',
+                }}
+              >
+                <span style={{
+                  display: 'block',
+                  fontSize: '9px',
+                  fontWeight: 600,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: line.who === 'operator' ? 'var(--fg-muted)' : 'var(--accent)',
+                  marginBottom: 4,
+                }}>
+                  {line.who === 'operator' ? 'Operator' : 'Arkim'}
+                </span>
+                {line.text}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{
+              flex: 1,
+              border: '1px solid var(--border)',
+              borderRadius: 12,
+              background: 'var(--bg-card)',
+              padding: narrow ? '14px 12px' : '16px 16px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              gap: 8,
+            }}>
+              <div style={{
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+                fontSize: '10px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: 'var(--fg-muted)',
+              }}>
+                Baseline anchors
+              </div>
+              <div style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                border: '2px solid var(--accent)',
+                background: 'rgba(74, 138, 191, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'var(--sans)',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: 'var(--accent)',
+                marginBottom: 4,
+              }}>
+                #247
+              </div>
+              <p style={{
+                fontFamily: 'var(--sans)',
+                fontSize: '12px',
+                color: 'var(--p-fg, var(--fg-muted))',
+                lineHeight: 1.55,
+                textWrap: 'pretty',
+              }}>
+                Per-asset operating parameters, rhythms, and tribal knowledge — the reference point for every future deviation.
+              </p>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 8,
+            }}>
+              {downstream.map((name, i) => (
+                <div
+                  key={name}
+                  style={{
+                    padding: '10px 10px',
+                    borderRadius: 8,
+                    border: '1px solid var(--border)',
+                    background: captured ? 'rgba(74, 138, 191, 0.1)' : 'var(--bg-card)',
+                    fontFamily: 'var(--sans)',
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    color: captured ? 'var(--fg)' : 'var(--fg-muted)',
+                    lineHeight: 1.35,
+                    textAlign: 'center',
+                    opacity: captured ? 1 : 0.5 + i * 0.08,
+                    transition: 'opacity 0.6s, background 0.6s, color 0.6s',
+                  }}
+                >
+                  {name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <p style={{
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+          fontSize: '10px',
+          color: 'var(--fg-muted)',
+          lineHeight: 1.5,
+          opacity: 0.9,
+        }}>
+          Initial data collection event for deviation detection · continuous capture of knowledge that never made it into OEM documentation
+        </p>
       </div>
     </div>
   );
@@ -1065,22 +1183,23 @@ function S02() {
   );
 }
 
-// ── SECTION 03 — MAINTAIN SMARTER ────────────────────────────────────────────
+// ── SECTION 03 — BASELINE CAPTURE ────────────────────────────────────────────
 function S03() {
   return (
     <Section
       id="s03"
-      eyebrow="03 — Maintain Smarter"
-      headline="The manufacturer's schedule is a starting point. Arkim makes it better every day."
-      sub="Most facilities run the maintenance schedule that came in the manual. Arkim learns from your actual equipment, in your actual conditions, and adjusts the schedule automatically."
-      imageLabel="dark timeline: maintenance schedule adapting over time — evenly-spaced markers shifting based on observed events"
-      imageSlot={<AdaptiveMaintenanceTimelineDiagram />}
+      eyebrow="03 — Baseline Capture"
+      headline="Drift detection only works when you know what normal is — for this machine, not just this model."
+      sub="Arkim captures per-asset operating parameters, operational rhythms, and institutional knowledge through natural-language conversation with the people who actually run and maintain the equipment. That baseline anchors diagnostic agents, drift detection, predictive maintenance, and agentic prioritization — and keeps growing as tribal knowledge surfaces on the floor."
+      imageLabel="infographic: OEM asset-class specs versus per-asset baseline from operator conversation, feeding drift detection and maintenance intelligence"
+      imageSlot={<BaselineCaptureDiagram />}
+      showDemoButton={false}
     >
       <FeaturePills items={[
-        { title: 'Manufacturer baseline scheduling', body: "Arkim ingests your equipment manuals and builds the initial maintenance schedule from the manufacturer's specs. Done in hours, not weeks." },
-        { title: 'Event learning', body: 'Every downtime event — even a 15-minute one — is captured and analyzed. Arkim looks for patterns that show up before failures.' },
-        { title: 'Automatic schedule adjustment', body: 'When Arkim spots a pattern, it adds new tasks, changes frequencies, and flags components likely to fail — before they do.' },
-        { title: 'Operator event capture', body: 'Operators on the floor see something unusual? They report it in Arkim. That report feeds directly into the maintenance picture.' },
+        { title: 'Per-asset operating parameters', body: 'Temperature bands, pressure ranges, cycle times, and load profiles are captured as they actually run on your floor — not as a generic spec sheet describes the class.' },
+        { title: 'Operational rhythms', body: 'Oil changes, inspections, startups, and seasonal patterns are recorded in the cadence your team already follows, so schedules and alerts match reality.' },
+        { title: 'Tribal knowledge, continuously', body: 'Quirks, shortcuts, sounds, and fixes that never made it into OEM documentation are captured in conversation and stay with the asset when people rotate or retire.' },
+        { title: 'Anchor for everything downstream', body: 'Diagnostic agents, drift detection, predictive maintenance, and prioritization all compare against this baseline — the reference for what counts as a deviation on asset #247.' },
       ]} />
     </Section>
   );
@@ -1142,13 +1261,6 @@ function S04() {
           ]} />
         </FadeIn>
       </div>
-      <FadeIn>
-        <SectionImg
-          videoSrc="https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/intergrations.mp4"
-          label="Arkim at center, connecting lines to maintenance software logos — clean, dark"
-          alt="Animation showing Arkim connecting to maintenance software systems"
-        />
-      </FadeIn>
     </div>
   );
 }
@@ -1253,7 +1365,7 @@ function HowItWorks() {
         <FadeIn style={{ marginBottom: narrow ? '48px' : '80px' }}>
           <Eyebrow>From Kickoff to Live</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.1, letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
-            Up and running in days.<br /><em style={{ fontStyle: 'normal', color: 'var(--fg-muted)' }}>Not months.</em>
+            Up and running in days.<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>Not months.</em>
           </h2>
         </FadeIn>
         <div style={{
@@ -1263,19 +1375,19 @@ function HowItWorks() {
         }}>
           {steps.map((s, i) => (
             <FadeIn key={i} delay={i * 0.1}>
-              <div style={{ background: '#111', padding: narrow ? '28px 22px' : '40px 36px', height: '100%', transition: 'background 0.25s, box-shadow 0.4s cubic-bezier(0.16,1,0.3,1)' }}
+              <div style={{ background: 'var(--step-card-bg)', padding: narrow ? '28px 22px' : '40px 36px', height: '100%', transition: 'background 0.25s, box-shadow 0.4s cubic-bezier(0.16,1,0.3,1)' }}
               onMouseEnter={e => {
-                e.currentTarget.style.background = '#1a1a1a';
-                e.currentTarget.style.boxShadow = '0 18px 40px rgba(0,0,0,0.16)';
+                e.currentTarget.style.background = 'var(--step-card-hover)';
+                e.currentTarget.style.boxShadow = '0 18px 40px var(--step-card-shadow)';
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.background = '#111';
+                e.currentTarget.style.background = 'var(--step-card-bg)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
               >
                 <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', letterSpacing: '0.12em', color: 'var(--accent)', fontWeight: 500, marginBottom: '20px' }}>{s.num}</div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 600, marginBottom: '16px', lineHeight: 1.2, letterSpacing: '-0.01em', color: 'rgba(245,242,237,0.96)' }}>{s.title}</div>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 400, color: 'rgba(245,242,237,0.72)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.body}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 600, marginBottom: '16px', lineHeight: 1.2, letterSpacing: '-0.01em', color: 'var(--step-card-title)' }}>{s.title}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: '14px', fontWeight: 400, color: 'var(--step-card-body)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.body}</div>
               </div>
             </FadeIn>
           ))}
@@ -1312,15 +1424,6 @@ function Results() {
               <div style={{
                 background: 'var(--bg-card)', padding: narrow ? '32px 22px' : '48px 40px', height: '100%',
                 borderTop: '3px solid var(--accent)',
-                transition: 'background 0.25s, box-shadow 0.4s cubic-bezier(0.16,1,0.3,1)',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = 'var(--card-hover)';
-                e.currentTarget.style.boxShadow = '0 18px 40px rgba(0,0,0,0.18)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = 'var(--bg-card)';
-                e.currentTarget.style.boxShadow = 'none';
               }}
               >
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(32px, 3.5vw, 52px)', fontWeight: 700, color: 'var(--accent)', lineHeight: 1.05, letterSpacing: '-0.025em', marginBottom: '16px' }}>{s.num}</div>
@@ -1339,12 +1442,22 @@ function Results() {
 function FinalCTA() {
   const narrow = useIsNarrowLayout();
   return (
-    <div className="arkim-dark-surface" style={{ borderTop: '1px solid var(--border)', background: 'linear-gradient(to bottom, #0A0A0A, #0c0e0f)', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '700px', height: '400px', background: 'radial-gradient(ellipse, rgba(74,138,191,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', color: 'rgba(245,242,237,0.96)' }}>
+    <div style={{
+      borderTop: '1px solid var(--border)',
+      background: 'linear-gradient(to bottom, var(--final-cta-1), var(--final-cta-2))',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+        width: '700px', height: '400px',
+        background: 'radial-gradient(ellipse, var(--radial-accent-glow) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', color: 'var(--fg)' }}>
         <FadeIn>
-          <div style={{ fontFamily: 'var(--sans)', fontSize: '11px', fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(245,242,237,0.52)', marginBottom: '20px' }}>Let's Talk</div>
-          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
+          <Eyebrow>Let's Talk</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 1.06, letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--fg)' }}>
             Let's talk about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your facility.</em>
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>

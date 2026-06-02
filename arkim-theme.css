@@ -16,6 +16,14 @@
   --p-fg: rgba(245, 242, 237, 0.84);
   --p-fg-soft: rgba(245, 242, 237, 0.68);
   --text-body-weight: 400;
+  /* How-it-works step grid (dark default) */
+  --step-card-bg: #111111;
+  --step-card-hover: #1a1a1a;
+  --step-card-title: rgba(245, 242, 237, 0.96);
+  --step-card-body: rgba(245, 242, 237, 0.72);
+  --step-card-shadow: rgba(0, 0, 0, 0.16);
+  --final-cta-1: #0a0a0a;
+  --final-cta-2: #0c0e0f;
 }
 
 /* Body + form fields — regular weight in every site theme */
@@ -42,6 +50,14 @@ html[data-theme="light"] {
   --partner-logo-filter: brightness(0) saturate(100%);
   --radial-accent-glow: rgba(58, 122, 175, 0.14);
   --p-fg: #000000;
+  --p-fg-soft: rgba(28, 25, 21, 0.55);
+  --final-cta-1: #f0ebe3;
+  --final-cta-2: #e5dfd4;
+  --step-card-bg: #ebe6dc;
+  --step-card-hover: #e2ddd2;
+  --step-card-title: var(--fg);
+  --step-card-body: var(--fg-muted);
+  --step-card-shadow: rgba(28, 25, 21, 0.1);
 }
 
 /* Always-dark promos (e.g. gradient #0A blocks): light paragraph copy on both site themes */

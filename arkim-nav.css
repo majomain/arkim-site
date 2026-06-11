@@ -85,9 +85,10 @@
 
 .arkim-site-nav__link {
   font-family: var(--sans);
-  font-size: var(--text-caption, 13px);
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  font-size: var(--text-caption, 16px);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   text-decoration: none;
   text-decoration-color: transparent;
   text-underline-offset: 0.28em;
@@ -114,7 +115,7 @@
 }
 
 .arkim-site-nav__email {
-  font-family: var(--sans);
+  font-family: var(--body);
   font-size: var(--text-micro, 12px);
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -145,7 +146,9 @@
 .arkim-site-nav__drawer-link {
   font-family: var(--sans);
   font-size: var(--text-label, 15px);
-  letter-spacing: 0.03em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   text-decoration: none;
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
@@ -154,7 +157,7 @@
 
 .arkim-site-nav__drawer-cta {
   font-family: var(--sans);
-  font-size: var(--text-caption, 14px);
+  font-size: var(--text-caption, 16px);
   font-weight: 600;
   letter-spacing: 0.02em;
   padding: 14px 18px;

@@ -1,17 +1,28 @@
 /**
  * Hero + section headline tokens — shared by index and subpages (arkim-hero.css).
- * h1: .hero-h1 / --hero-h1-size (max 48px). h2: --title-h2-md|lg|xl (all capped below h1).
+ * h1: .hero-h1 / --hero-h1-size. h2: --title-h2-md|lg|xl. h3/card/stat tokens below.
  */
 :root {
-  --hero-h1-size: clamp(26px, 3.5vw, 48px);
-  --hero-h1-line-height: 1.04;
-  --hero-h1-letter-spacing: 0.01em;
-  /*
-   * h2 scale — every step stays under hero h1 (max 48px). Use site-wide for h2; weight 700 in markup.
-   */
-  --title-h2-md: clamp(22px, 2.7vw, 36px);
-  --title-h2-lg: clamp(24px, 3vw, 40px);
-  --title-h2-xl: clamp(26px, 3.2vw, 44px);
+  --hero-h1-size: clamp(36px, 4.8vw, 66px);
+  --hero-h1-line-height: 0.9;
+  --heading-line-height: 0.9;
+  --hero-h1-letter-spacing: 0.018em;
+  --title-h2-letter-spacing: 0.006em;
+  --title-h3-letter-spacing: 0.012em;
+  --title-card-letter-spacing: 0.012em;
+  --title-stat-letter-spacing: 0.006em;
+  /* h2 — section + display headlines */
+  --title-h2-md: clamp(28px, 3.6vw, 50px);
+  --title-h2-lg: clamp(34px, 4.2vw, 56px);
+  --title-h2-xl: clamp(38px, 4.6vw, 62px);
+  /* h3 + card titles */
+  --title-h3-sm: clamp(22px, 2.4vw, 32px);
+  --title-h3-md: clamp(26px, 2.8vw, 38px);
+  --title-h3-lg: clamp(28px, 3.1vw, 42px);
+  --title-card: clamp(28px, 2.9vw, 42px);
+  /* Large stat / number callouts (Acumin) */
+  --title-stat: clamp(44px, 5.4vw, 68px);
+  --title-stat-md: clamp(38px, 4.6vw, 60px);
 }
 
 .hero-h1 {
@@ -20,6 +31,7 @@
   font-weight: 700;
   line-height: var(--hero-h1-line-height);
   letter-spacing: var(--hero-h1-letter-spacing);
+  text-transform: uppercase;
   text-wrap: balance;
   margin: 0 0 32px;
 }
@@ -28,7 +40,8 @@
   font-family: var(--sans);
   font-style: normal;
   font-weight: 700;
-  color: var(--accent);
+  text-transform: uppercase;
+  color: var(--hero-title);
 }
 
 /*
@@ -38,19 +51,30 @@
 .hero-cinematic {
   --hero-title: #ffffff;
   --hero-lead-size: clamp(16px, 1.32vw, 18px);
+  --hero-lead-line-height: 1.32;
+  --hero-scrim-top: 0.55;
+  --hero-scrim-mid: 0.28;
+  --hero-scrim-bottom: 0.62;
+  /* Partner strip — fixed on dark hero in every site theme */
+  --hero-trust-fg: rgba(245, 242, 237, 0.82);
+  --hero-trust-fg-hover: rgba(245, 242, 237, 0.96);
+  --hero-trust-logo-opacity: 0.56;
+  --hero-trust-logo-opacity-hover: 0.82;
+  --hero-trust-logo-filter: brightness(10);
+  --hero-trust-dot: rgba(245, 242, 237, 0.42);
 }
 
 .hero-cinematic .hero-h1 {
   color: var(--hero-title);
 }
 
-/* Subhead / dek under hero h1 — same scale on index + subpages; regular weight */
-.hero-cinematic .hero-lead {
-  font-family: var(--sans);
+/* Subhead / dek under hero h1 — Proxima via .arkim-subhead / p.hero-lead in arkim-type.css */
+.hero-cinematic p.hero-lead,
+.hero-cinematic .arkim-subhead {
   font-size: var(--hero-lead-size);
   font-weight: 400;
   color: var(--p-fg);
-  line-height: 1.65;
+  line-height: var(--hero-lead-line-height);
   max-width: 580px;
   margin: 0 auto 42px;
   text-wrap: pretty;
@@ -70,19 +94,18 @@ html[data-theme="light"] .hero-cinematic {
   --fg: #f5f2ed;
   --fg-muted: rgba(245, 242, 237, 0.78);
   --text-muted: rgba(245, 242, 237, 0.8);
-  --accent: #4a8abf;
-  --headline-accent: #7ab5e0;
+  /* --accent inherits html[data-theme="light"] primary (#1473cc) */
   --border: rgba(255, 255, 255, 0.22);
-  --btn-fg: #000000;
+  --btn-fg: #ffffff;
   --outline: rgba(245, 242, 237, 0.22);
   --outline-hover: rgba(245, 242, 237, 0.42);
   --outline-fill: rgba(245, 242, 237, 0.06);
   --fg-ghost: rgba(245, 242, 237, 0.35);
-  /* Hero stays dark in light theme — partner marks must match dark UI (not page footer tokens). */
-  --partner-logo-opacity: 0.25;
-  --partner-logo-hover-opacity: 0.55;
-  --partner-logo-filter: brightness(10);
   --p-fg: rgba(245, 242, 237, 0.78);
+  /* Lighter scrim — let the loop read brighter while keeping copy legible */
+  --hero-scrim-top: 0.38;
+  --hero-scrim-mid: 0.14;
+  --hero-scrim-bottom: 0.42;
 }
 
 /*
@@ -171,8 +194,72 @@ html[data-theme='light'] .hero-cinematic--static-texture {
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.55) 0%,
-    rgba(0, 0, 0, 0.28) 45%,
-    rgba(0, 0, 0, 0.62) 100%
+    rgba(0, 0, 0, var(--hero-scrim-top, 0.55)) 0%,
+    rgba(0, 0, 0, var(--hero-scrim-mid, 0.28)) 45%,
+    rgba(0, 0, 0, var(--hero-scrim-bottom, 0.62)) 100%
   );
+}
+
+.hero-trust-row {
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  list-style: none;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.hero-trust-row > li {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.hero-trust-row > li::before {
+  content: '';
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--hero-trust-dot);
+  flex-shrink: 0;
+}
+
+.hero-trust-row > li:first-child::before {
+  display: none;
+}
+
+.hero-cinematic .hero-trust-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--hero-trust-fg);
+  font-family: var(--body);
+  font-size: var(--text-micro);
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.hero-cinematic .hero-trust-link:hover,
+.hero-cinematic .hero-trust-link:focus-visible {
+  color: var(--hero-trust-fg-hover);
+}
+
+.hero-cinematic .hero-trust-logo {
+  height: 22px;
+  width: auto;
+  max-width: 112px;
+  object-fit: contain;
+  opacity: var(--hero-trust-logo-opacity);
+  filter: var(--hero-trust-logo-filter);
+  transition: opacity 0.2s;
+}
+
+.hero-cinematic .hero-trust-link:hover .hero-trust-logo,
+.hero-cinematic .hero-trust-link:focus-visible .hero-trust-logo {
+  opacity: var(--hero-trust-logo-opacity-hover);
 }

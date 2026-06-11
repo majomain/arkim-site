@@ -1,0 +1,1390 @@
+const { useState, useEffect, useRef } = React;
+const { ArkimFixedHeader } = window;
+const ArkimFooter = window.ArkimFooter;
+const useArkimTheme = window.useArkimTheme;
+const usePrefersReducedMotion = window.usePrefersReducedMotion;
+const HeroBgVideo = window.HeroBgVideo;
+
+// ── Shared helpers ────────────────────────────────────────────────────────────
+function useFadeIn(threshold = 0.1) {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVis(true); obs.disconnect(); } }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, vis];
+}
+
+/** Viewport ≤ breakpoint: single-column grids + tighter section padding (matches nav @768) */
+function useIsNarrowLayout(breakpointPx = 768) {
+  const [narrow, setNarrow] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia(`(max-width: ${breakpointPx}px)`).matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpointPx}px)`);
+    const update = () => setNarrow(mq.matches);
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, [breakpointPx]);
+  return narrow;
+}
+
+function FadeIn({ children, delay = 0, y = 28, style = {} }) {
+  const [ref, vis] = useFadeIn();
+  const reducedMotion = usePrefersReducedMotion();
+  const effectiveDelay = reducedMotion ? 0 : delay;
+  return (
+    <div ref={ref} style={{
+      opacity: vis ? 1 : 0,
+      transform: reducedMotion ? 'none' : (vis ? 'none' : `translateY(${y}px)`),
+      transition: reducedMotion
+        ? 'none'
+        : `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${effectiveDelay}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${effectiveDelay}s`,
+      ...style,
+    }}>{children}</div>
+  );
+}
+function Eyebrow({ children, accent = false }) {
+  return (
+    <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 500, letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: accent ? 'var(--accent)' : 'var(--fg-muted)', marginBottom: '20px' }}>
+      {children}
+    </div>
+  );
+}
+function DemoBtn({ label = 'Request a Demo', style = {} }) {
+  return (
+    <a href="/contactus/" className="arkim-cta-btn" style={{
+      display: 'inline-flex', alignItems: 'center', gap: 8,
+      fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600,
+      background: 'var(--accent)', color: 'var(--btn-fg)',
+      padding: '13px 28px', borderRadius: '6px', textDecoration: 'none',
+      transition: 'opacity 0.2s, transform 0.2s cubic-bezier(0.16,1,0.3,1)',
+      ...style,
+    }}
+    onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-2px)'; }}
+    onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
+    >{label} →</a>
+  );
+}
+function SectionImg({ label, height = '55vh', src = null, videoSrc = null, alt = '', objectFit = 'cover' }) {
+  const narrow = useIsNarrowLayout();
+  if (videoSrc) {
+    return (
+      <div
+        style={{
+          width: '100%',
+          margin: 0,
+          padding: 0,
+          background: '#050505',
+          borderTop: '1px solid var(--border)',
+          borderBottom: '1px solid var(--border)',
+          lineHeight: 0,
+        }}
+      >
+        <div
+          style={{
+            boxSizing: 'border-box',
+            maxWidth: '1120px',
+            margin: '0 auto',
+            padding: narrow ? '32px 16px 40px' : '48px 24px 56px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <video
+            src={videoSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-label={alt || label}
+            title={label}
+            style={{
+              width: '100%',
+              maxWidth: '100%',
+              height: 'auto',
+              maxHeight: narrow ? 'min(44vh, 380px)' : 'min(50vh, 480px)',
+              objectFit: 'contain',
+              display: 'block',
+              background: '#000',
+              borderRadius: '12px',
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+  if (src) {
+    if (objectFit === 'contain') {
+      return (
+        <div style={{
+          width: '100%',
+          position: 'relative',
+          overflow: 'hidden',
+          background: 'var(--media-bg, var(--bg))',
+          borderTop: '1px solid var(--border)',
+          borderBottom: '1px solid var(--border)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: narrow ? 'min(72vh, 480px)' : 'clamp(560px, 92vh, 980px)',
+          padding: 'clamp(32px, 5vw, 80px) clamp(16px, 4vw, 48px)',
+        }}>
+          <img
+            src={src}
+            alt={alt || label}
+            loading="lazy"
+            decoding="async"
+            style={{
+              display: 'block',
+              width: 'auto',
+              height: 'auto',
+              maxWidth: '100%',
+              maxHeight: 'min(90vh, 880px)',
+              objectFit: 'contain',
+              objectPosition: 'center',
+            }}
+          />
+        </div>
+      );
+    }
+    return (
+      <div style={{
+        width: '100%', height, position: 'relative', overflow: 'hidden',
+        background: 'var(--media-bg, #000)',
+        borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
+      }}>
+        <img
+          src={src}
+          alt={alt || label}
+          loading="lazy"
+          decoding="async"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center',
+            display: 'block',
+          }}
+        />
+      </div>
+    );
+  }
+  return (
+    <div style={{
+      width: '100%', height, position: 'relative', overflow: 'hidden',
+      background: 'repeating-linear-gradient(45deg, #111 0, #111 16px, #0e0e0e 16px, #0e0e0e 32px)',
+      borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
+    }}>
+      <div style={{
+        position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        flexDirection: 'column', gap: 10, color: 'rgba(245,242,237,0.15)', fontFamily: 'monospace', fontSize: '13px', textAlign: 'center', padding: '32px',
+      }}>
+        <div style={{ fontSize: 40, opacity: 0.2 }}>◻</div>
+        <div>{label}</div>
+      </div>
+    </div>
+  );
+}
+
+// ── HERO ─────────────────────────────────────────────────────────────────────
+function Hero() {
+  const narrow = useIsNarrowLayout();
+  const reducedMotion = usePrefersReducedMotion();
+  const heroFade = (delay, children) => (
+    <div style={{ animation: reducedMotion ? 'none' : `fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s both` }}>
+      {children}
+    </div>
+  );
+  return (
+    <div className="hero-cinematic hero-cinematic--video-bg" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? 'calc(120px + var(--arkim-nav-offset)) 16px 72px' : 'calc(140px + var(--arkim-nav-offset)) 48px 80px', overflow: 'hidden' }}>
+      <HeroBgVideo
+        src="https://assets.arkim.ai/arkim-banner-video-product.mp4"
+        poster="https://assets.arkim.ai/arkim-banner-video-product-poster.webp"
+        reducedMotion={reducedMotion}
+      />
+      <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
+        {heroFade(0.1, (
+          <>
+            <h1 className="hero-h1">
+              <span style={{ fontWeight: 700, color: 'var(--hero-title)', display: 'block' }}>Maintenance solutions</span>
+              <span style={{ fontWeight: 700, color: 'var(--hero-title)', display: 'block' }}>for any facility</span>
+            </h1>
+            <p className="hero-lead arkim-subhead">
+              Capture knowledge automatically. Diagnose faster. Stop downtime before it starts.
+            </p>
+          </>
+        ))}
+        {heroFade(0.35, (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: narrow ? '1fr' : 'repeat(4, 1fr)',
+            width: '100%',
+            maxWidth: narrow ? '100%' : '740px',
+            border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
+            background: 'rgba(10,10,10,0.6)', backdropFilter: 'blur(12px)', margin: '0 auto',
+          }}>
+            {[
+              { num: '01', label: 'Diagnose faster', id: 's01' },
+              { num: '02', label: 'Capture knowledge', id: 's02' },
+              { num: '03', label: 'Maintain smarter', id: 's03' },
+              { num: '04', label: 'Your existing tools', id: 's04' },
+            ].map((item, i) => (
+              <a key={i} href={`#${item.id}`} style={{
+                display: 'flex', flexDirection: 'column', gap: 4,
+                padding: narrow ? '16px 18px' : '20px 24px', textDecoration: 'none',
+                borderRight: !narrow && i < 3 ? '1px solid var(--border)' : 'none',
+                borderBottom: narrow && i < 3 ? '1px solid var(--border)' : 'none',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'rgba(60,122,172,0.08)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+              >
+                <span style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.1em', color: 'var(--accent)', fontWeight: 500 }}>{item.num}</span>
+                <span style={{ fontFamily: 'var(--body)', fontSize: '13px', color: 'var(--fg-muted)', fontWeight: 400, lineHeight: 1.3 }}>{item.label}</span>
+              </a>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── STICKY ANCHOR NAV (shows when hero nav scrolls away) ─────────────────────
+function StickyAnchorNav() {
+  const [show, setShow] = useState(false);
+  const [active, setActive] = useState(null);
+  const narrow = useIsNarrowLayout();
+  useEffect(() => {
+    const sectionIds = ['s01','s02','s03','s04'];
+    const fn = () => {
+      setShow(window.scrollY > window.innerHeight * 0.7);
+      const found = sectionIds.slice().reverse().find(id => {
+        const el = document.getElementById(id);
+        return el && el.getBoundingClientRect().top <= 120;
+      });
+      setActive(found || null);
+    };
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+  if (!show) return null;
+  const items = [
+    { num: '01', label: 'Diagnose faster', id: 's01' },
+    { num: '02', label: 'Capture knowledge', id: 's02' },
+    { num: '03', label: 'Maintain smarter', id: 's03' },
+    { num: '04', label: 'Your existing tools', id: 's04' },
+  ];
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 'calc(68px + env(safe-area-inset-top, 0px))',
+      left: 0,
+      right: 0,
+      zIndex: 150,
+      background: 'var(--nav-scrim)', backdropFilter: 'blur(16px)',
+      borderBottom: '1px solid var(--border)',
+      display: 'flex', alignItems: 'stretch',
+      justifyContent: narrow ? 'flex-start' : 'center',
+      overflowX: narrow ? 'auto' : 'visible',
+      WebkitOverflowScrolling: 'touch',
+      touchAction: 'pan-x',
+      padding: narrow ? '0 10px' : '0 48px', height: '52px', gap: 0,
+      transition: 'opacity 0.3s',
+    }}>
+      {items.map((item, i) => (
+        <a key={i} href={`#${item.id}`} style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+          flexShrink: 0,
+          padding: narrow ? '0 14px' : '0 28px', alignSelf: 'stretch', textDecoration: 'none',
+          borderRight: i < 3 ? '1px solid var(--border)' : 'none',
+          borderBottom: active === item.id ? `2px solid var(--accent)` : '2px solid transparent',
+          transition: 'background 0.2s',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.background = 'rgba(60,122,172,0.06)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.background = 'transparent';
+        }}
+        >
+          <span style={{ fontFamily: 'var(--body)', fontSize: 'var(--text-eyebrow-size)', lineHeight: 1, color: active === item.id ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, letterSpacing: '0.08em' }}>{item.num}</span>
+          <span style={{ fontFamily: 'var(--body)', fontSize: '13px', lineHeight: 1, color: active === item.id ? 'var(--fg)' : 'var(--fg-muted)', fontWeight: 400 }}>{item.label}</span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+// ── FEATURE PILLS ─────────────────────────────────────────────────────────────
+function FeaturePills({ items }) {
+  const narrow = useIsNarrowLayout();
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: narrow ? '1fr' : '1fr 1fr',
+      gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
+    }}>
+      {items.map((item, i) => (
+        <div key={i} style={{
+          background: 'var(--bg-card)', padding: narrow ? '22px 20px' : '32px 36px',
+          transition: 'background 0.25s, box-shadow 0.4s cubic-bezier(0.16,1,0.3,1)',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.background = 'var(--card-hover)';
+          e.currentTarget.style.boxShadow = '0 18px 40px rgba(0,0,0,0.18)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.background = 'var(--bg-card)';
+          e.currentTarget.style.boxShadow = 'none';
+        }}
+        >
+          <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{item.title}</div>
+          <div style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>{item.body}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── STAT BLOCK ────────────────────────────────────────────────────────────────
+function StatBlock({ num, label, sub }) {
+  return (
+    <div style={{ padding: '48px 0', borderTop: '1px solid var(--border)' }}>
+      <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-stat-md)', fontWeight: 700, color: 'var(--accent)', lineHeight: 1, letterSpacing: 'var(--title-stat-letter-spacing)', marginBottom: '12px' }}>{num}</div>
+      <div style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 500, color: 'var(--fg)', marginBottom: '8px' }}>{label}</div>
+      {sub && <div style={{ fontFamily: 'var(--body)', fontSize: '15px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.6, maxWidth: '560px', textWrap: 'pretty' }}>{sub}</div>}
+    </div>
+  );
+}
+
+/** Per-asset baseline diagram — width matches Section (1300px + page gutters) */
+function BaselineCaptureDiagram() {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const [captured, setCaptured] = useState(false);
+  useEffect(() => {
+    const t = setInterval(() => setCaptured((v) => !v), 5000);
+    return () => clearInterval(t);
+  }, []);
+
+  const paperParams = [
+    { label: 'Operating temp', value: '180–220 °F' },
+    { label: 'Service interval', value: 'Every 6 months' },
+    { label: 'Vibration limit', value: 'Per ISO class' },
+  ];
+  const assetParams = [
+    { label: 'Operating temp', value: '195 °F steady' },
+    { label: 'Oil change rhythm', value: 'Every 11 weeks' },
+    { label: 'Startup quirk', value: '2 min purge before load' },
+  ];
+  const chatLines = [
+    { who: 'operator', text: 'Compressor 7 always runs about 195 — never hits manual max.' },
+    { who: 'arkim', text: 'Logged as normal operating temp for asset #247.' },
+    { who: 'operator', text: 'We change oil every 11 weeks, not quarterly like the book says.' },
+  ];
+  const downstream = ['Drift detection', 'Diagnostic agent', 'Predictive maintenance', 'Agentic prioritization'];
+
+  return (
+    <div
+      role="img"
+      aria-label="Diagram: operator conversation builds a per-asset baseline that anchors drift detection and maintenance intelligence"
+      style={{
+        width: '100%',
+        background: 'var(--bg)',
+        borderTop: '1px solid var(--border)',
+        borderBottom: '1px solid var(--border)',
+      }}
+    >
+      <div style={{
+        maxWidth: '1300px',
+        margin: '0 auto',
+        width: '100%',
+        padding: narrow ? `28px ${gx}px 32px` : `40px ${gx}px 44px`,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: narrow ? 20 : 28,
+      }}>
+        <div>
+          <div style={{
+            fontFamily: 'var(--sans)',
+            fontSize: 'var(--text-eyebrow-size)',
+            fontWeight: 600,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            color: 'var(--accent)',
+            marginBottom: 10,
+          }}>
+            Baseline capture
+          </div>
+          <p style={{
+            fontFamily: 'var(--sans)',
+            fontSize: narrow ? '15px' : '17px',
+            fontWeight: 500,
+            color: 'var(--fg)',
+            lineHeight: 1.4,
+            textWrap: 'balance',
+          }}>
+            Natural-language conversations with the people who run your equipment define what normal looks like for each asset — not just what the manual says for the class.
+          </p>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: narrow ? '1fr' : '1fr 1fr',
+          gap: narrow ? 12 : 16,
+        }}>
+          <div style={{
+            border: '1px solid var(--border)',
+            borderRadius: 12,
+            background: 'var(--bg-card)',
+            padding: narrow ? '16px 14px' : '20px 18px',
+            opacity: captured ? 0.55 : 1,
+            transition: 'opacity 0.7s ease',
+          }}>
+            <div style={{
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--fg-muted)',
+              marginBottom: 14,
+            }}>
+              Asset class on paper
+            </div>
+            {paperParams.map((p) => (
+              <div key={p.label} style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: 12,
+                padding: '10px 0',
+                borderTop: '1px solid var(--border)',
+                fontFamily: 'var(--sans)',
+                fontSize: '13px',
+              }}>
+                <span style={{ color: 'var(--fg-muted)' }}>{p.label}</span>
+                <span style={{ color: 'var(--fg)', fontWeight: 500, textAlign: 'right' }}>{p.value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{
+            border: `1px solid ${captured ? 'var(--accent)' : 'var(--border)'}`,
+            borderRadius: 12,
+            background: captured ? 'rgba(60, 122, 172, 0.08)' : 'var(--bg-card)',
+            padding: narrow ? '16px 14px' : '20px 18px',
+            boxShadow: captured ? '0 0 0 1px rgba(60, 122, 172, 0.2)' : 'none',
+            transition: 'border-color 0.7s, background 0.7s, box-shadow 0.7s, opacity 0.7s',
+            opacity: captured ? 1 : 0.72,
+          }}>
+            <div style={{
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: captured ? 'var(--accent)' : 'var(--fg-muted)',
+              marginBottom: 14,
+              transition: 'color 0.7s',
+            }}>
+              This asset&apos;s baseline
+            </div>
+            {assetParams.map((p) => (
+              <div key={p.label} style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: 12,
+                padding: '10px 0',
+                borderTop: '1px solid var(--border)',
+                fontFamily: 'var(--sans)',
+                fontSize: '13px',
+              }}>
+                <span style={{ color: 'var(--fg-muted)' }}>{p.label}</span>
+                <span style={{ color: 'var(--accent)', fontWeight: 600, textAlign: 'right' }}>{p.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: narrow ? '1fr' : 'minmax(0, 1.1fr) minmax(0, 0.9fr)',
+          gap: narrow ? 16 : 20,
+          alignItems: 'stretch',
+        }}>
+          <div style={{
+            border: '1px solid var(--border)',
+            borderRadius: 12,
+            background: 'var(--bg-card)',
+            padding: narrow ? '14px 12px' : '16px 16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+          }}>
+            <div style={{
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+              fontSize: '10px',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--fg-muted)',
+            }}>
+              Floor conversation → captured knowledge
+            </div>
+            {chatLines.map((line, i) => (
+              <div
+                key={i}
+                style={{
+                  alignSelf: line.who === 'operator' ? 'flex-start' : 'flex-end',
+                  maxWidth: '92%',
+                  padding: '10px 12px',
+                  borderRadius: line.who === 'operator' ? '10px 10px 10px 4px' : '10px 10px 4px 10px',
+                  background: line.who === 'operator' ? 'var(--bg)' : 'rgba(60, 122, 172, 0.14)',
+                  border: `1px solid ${line.who === 'operator' ? 'var(--border)' : 'rgba(60, 122, 172, 0.35)'}`,
+                  fontFamily: 'var(--sans)',
+                  fontSize: '12px',
+                  lineHeight: 1.5,
+                  color: 'var(--fg)',
+                  opacity: captured || i < 2 ? 1 : 0.35,
+                  transition: 'opacity 0.6s ease',
+                }}
+              >
+                <span style={{
+                  display: 'block',
+                  fontSize: '9px',
+                  fontWeight: 600,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: line.who === 'operator' ? 'var(--fg-muted)' : 'var(--accent)',
+                  marginBottom: 4,
+                }}>
+                  {line.who === 'operator' ? 'Operator' : 'Arkim'}
+                </span>
+                {line.text}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{
+              flex: 1,
+              border: '1px solid var(--border)',
+              borderRadius: 12,
+              background: 'var(--bg-card)',
+              padding: narrow ? '14px 12px' : '16px 16px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              gap: 8,
+            }}>
+              <div style={{
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+                fontSize: '10px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: 'var(--fg-muted)',
+              }}>
+                Baseline anchors
+              </div>
+              <div style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                border: '2px solid var(--accent)',
+                background: 'rgba(60, 122, 172, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'var(--sans)',
+                fontSize: 'var(--text-eyebrow-size)',
+                fontWeight: 700,
+                color: 'var(--accent)',
+                marginBottom: 4,
+              }}>
+                #247
+              </div>
+              <p style={{
+                fontFamily: 'var(--sans)',
+                fontSize: '12px',
+                color: 'var(--p-fg, var(--fg-muted))',
+                lineHeight: 1.55,
+                textWrap: 'pretty',
+              }}>
+                Per-asset operating parameters, rhythms, and tribal knowledge — the reference point for every future deviation.
+              </p>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 8,
+            }}>
+              {downstream.map((name, i) => (
+                <div
+                  key={name}
+                  style={{
+                    padding: '10px 10px',
+                    borderRadius: 8,
+                    border: '1px solid var(--border)',
+                    background: captured ? 'rgba(60, 122, 172, 0.1)' : 'var(--bg-card)',
+                    fontFamily: 'var(--sans)',
+                    fontSize: 'var(--text-eyebrow-size)',
+                    fontWeight: 500,
+                    color: captured ? 'var(--fg)' : 'var(--fg-muted)',
+                    lineHeight: 1.35,
+                    textAlign: 'center',
+                    opacity: captured ? 1 : 0.5 + i * 0.08,
+                    transition: 'opacity 0.6s, background 0.6s, color 0.6s',
+                  }}
+                >
+                  {name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <p style={{
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+          fontSize: '10px',
+          color: 'var(--fg-muted)',
+          lineHeight: 1.5,
+          opacity: 0.9,
+        }}>
+          Initial data collection event for deviation detection · continuous capture of knowledge that never made it into OEM documentation
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function ZeroDayTechnicianDiagram() {
+  const narrow = useIsNarrowLayout();
+  const steps = [
+    {
+      tag: 'The gap',
+      title: 'Veteran know-how retires',
+      body: 'Machine quirks, shortcuts, failure sounds, and quick fixes leave with senior technicians.',
+    },
+    {
+      tag: 'Arkim captures',
+      title: 'A digital brain forms',
+      body: 'Manuals, maintenance logs, asset history, and expert notes become one searchable knowledge layer.',
+    },
+    {
+      tag: 'AI assistant',
+      title: 'Answers at the machine',
+      body: 'A new technician asks in plain language and gets the likely cause plus the exact next steps.',
+    },
+    {
+      tag: 'Day zero',
+      title: 'Senior-level execution',
+      body: 'Decades of experience show up in the first shift, reducing search time and guesswork.',
+    },
+  ];
+
+  return (
+    <div style={{
+      border: '1px solid var(--border)',
+      borderRadius: '16px',
+      background: 'linear-gradient(135deg, var(--accent-soft), var(--bg-card))',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        padding: narrow ? '24px 20px' : '30px 34px',
+        borderBottom: '1px solid var(--border)',
+        display: 'flex',
+        flexDirection: narrow ? 'column' : 'row',
+        gap: narrow ? 12 : 28,
+        justifyContent: 'space-between',
+        alignItems: narrow ? 'flex-start' : 'center',
+      }}>
+        <div>
+          <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 10 }}>
+            How it works
+          </div>
+          <h3 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h3-letter-spacing)', color: 'var(--fg)', textWrap: 'balance' }}>
+            From tribal knowledge to first-day expertise.
+          </h3>
+        </div>
+        <p style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, maxWidth: narrow ? '100%' : 360, textWrap: 'pretty' }}>
+          Arkim turns scattered maintenance experience into guided action, so a new hire can diagnose and repair with the context of your best people.
+        </p>
+      </div>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: narrow ? '1fr' : 'repeat(4, minmax(0, 1fr))',
+        gap: '1px',
+        background: 'var(--border)',
+      }}>
+        {steps.map((step, i) => (
+          <div key={step.tag} style={{ position: 'relative', background: 'var(--bg-card)', padding: narrow ? '24px 20px' : '28px 24px', minHeight: narrow ? 'auto' : 240 }}>
+            <div style={{
+              width: 34,
+              height: 34,
+              borderRadius: '50%',
+              border: '1px solid var(--accent-border)',
+              background: 'var(--accent-soft)',
+              color: 'var(--accent)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: 'var(--sans)',
+              fontSize: '12px',
+              fontWeight: 700,
+              marginBottom: 22,
+            }}>
+              {String(i + 1).padStart(2, '0')}
+            </div>
+            {!narrow && i < steps.length - 1 && (
+              <div style={{ position: 'absolute', top: 45, right: -13, zIndex: 2, color: 'var(--accent)', fontFamily: 'var(--sans)', fontSize: 22, lineHeight: 1 }}>
+                →
+              </div>
+            )}
+            <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--fg-faint)', marginBottom: 10 }}>
+              {step.tag}
+            </div>
+            <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', color: 'var(--fg)', marginBottom: 12, textWrap: 'balance' }}>
+              {step.title}
+            </div>
+            <p style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>
+              {step.body}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div style={{ padding: narrow ? '22px 20px' : '24px 34px', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+        <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--accent)', marginTop: 8, flexShrink: 0 }} />
+        <p style={{ fontFamily: 'var(--body)', fontSize: '15px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, textWrap: 'pretty', maxWidth: 760 }}>
+          The result is a "0-day technician": someone who can act with senior context on day one because Arkim has already synthesized the facility's history, documentation, and expert intuition.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ── SECTION WRAPPER ───────────────────────────────────────────────────────────
+function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', imageSlot = null, sideBySideGifs = null, imageBelowSplit = false, stretchSplitMediaHeight = false, splitMediaMatchTable = false, splitIntroAlign = 'center', children, statNum, statLabel, statSub, afterStatContent = null, showDemoButton = true }) {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
+  const hasSplit = Array.isArray(sideBySideGifs) && sideBySideGifs.length > 0;
+  const stretchDesktop = stretchSplitMediaHeight && !narrow;
+  const matchTableHeight = splitMediaMatchTable && !narrow && hasSplit;
+  const gifsFillRow = stretchDesktop || matchTableHeight;
+  const introSplitCentered = splitIntroAlign !== 'left';
+
+  const introBlock = (
+    <>
+      <Eyebrow accent>{eyebrow}</Eyebrow>
+      <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>{headline}</h2>
+      <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>{sub}</p>
+    </>
+  );
+
+  const introBlockSplit = (
+    <div style={{ textAlign: introSplitCentered ? 'center' : 'left', marginBottom: narrow ? 32 : 44 }}>
+      <Eyebrow accent>{eyebrow}</Eyebrow>
+      <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', margin: introSplitCentered ? '0 auto 24px' : '0 0 24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
+      <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '680px', margin: introSplitCentered ? '0 auto' : '0', textWrap: 'pretty' }}>{sub}</p>
+    </div>
+  );
+
+  const gifsInner = hasSplit ? (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: narrow ? 10 : 14,
+        justifyContent: 'center',
+        alignItems: gifsFillRow ? 'stretch' : 'center',
+        width: '100%',
+        flex: gifsFillRow ? 1 : undefined,
+        minHeight: gifsFillRow ? 0 : undefined,
+        height: gifsFillRow ? '100%' : undefined,
+      }}
+    >
+      {sideBySideGifs.map((g, i) => {
+        const phoneClipRadius = 'clamp(16px, 2.2vw, 26px)';
+        const fillMediaItem = stretchDesktop || (matchTableHeight && g.ingestLightFrame);
+        const imgStyle = fillMediaItem ? {
+          display: 'block',
+          maxWidth: '100%',
+          maxHeight: '100%',
+          width: 'auto',
+          height: 'auto',
+          objectFit: 'contain',
+          objectPosition: 'center',
+        } : {
+          width: narrow ? '100%' : 'auto',
+          maxWidth: narrow ? (sideBySideGifs.length > 1 ? '50%' : '100%') : 'none',
+          height: 'auto',
+          maxHeight: narrow
+            ? 'min(52vh, 420px)'
+            : (g.ingestLightFrame ? 'min(40vh, 340px)' : 'min(58vh, 520px)'),
+          objectFit: 'contain',
+          objectPosition: 'center top',
+          display: 'block',
+        };
+        const img = (
+          <img
+            src={g.src}
+            alt={g.alt || ''}
+            loading="lazy"
+            decoding="async"
+            style={imgStyle}
+          />
+        );
+        if (g.ingestLightFrame) {
+          return (
+            <div
+              key={i}
+              className="arkim-ingestion-frame"
+              style={{
+                flex: narrow ? '1 1 auto' : (fillMediaItem ? '1 1 0%' : '0 1 auto'),
+                minWidth: 0,
+                minHeight: fillMediaItem ? 0 : undefined,
+                height: fillMediaItem ? '100%' : undefined,
+                maxWidth: narrow ? '100%' : (fillMediaItem ? 460 : 380),
+                width: fillMediaItem ? '100%' : undefined,
+                alignSelf: fillMediaItem ? 'stretch' : undefined,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {img}
+            </div>
+          );
+        }
+        return (
+          <div
+            key={i}
+            style={{
+              flex: narrow ? '1 1 0' : '0 1 auto',
+              minWidth: 0,
+              borderRadius: phoneClipRadius,
+              overflow: 'hidden',
+              lineHeight: 0,
+            }}
+          >
+            {img}
+          </div>
+        );
+      })}
+    </div>
+  ) : null;
+
+  return (
+    <div id={id} style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 60px` }}>
+        {hasSplit ? (
+          <>
+            <FadeIn>{introBlockSplit}</FadeIn>
+            <FadeIn delay={0.1}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: narrow ? 'column' : 'row',
+                  justifyContent: 'center',
+                  alignItems: narrow ? 'stretch' : (gifsFillRow ? 'stretch' : 'flex-start'),
+                  gap: narrow ? 28 : 48,
+                  width: '100%',
+                }}
+              >
+                <div style={{
+                  flex: narrow ? 'none' : (stretchDesktop ? '1 1 58%' : '0 1 520px'),
+                  minWidth: 0,
+                  minHeight: narrow ? undefined : (matchTableHeight ? 0 : undefined),
+                  maxWidth: narrow ? '100%' : (stretchDesktop ? 'none' : 560),
+                  width: narrow ? '100%' : 'auto',
+                }}
+                >
+                  {children}
+                </div>
+                <div style={{
+                  flex: narrow ? 'none' : (stretchDesktop ? '1 1 34%' : (matchTableHeight ? '1 1 0%' : '0 1 auto')),
+                  minWidth: narrow ? undefined : (stretchDesktop ? 240 : (matchTableHeight ? 0 : 0)),
+                  minHeight: narrow ? undefined : (gifsFillRow ? 0 : undefined),
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                  alignItems: narrow ? 'stretch' : (gifsFillRow ? 'stretch' : 'center'),
+                  width: narrow ? '100%' : 'auto',
+                  maxWidth: narrow ? '100%' : (matchTableHeight ? 'min(40vw, 380px)' : undefined),
+                  alignSelf: narrow ? 'stretch' : (gifsFillRow ? 'stretch' : 'flex-start'),
+                }}
+                >
+                  {gifsInner}
+                </div>
+              </div>
+            </FadeIn>
+          </>
+        ) : (
+          <>
+            <FadeIn>{introBlock}</FadeIn>
+            <FadeIn delay={0.1}>{children}</FadeIn>
+          </>
+        )}
+      </div>
+      {(!hasSplit || (imageBelowSplit && imageSrc)) && (
+        <FadeIn>
+          {imageSlot ? (
+            imageSlot
+          ) : (
+            <SectionImg label={imageLabel} height={imageHeight} src={imageSrc} alt={imageAlt} objectFit={imageObjectFit} />
+          )}
+        </FadeIn>
+      )}
+      {statNum && (
+        <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `0 ${gx}px` }}>
+          <FadeIn delay={0.1}>
+            <StatBlock num={statNum} label={statLabel} sub={statSub} />
+          </FadeIn>
+        </div>
+      )}
+      {afterStatContent && (
+        <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `24px ${gx}px ${showDemoButton ? 36 : 80}px` }}>
+          <FadeIn>
+            {afterStatContent}
+          </FadeIn>
+        </div>
+      )}
+      {showDemoButton && (
+        <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${afterStatContent ? 0 : 40}px ${gx}px 80px` }}>
+          <FadeIn>
+            <DemoBtn />
+          </FadeIn>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── SECTION 01 — DIAGNOSE FASTER ─────────────────────────────────────────────
+function DiagnoseModalitiesTable() {
+  const narrow = useIsNarrowLayout();
+  const rows = [
+    { title: 'Video capture', body: 'Hold your phone up to a machine. Arkim reads smoke, cracks, vibration, and fluid leaks from the video automatically.' },
+    { title: 'Audio capture', body: 'Unusual sound from a pump? Arkim listens to the frequency and compares it to what healthy equipment should sound like.' },
+    { title: 'AI chat assistant', body: "Ask Arkim what's wrong in plain language. It pulls from the equipment manual, your past repair logs, and asset history to give you an answer in seconds." },
+    { title: 'Pre-diagnosed repair summary', body: "Before a technician touches the machine, they already know what's wrong, what part is needed, and what the manual says to do." },
+  ];
+  return (
+    <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+      <div style={{ border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', background: 'var(--bg-card)' }}>
+      <table
+        style={{
+          width: '100%',
+          borderCollapse: 'collapse',
+          fontFamily: 'var(--sans)',
+          tableLayout: 'fixed',
+        }}
+      >
+        <tbody>
+          {rows.map((row, i) => (
+            <tr key={i}>
+              <th
+                scope="row"
+                style={{
+                  padding: narrow ? '18px 14px' : '22px 20px',
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  color: 'var(--fg)',
+                  textAlign: 'left',
+                  verticalAlign: 'top',
+                  width: narrow ? '38%' : '34%',
+                  borderBottom: i < rows.length - 1 ? '1px solid var(--border)' : 'none',
+                  borderRight: '1px solid var(--border)',
+                  background: 'var(--bg-card)',
+                }}
+              >{row.title}</th>
+              <td
+                style={{
+                  padding: narrow ? '18px 14px' : '22px 22px',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: 'var(--fg-muted)',
+                  lineHeight: 1.65,
+                  verticalAlign: 'top',
+                  borderBottom: i < rows.length - 1 ? '1px solid var(--border)' : 'none',
+                  background: 'var(--bg-card)',
+                }}
+              >{row.body}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  );
+}
+
+function S01() {
+  return (
+    <Section
+      id="s01"
+      splitIntroAlign="left"
+      eyebrow="01 — Diagnose Faster"
+      headline="Your team already has everything they need to diagnose equipment. They just need Arkim."
+      sub="The phone in your technician's pocket is a diagnostic sensor. Point it at a machine, describe what you're hearing or seeing, and Arkim tells you what's wrong — and what to do about it."
+      splitMediaMatchTable
+      showDemoButton={false}
+      sideBySideGifs={[
+        {
+          src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/funnel-updated.png',
+          alt: 'Diagram: video, audio, and chat inputs converging into Arkim data ingestion',
+          ingestLightFrame: true,
+        },
+      ]}
+    >
+      <DiagnoseModalitiesTable />
+    </Section>
+  );
+}
+
+// ── SECTION 02 — CAPTURE KNOWLEDGE ───────────────────────────────────────────
+function S02() {
+  return (
+    <Section
+      id="s02"
+      splitIntroAlign="left"
+      eyebrow="02 — Capture Knowledge Automatically"
+      headline="Every repair your team does is a permanent company asset. Right now, most of it disappears when they clock out."
+      sub="Arkim captures every repair, every inspection, every compliance check — automatically. When your most experienced technician retires, their knowledge stays."
+      sideBySideGifs={[
+        { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile-2.gif', alt: 'Arkim mobile capture workflow' },
+        { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile-1.gif', alt: 'Arkim mobile app on the plant floor' },
+      ]}
+      statNum="The 0-day technician."
+      statLabel="Any technician, from day one."
+      statSub="With Arkim, any technician can execute at a senior level on their first day — using the knowledge your best people built over years."
+      afterStatContent={<ZeroDayTechnicianDiagram />}
+      showDemoButton={false}
+    >
+      <FeaturePills items={[
+        { title: 'Repair documentation', body: 'Every repair is logged as it happens. No paperwork. No end-of-shift data entry.' },
+        { title: 'Equipment manual ingestion', body: 'Arkim reads your equipment manuals, wiring schematics, and parts lists and makes them searchable in plain language.' },
+        { title: 'Daily compliance checks', body: 'Operators complete digital checklists on their phone, with photo and video attached. Every check is logged and searchable.' },
+        { title: 'Tribal knowledge capture', body: 'The way your senior technician would diagnose a specific machine quirk? That lives in Arkim now, not just in their head.' },
+      ]} />
+    </Section>
+  );
+}
+
+// ── SECTION 03 — BASELINE CAPTURE ────────────────────────────────────────────
+function S03() {
+  return (
+    <Section
+      id="s03"
+      eyebrow="03 — Baseline Capture"
+      headline="Drift detection only works when you know what normal is — for this machine, not just this model."
+      sub="Arkim captures per-asset operating parameters, operational rhythms, and institutional knowledge through natural-language conversation with the people who actually run and maintain the equipment. That baseline anchors diagnostic agents, drift detection, predictive maintenance, and agentic prioritization — and keeps growing as tribal knowledge surfaces on the floor."
+      imageLabel="infographic: OEM asset-class specs versus per-asset baseline from operator conversation, feeding drift detection and maintenance intelligence"
+      imageSlot={<BaselineCaptureDiagram />}
+      showDemoButton={false}
+    >
+      <FeaturePills items={[
+        { title: 'Per-asset operating parameters', body: 'Temperature bands, pressure ranges, cycle times, and load profiles are captured as they actually run on your floor — not as a generic spec sheet describes the class.' },
+        { title: 'Operational rhythms', body: 'Oil changes, inspections, startups, and seasonal patterns are recorded in the cadence your team already follows, so schedules and alerts match reality.' },
+        { title: 'Tribal knowledge, continuously', body: 'Quirks, shortcuts, sounds, and fixes that never made it into OEM documentation are captured in conversation and stay with the asset when people rotate or retire.' },
+        { title: 'Anchor for everything downstream', body: 'Diagnostic agents, drift detection, predictive maintenance, and prioritization all compare against this baseline — the reference for what counts as a deviation on asset #247.' },
+      ]} />
+    </Section>
+  );
+}
+
+// ── SECTION 04 — EXISTING TOOLS ───────────────────────────────────────────────
+const INTEGRATIONS = ['eMaint','Fiix','UpKeep','Limble CMMS','IBM Maximo','SAP PM','MaintainX','Oracle EAM','Fleetio','Brightly'];
+
+function S04() {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
+  return (
+    <div id="s04" style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 60px` }}>
+        <FadeIn>
+          <Eyebrow accent>04 — Works With What You Already Have</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
+            No rip and replace. Arkim works alongside the systems your team already uses.
+          </h2>
+          <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>
+            We connect directly to your existing maintenance software. Your data stays where it is. Your team doesn't have to change how they work.
+          </p>
+        </FadeIn>
+        {/* Integration logos */}
+        <FadeIn delay={0.1}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: narrow ? 'repeat(2, minmax(0, 1fr))' : 'repeat(5, minmax(0, 1fr))',
+            gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', marginBottom: '40px',
+          }}>
+            {INTEGRATIONS.map((name, i) => (
+              <div key={i} style={{
+                background: 'var(--bg-card)', padding: narrow ? '18px 14px' : '28px 24px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'var(--sans)', fontSize: narrow ? '14px' : '16px', fontWeight: 500,
+                color: 'var(--fg-muted)', textAlign: 'center',
+                transition: 'color 0.25s, background 0.25s, box-shadow 0.35s cubic-bezier(0.16,1,0.3,1)',
+                cursor: 'default',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = 'var(--accent)';
+                e.currentTarget.style.background = 'var(--card-hover)';
+                e.currentTarget.style.boxShadow = '0 14px 32px rgba(0,0,0,0.12)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.color = 'var(--fg-muted)';
+                e.currentTarget.style.background = 'var(--bg-card)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+              >{name}</div>
+            ))}
+          </div>
+        </FadeIn>
+        <FadeIn delay={0.2}>
+          <FeaturePills items={[
+            { title: 'Two-way sync', body: 'Arkim reads work orders from your maintenance software and writes completed repairs, compliance checks, and updated schedules back automatically.' },
+            { title: 'No migration required', body: 'Your historical data, your asset list, your workflows — they all stay in your existing system. Arkim layers on top.' },
+          ]} />
+        </FadeIn>
+      </div>
+    </div>
+  );
+}
+
+// ── ENTERPRISE READY CAROUSEL ───────────────────────────────────────────────
+const ENTERPRISE_CARDS = [
+  {
+    id: '21cfr',
+    badge: '21 CFR Part 11',
+    title: 'Pharma Ready',
+    detail: 'Validation documentation, IQ/OQ/PQ templates, and audit-trail logging built for regulated pharmaceutical environments. Every action is timestamped, attributed, and exportable for inspection.',
+  },
+  {
+    id: 'nvidia',
+    badge: 'NVIDIA Inception',
+    title: 'AI Infrastructure',
+    detail: "Member of NVIDIA's Inception program — built on the same AI infrastructure powering the world's leading industrial platforms. GPU-accelerated inference for real-time multimodal diagnostics.",
+  },
+  {
+    id: 'databricks',
+    badge: 'Databricks Program',
+    title: 'Enterprise Data',
+    detail: 'Part of the Databricks program — enterprise-grade data infrastructure for scalable ingestion, model training, and real-time analytics across your entire asset base.',
+  },
+  {
+    id: 'aws',
+    badge: 'AWS Activate',
+    title: 'Cloud Infrastructure',
+    detail: 'Deployed on enterprise AWS infrastructure with global availability, multi-region redundancy, and the security posture your IT team requires. SOC 2 aligned by design.',
+  },
+  {
+    id: 'audit',
+    badge: 'Audit-Ready Documentation',
+    title: 'Full Traceability',
+    detail: 'Every repair, every compliance check, every diagnostic event — fully logged, attributed, and exportable. Nothing falls through the cracks. Arkim is your paper trail.',
+  },
+];
+
+function EnterpriseReady() {
+  const [active, setActive] = useState(0);
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
+  const card = ENTERPRISE_CARDS[active];
+  return (
+    <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-card)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px` }}>
+        <FadeIn style={{ marginBottom: '60px' }}>
+          <Eyebrow accent>Enterprise Ready</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
+            Built for regulated industries.
+          </h2>
+        </FadeIn>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: narrow ? '1fr' : '1fr 1.6fr',
+          gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden',
+        }}>
+          {/* Tab list */}
+          <div style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
+            {ENTERPRISE_CARDS.map((c, i) => (
+              <button key={c.id} onClick={() => setActive(i)} style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                padding: narrow ? '18px 20px' : '28px 32px',
+                borderBottom: i < ENTERPRISE_CARDS.length - 1 ? '1px solid var(--border)' : 'none',
+                borderLeft: active === i ? '3px solid var(--accent)' : '3px solid transparent',
+                textAlign: 'left',
+                transition: 'background 0.15s, border-color 0.15s',
+                background: active === i ? 'rgba(60,122,172,0.06)' : 'transparent',
+              }}>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.1em', textTransform: 'uppercase', color: active === i ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, marginBottom: '6px' }}>{c.badge}</div>
+                <div style={{ fontFamily: 'var(--body)', fontSize: 'var(--text-body)', fontWeight: 500, color: active === i ? 'var(--fg)' : 'var(--fg-muted)', lineHeight: 1.35, letterSpacing: 'normal' }}>{c.title}</div>
+              </button>
+            ))}
+          </div>
+          {/* Detail panel */}
+          <div style={{ background: 'var(--bg-card)', padding: narrow ? '32px 22px' : '56px 52px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>{card.badge}</div>
+            <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-card)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-card-letter-spacing)', marginBottom: '24px' }}>{card.title}</div>
+            <p style={{ fontFamily: 'var(--body)', fontSize: '17px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty' }}>{card.detail}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── HOW IT WORKS ──────────────────────────────────────────────────────────────
+function HowItWorks() {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
+  const steps = [
+    { num: '01', title: 'Connect your systems', body: 'We integrate with your existing maintenance software. No hardware to install. No IT project.' },
+    { num: '02', title: 'Load your equipment', body: 'Upload your equipment manuals or point us at your asset list. Arkim builds the baseline schedule and knowledge base automatically.' },
+    { num: '03', title: 'Put the phone to work', body: 'Operators and technicians start capturing on day one — compliance checks, symptoms, repairs. Every interaction builds the knowledge base.' },
+    { num: '04', title: 'Arkim gets smarter', body: 'Every event, every repair, every captured symptom feeds back into the system. The diagnostic accuracy and maintenance schedule improve automatically over time.' },
+  ];
+  return (
+    <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-card)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px` }}>
+        <FadeIn style={{ marginBottom: narrow ? '48px' : '80px' }}>
+          <Eyebrow>From Kickoff to Live</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
+            Up and running in days.<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>Not months.</em>
+          </h2>
+        </FadeIn>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: narrow ? '1fr' : 'repeat(4, minmax(0, 1fr))',
+          gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
+        }}>
+          {steps.map((s, i) => (
+            <FadeIn key={i} delay={i * 0.1}>
+              <div style={{ background: 'var(--step-card-bg)', padding: narrow ? '28px 22px' : '40px 36px', height: '100%', transition: 'background 0.25s, box-shadow 0.4s cubic-bezier(0.16,1,0.3,1)' }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'var(--step-card-hover)';
+                e.currentTarget.style.boxShadow = '0 18px 40px var(--step-card-shadow)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'var(--step-card-bg)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+              >
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.12em', color: 'var(--accent)', fontWeight: 500, marginBottom: '20px' }}>{s.num}</div>
+                <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 600, marginBottom: '16px', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h3-letter-spacing)', color: 'var(--step-card-title)' }}>{s.title}</div>
+                <div style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--step-card-body)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.body}</div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
+function Results() {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
+  const stats = [
+    { num: '65%', label: "of a technician's time is non-wrench time", sub: 'Knowledge gaps and admin burden eat the majority of every shift. Arkim eliminates the search — technicians arrive at the machine knowing exactly what to do.' },
+    { num: '80%', label: 'of repair knowledge is undocumented', sub: 'When your best technician leaves, their knowledge leaves with them. Arkim captures every repair in real time and builds a collective memory for every asset.' },
+    { num: 'The 0-day technician.', label: 'Any hire. Any experience level.', sub: 'Senior-level knowledge available from the very first shift — not after years on the floor.' },
+  ];
+  return (
+    <div style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px` }}>
+        <FadeIn style={{ marginBottom: '64px' }}>
+          <Eyebrow accent>What You Get</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, letterSpacing: 'var(--title-h2-letter-spacing)', lineHeight: 'var(--heading-line-height)', textWrap: 'balance' }}>Results from week one.</h2>
+        </FadeIn>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: narrow ? '1fr' : 'repeat(3, minmax(0, 1fr))',
+          gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
+        }}>
+          {stats.map((s, i) => (
+            <FadeIn key={i} delay={i * 0.12}>
+              <div style={{
+                background: 'var(--bg-card)', padding: narrow ? '32px 22px' : '48px 40px', height: '100%',
+                borderTop: '3px solid var(--accent)',
+              }}
+              >
+                <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-stat-md)', fontWeight: 700, color: 'var(--accent)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-stat-letter-spacing)', marginBottom: '16px' }}>{s.num}</div>
+                <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{s.label}</div>
+                <div style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.sub}</div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── FINAL CTA ─────────────────────────────────────────────────────────────────
+function FinalCTA() {
+  const narrow = useIsNarrowLayout();
+  return (
+    <div style={{
+      borderTop: '1px solid var(--border)',
+      background: 'linear-gradient(to bottom, var(--final-cta-1), var(--final-cta-2))',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+        width: '700px', height: '400px',
+        background: 'radial-gradient(ellipse, var(--radial-accent-glow) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', color: 'var(--fg)' }}>
+        <FadeIn>
+          <Eyebrow>Let's Talk</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--fg)' }}>
+            Let's talk about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your facility.</em>
+          </h2>
+          <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
+            A 30-minute conversation. We'll show you exactly what Arkim would look like for your equipment and your team.
+          </p>
+          <DemoBtn label="Request a Demo" style={{ fontSize: '16px', padding: '15px 36px' }} />
+          <p style={{ fontFamily: 'var(--body)', fontSize: '14px', color: 'var(--p-fg-soft)', marginTop: '20px' }}>No pitch deck. No commitment.</p>
+        </FadeIn>
+      </div>
+    </div>
+  );
+}
+
+// ── FOOTER ────────────────────────────────────────────────────────────────────
+// ── APP ───────────────────────────────────────────────────────────────────────
+function App() {
+  return (
+    <div>
+      <ArkimFixedHeader activeLabel="Product" heroOverlay />
+      <Hero />
+      <StickyAnchorNav />
+      <S01 />
+      <S02 />
+      <S03 />
+      <S04 />
+      <HowItWorks />
+      <Results />
+      <EnterpriseReady />
+      <FinalCTA />
+      <ArkimFooter />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);

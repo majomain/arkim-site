@@ -8,7 +8,7 @@
 const { useState, useEffect, useRef } = React;
 
 /** Full-bleed muted loop for cinematic heroes (index, product). Respects reduced motion. */
-function HeroBgVideo({ src, reducedMotion = false }) {
+function HeroBgVideo({ src, poster, reducedMotion = false }) {
   const videoRef = useRef(null);
 
   const tryPlay = () => {
@@ -42,11 +42,12 @@ function HeroBgVideo({ src, reducedMotion = false }) {
           ref={videoRef}
           className="hero-bg-video"
           src={src}
+          poster={poster}
           muted
           loop
           playsInline
           autoPlay
-          preload={reducedMotion ? 'metadata' : 'auto'}
+          preload="metadata"
           tabIndex={-1}
           onCanPlay={tryPlay}
         />
@@ -197,8 +198,6 @@ function ArkimNav({ activeLabel = null, heroOverlay = false }) {
     return activeLabel === label ? 'var(--fg)' : 'var(--fg-muted)';
   };
 
-  const linkWeight = (label) => (activeLabel === label ? 600 : 500);
-
   /* Brand: arkim-side-by-side.svg = light theme; arkim-side-by-side-wht.svg = dark theme / hero overlay. */
   const logoLightSurface =
     (window.__resources && window.__resources.logoSideBySide) || '/uploads/arkim-side-by-side.svg';
@@ -221,7 +220,7 @@ function ArkimNav({ activeLabel = null, heroOverlay = false }) {
           href="/"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', minHeight: 40 }}
         >
-          <img src={navLogoSrc} alt="Arkim" style={{ height: 28, width: 'auto', display: 'block' }} />
+          <img src={navLogoSrc} alt="Arkim" width={89} height={28} style={{ height: 28, width: 'auto', display: 'block' }} />
         </a>
 
         {!isMobile && (
@@ -239,7 +238,6 @@ function ArkimNav({ activeLabel = null, heroOverlay = false }) {
                   }
                   style={{
                     color: linkColor(l),
-                    fontWeight: linkWeight(l),
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = isOverlay ? 'var(--nav-overlay-fg)' : 'var(--fg)';
@@ -313,7 +311,6 @@ function ArkimNav({ activeLabel = null, heroOverlay = false }) {
                   className="arkim-site-nav__drawer-link"
                   style={{
                     color: 'var(--fg)',
-                    fontWeight: activeLabel === label ? 600 : 500,
                   }}
                 >
                   {label}

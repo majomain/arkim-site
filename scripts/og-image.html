@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://use.typekit.net" crossorigin />
+<link rel="preconnect" href="https://p.typekit.net" crossorigin />
+<link rel="stylesheet" href="https://use.typekit.net/now2kdo.css" />
+<link rel="stylesheet" href="https://use.typekit.net/xrx7uwg.css" />
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     width: 1200px;
     height: 630px;
     overflow: hidden;
-    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-family: "proxima-nova", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
   .og {
@@ -28,7 +29,7 @@
     right: -180px;
     top: -220px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(74, 138, 191, 0.22) 0%, rgba(74, 138, 191, 0.06) 42%, transparent 68%);
+    background: radial-gradient(circle, rgba(60, 122, 172, 0.22) 0%, rgba(60, 122, 172, 0.06) 42%, transparent 68%);
     pointer-events: none;
   }
   .og__grid {
@@ -47,7 +48,7 @@
     top: 0;
     width: 6px;
     height: 100%;
-    background: linear-gradient(180deg, #4a8abf 0%, rgba(74, 138, 191, 0.15) 100%);
+    background: linear-gradient(180deg, #3c7aac 0%, rgba(60, 122, 172, 0.15) 100%);
   }
   .og__content {
     position: relative;
@@ -64,17 +65,19 @@
     margin-bottom: 48px;
   }
   .og__headline {
-    font-size: 58px;
+    font-family: "acumin-pro-extra-condensed", system-ui, sans-serif;
+    font-size: clamp(48px, 5vw, 72px);
     font-weight: 700;
-    line-height: 1.06;
-    letter-spacing: 0.01em;
+    line-height: 0.9;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
     color: #f5f2ed;
     max-width: 900px;
     margin-bottom: 24px;
   }
   .og__headline em {
     font-style: normal;
-    color: #4a8abf;
+    color: #3c7aac;
   }
   .og__lead {
     font-size: 24px;
@@ -90,7 +93,7 @@
     bottom: 56px;
     font-size: 20px;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.025em;
     color: rgba(245, 242, 237, 0.42);
     text-transform: lowercase;
   }
@@ -105,7 +108,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 0 1px rgba(74, 138, 191, 0.25);
+    box-shadow: 0 0 0 1px rgba(60, 122, 172, 0.25);
   }
   .og__mark svg {
     width: 44px;

@@ -1,0 +1,11 @@
+{
+  "name": "arkim-website",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-site.mjs",
+    "dev": "npm run build && npx --yes serve -l 9292"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

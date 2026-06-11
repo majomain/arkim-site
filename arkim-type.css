@@ -1,0 +1,75 @@
+/**
+ * Site typography — Acumin Extra Condensed (headings), Proxima Nova (body / subtext).
+ * Load after Adobe Fonts stylesheets (now2kdo + xrx7uwg).
+ */
+:root {
+  --sans: "acumin-pro-extra-condensed", Helvetica, sans-serif;
+  --body: "proxima-nova", Helvetica, sans-serif;
+  --text-eyebrow-size: clamp(14px, 1.1vw, 17px);
+  --text-eyebrow-tracking: 0.12em;
+  --text-caption: 16px;
+}
+
+body {
+  font-family: var(--body);
+}
+
+p,
+li,
+.form-input,
+textarea,
+select,
+.arkim-body {
+  font-family: var(--body);
+}
+
+/* Hero dek + section subheads — Proxima, sentence case (not uppercase headings) */
+p.hero-lead,
+.arkim-subhead {
+  font-family: var(--body);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.hero-h1,
+.hero-h1-accent,
+.arkim-heading {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  line-height: var(--heading-line-height, 0.9);
+}
+
+h1,
+.hero-h1,
+.hero-h1-accent {
+  letter-spacing: var(--hero-h1-letter-spacing);
+}
+
+h2 {
+  letter-spacing: var(--title-h2-letter-spacing);
+}
+
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: var(--title-h3-letter-spacing);
+}
+
+/* CTA buttons — uppercase label on every page */
+.arkim-btn-primary,
+button.arkim-btn-primary,
+a.arkim-btn-primary,
+button.arkim-btn-outline,
+a.arkim-btn-outline,
+.arkim-site-nav__cta,
+.arkim-cta-btn {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

@@ -4,10 +4,10 @@
  */
 :root {
   --nav-scrim: rgba(10, 10, 10, 0.94);
-  --btn-fg: #000000;
-  --title-h2-letter-spacing: -0.025em;
+  --btn-fg: #ffffff;
+  --title-h2-letter-spacing: 0.006em;
   /* Soft radial behind headlines / CTAs (matches site accent, not legacy orange) */
-  --radial-accent-glow: rgba(74, 138, 191, 0.1);
+  --radial-accent-glow: rgba(60, 122, 172, 0.1);
   /* Footer partner marks: dark UI needs inverted treatment; light forces dark marks */
   --partner-logo-opacity: 0.25;
   --partner-logo-hover-opacity: 0.55;
@@ -26,35 +26,36 @@
   --final-cta-2: #0c0e0f;
 }
 
-/* Body + form fields — regular weight in every site theme */
+/* Body + form fields — regular weight in every site theme (family in arkim-type.css) */
 body,
 .form-input {
+  font-family: var(--body);
   font-weight: var(--text-body-weight);
 }
 
 html[data-theme="light"] {
   color-scheme: light;
-  --bg: #f5f2eb;
+  --bg: #fafafa;
   --bg-card: #ffffff;
-  --border: #e3dfd5;
+  --border: #e5e5e5;
   --fg: #1c1915;
   --fg-muted: #5e5850;
-  --accent: #3a7aaf;
+  --accent: #1473cc;
   --btn-fg: #ffffff;
-  --nav-scrim: rgba(245, 242, 235, 0.94);
-  --headline-accent: #3a7aaf;
+  --nav-scrim: rgba(250, 250, 250, 0.94);
+  --headline-accent: #1473cc;
   --text-muted: rgba(28, 25, 21, 0.72);
-  --card-hover: #efebe3;
+  --card-hover: #f3f3f3;
   --partner-logo-opacity: 0.62;
   --partner-logo-hover-opacity: 0.86;
   --partner-logo-filter: brightness(0) saturate(100%);
-  --radial-accent-glow: rgba(58, 122, 175, 0.14);
+  --radial-accent-glow: rgba(20, 115, 204, 0.14);
   --p-fg: #000000;
   --p-fg-soft: rgba(28, 25, 21, 0.55);
-  --final-cta-1: #f0ebe3;
-  --final-cta-2: #e5dfd4;
-  --step-card-bg: #ebe6dc;
-  --step-card-hover: #e2ddd2;
+  --final-cta-1: #f5f5f5;
+  --final-cta-2: #ededed;
+  --step-card-bg: #f4f4f4;
+  --step-card-hover: #ececec;
   --step-card-title: var(--fg);
   --step-card-body: var(--fg-muted);
   --step-card-shadow: rgba(28, 25, 21, 0.1);

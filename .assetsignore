@@ -1,0 +1,10 @@
+node_modules/
+pages/
+scripts/
+*.jsx
+package.json
+package-lock.json
+.gitignore
+.wrangler/
+.dev.vars*
+.env*

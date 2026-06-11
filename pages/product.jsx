@@ -427,12 +427,12 @@ function BaselineCaptureDiagram() {
             Baseline capture
           </div>
           <p style={{
-            fontFamily: 'var(--sans)',
+            fontFamily: 'var(--body)',
             fontSize: narrow ? '15px' : '17px',
-            fontWeight: 500,
-            color: 'var(--fg)',
-            lineHeight: 1.4,
-            textWrap: 'balance',
+            fontWeight: 400,
+            color: 'var(--p-fg)',
+            lineHeight: 1.65,
+            textWrap: 'pretty',
           }}>
             Natural-language conversations with the people who run your equipment define what normal looks like for each asset — not just what the manual says for the class.
           </p>
@@ -611,8 +611,9 @@ function BaselineCaptureDiagram() {
                 #247
               </div>
               <p style={{
-                fontFamily: 'var(--sans)',
+                fontFamily: 'var(--body)',
                 fontSize: '12px',
+                fontWeight: 400,
                 color: 'var(--p-fg, var(--fg-muted))',
                 lineHeight: 1.55,
                 textWrap: 'pretty',
@@ -750,7 +751,7 @@ function ZeroDayTechnicianDiagram() {
             <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--fg-faint)', marginBottom: 10 }}>
               {step.tag}
             </div>
-            <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', color: 'var(--fg)', marginBottom: 12, textWrap: 'balance' }}>
+            <div style={{ fontFamily: 'var(--body)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 600, lineHeight: 1.25, letterSpacing: 'normal', color: 'var(--fg)', marginBottom: 12, textWrap: 'balance' }}>
               {step.title}
             </div>
             <p style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>
@@ -983,7 +984,6 @@ function DiagnoseModalitiesTable() {
         style={{
           width: '100%',
           borderCollapse: 'collapse',
-          fontFamily: 'var(--sans)',
           tableLayout: 'fixed',
         }}
       >
@@ -994,6 +994,7 @@ function DiagnoseModalitiesTable() {
                 scope="row"
                 style={{
                   padding: narrow ? '18px 14px' : '22px 20px',
+                  fontFamily: 'var(--sans)',
                   fontSize: '15px',
                   fontWeight: 600,
                   color: 'var(--fg)',
@@ -1008,6 +1009,7 @@ function DiagnoseModalitiesTable() {
               <td
                 style={{
                   padding: narrow ? '18px 14px' : '22px 22px',
+                  fontFamily: 'var(--body)',
                   fontSize: '14px',
                   fontWeight: 400,
                   color: 'var(--fg-muted)',
@@ -1015,6 +1017,7 @@ function DiagnoseModalitiesTable() {
                   verticalAlign: 'top',
                   borderBottom: i < rows.length - 1 ? '1px solid var(--border)' : 'none',
                   background: 'var(--bg-card)',
+                  textWrap: 'pretty',
                 }}
               >{row.body}</td>
             </tr>
@@ -1130,8 +1133,8 @@ function S04() {
               <div key={i} style={{
                 background: 'var(--bg-card)', padding: narrow ? '18px 14px' : '28px 24px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--sans)', fontSize: narrow ? '14px' : '16px', fontWeight: 500,
-                color: 'var(--fg-muted)', textAlign: 'center',
+                fontFamily: 'var(--sans)', fontSize: narrow ? '17px' : '19px', fontWeight: 500,
+                textTransform: 'uppercase', color: 'var(--fg-muted)', textAlign: 'center',
                 transition: 'color 0.25s, background 0.25s, box-shadow 0.35s cubic-bezier(0.16,1,0.3,1)',
                 cursor: 'default',
               }}
@@ -1218,24 +1221,24 @@ function EnterpriseReady() {
           <div style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
             {ENTERPRISE_CARDS.map((c, i) => (
               <button key={c.id} onClick={() => setActive(i)} style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                padding: narrow ? '18px 20px' : '28px 32px',
+                background: active === i ? 'var(--accent-soft)' : 'transparent',
+                border: 'none', cursor: 'pointer',
+                padding: narrow ? '18px 20px' : '22px 28px',
                 borderBottom: i < ENTERPRISE_CARDS.length - 1 ? '1px solid var(--border)' : 'none',
                 borderLeft: active === i ? '3px solid var(--accent)' : '3px solid transparent',
                 textAlign: 'left',
-                transition: 'background 0.15s, border-color 0.15s',
-                background: active === i ? 'rgba(60,122,172,0.06)' : 'transparent',
+                transition: 'background 0.15s',
               }}>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.1em', textTransform: 'uppercase', color: active === i ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, marginBottom: '6px' }}>{c.badge}</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: active === i ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, marginBottom: '6px' }}>{c.badge}</div>
                 <div style={{ fontFamily: 'var(--body)', fontSize: 'var(--text-body)', fontWeight: 500, color: active === i ? 'var(--fg)' : 'var(--fg-muted)', lineHeight: 1.35, letterSpacing: 'normal' }}>{c.title}</div>
               </button>
             ))}
           </div>
           {/* Detail panel */}
-          <div style={{ background: 'var(--bg-card)', padding: narrow ? '32px 22px' : '56px 52px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>{card.badge}</div>
-            <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-card)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-card-letter-spacing)', marginBottom: '24px' }}>{card.title}</div>
-            <p style={{ fontFamily: 'var(--body)', fontSize: '17px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty' }}>{card.detail}</p>
+          <div style={{ background: 'var(--bg-card)', padding: narrow ? '32px 22px' : '52px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: narrow ? undefined : '320px' }}>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '16px' }}>{card.badge}</div>
+            <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-card)', fontWeight: 700, letterSpacing: 'var(--title-h3-letter-spacing)', lineHeight: 'var(--heading-line-height)', marginBottom: '20px' }}>{card.title}</div>
+            <p style={{ fontFamily: 'var(--body)', fontSize: 'var(--text-body)', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, textWrap: 'pretty', maxWidth: '480px' }}>{card.detail}</p>
           </div>
         </div>
       </div>

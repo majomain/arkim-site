@@ -3,7 +3,7 @@
  * h1: .hero-h1 / --hero-h1-size. h2: --title-h2-md|lg|xl. h3/card/stat tokens below.
  */
 :root {
-  --hero-h1-size: clamp(36px, 4.8vw, 66px);
+  --hero-h1-size: clamp(29px, 3.84vw, 53px);
   --hero-h1-line-height: 0.9;
   --heading-line-height: 0.9;
   --hero-h1-letter-spacing: 0.018em;

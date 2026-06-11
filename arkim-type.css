@@ -8,6 +8,7 @@
   --text-eyebrow-size: clamp(14px, 1.1vw, 17px);
   --text-eyebrow-tracking: 0.12em;
   --text-caption: 16px;
+  --btn-letter-spacing: 0.08em;
 }
 
 body {
@@ -69,7 +70,8 @@ a.arkim-btn-primary,
 button.arkim-btn-outline,
 a.arkim-btn-outline,
 .arkim-site-nav__cta,
+.arkim-site-nav__drawer-cta,
 .arkim-cta-btn {
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--btn-letter-spacing);
 }

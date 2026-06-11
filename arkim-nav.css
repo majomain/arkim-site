@@ -127,7 +127,7 @@
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.07em;
+  letter-spacing: var(--btn-letter-spacing);
   text-transform: uppercase;
   padding: 7px 16px;
   border-radius: 4px;
@@ -159,7 +159,7 @@
   font-family: var(--sans);
   font-size: var(--text-caption, 16px);
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--btn-letter-spacing);
   padding: 14px 18px;
   border-radius: 4px;
   text-decoration: none;

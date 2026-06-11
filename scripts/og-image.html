@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .og {
+    position: relative;
+    width: 1200px;
+    height: 630px;
+    background: #0a0a0a;
+    overflow: hidden;
+  }
+  .og__glow {
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    right: -180px;
+    top: -220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(74, 138, 191, 0.22) 0%, rgba(74, 138, 191, 0.06) 42%, transparent 68%);
+    pointer-events: none;
+  }
+  .og__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245, 242, 237, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245, 242, 237, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .og__accent-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(180deg, #4a8abf 0%, rgba(74, 138, 191, 0.15) 100%);
+  }
+  .og__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 72px 96px;
+  }
+  .og__logo {
+    width: 248px;
+    height: auto;
+    margin-bottom: 48px;
+  }
+  .og__headline {
+    font-size: 58px;
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: 0.01em;
+    color: #f5f2ed;
+    max-width: 900px;
+    margin-bottom: 24px;
+  }
+  .og__headline em {
+    font-style: normal;
+    color: #4a8abf;
+  }
+  .og__lead {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: rgba(245, 242, 237, 0.72);
+    max-width: 780px;
+    margin-bottom: 0;
+  }
+  .og__domain {
+    position: absolute;
+    left: 96px;
+    bottom: 56px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: rgba(245, 242, 237, 0.42);
+    text-transform: lowercase;
+  }
+  .og__mark {
+    position: absolute;
+    right: 72px;
+    bottom: 52px;
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+    background: #090c17;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 1px rgba(74, 138, 191, 0.25);
+  }
+  .og__mark svg {
+    width: 44px;
+    height: 44px;
+  }
+</style>
+</head>
+<body>
+  <div class="og">
+    <div class="og__glow"></div>
+    <div class="og__grid"></div>
+    <div class="og__accent-bar"></div>
+    <div class="og__content">
+      <img class="og__logo" src="../uploads/arkim-side-by-side-wht.svg" alt="" />
+      <h1 class="og__headline">
+        Industrial maintenance,<br />
+        <em>re-leveraged.</em>
+      </h1>
+      <p class="og__lead">
+        Senior-level knowledge for every technician — using the phone in their pocket as the diagnostic sensor.
+      </p>
+    </div>
+    <div class="og__domain">arkim.ai</div>
+    <div class="og__mark">
+      <svg viewBox="0 0 88.8 88.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="88.8" height="88.8" rx="8.39" fill="#090c17"/>
+        <path fill="#fff" d="M52.08,20.72h-4.81v3.3h-4.81v-3.3H15.99l6.93,8.81h43.88l6.93-8.81h-21.65,0Z"/>
+        <polygon fill="#fff" points="49.68 73.44 55.69 67.42 49.68 61.41 40.05 61.41 40.05 61.41 40.05 55.39 34.04 61.41 40.05 67.42 49.68 67.42 49.68 67.42 49.68 73.44"/>
+        <polygon fill="#fff" points="60.5 54.79 54.49 48.77 35.24 48.77 35.24 42.76 29.22 48.77 35.24 54.79 54.49 54.79 54.49 60.8 60.5 54.79"/>
+        <polygon fill="#fff" points="56.89 48.17 62.91 42.16 56.89 36.14 32.83 36.14 32.83 36.14 32.83 30.13 26.82 36.14 32.83 42.16 56.89 42.16 56.89 42.16 56.89 48.17"/>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

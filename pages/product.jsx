@@ -751,7 +751,7 @@ function ZeroDayTechnicianDiagram() {
             <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--fg-faint)', marginBottom: 10 }}>
               {step.tag}
             </div>
-            <div style={{ fontFamily: 'var(--body)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 600, lineHeight: 1.25, letterSpacing: 'normal', color: 'var(--fg)', marginBottom: 12, textWrap: 'balance' }}>
+            <div style={{ fontFamily: 'var(--body)', fontSize: narrow ? '17px' : '19px', fontWeight: 600, lineHeight: 1.3, letterSpacing: 'normal', color: 'var(--fg)', marginBottom: 12, textWrap: 'balance' }}>
               {step.title}
             </div>
             <p style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>

@@ -123,26 +123,6 @@
   white-space: nowrap;
 }
 
-.arkim-site-nav__cta {
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: var(--btn-letter-spacing);
-  text-transform: uppercase;
-  padding: 7px 16px;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: opacity 0.25s ease, transform 0.2s ease;
-}
-
-.arkim-site-nav__cta:hover {
-  opacity: 0.9;
-}
-
-.arkim-site-nav__cta:active {
-  transform: translateY(1px);
-}
-
 .arkim-site-nav__drawer-link {
   font-family: var(--sans);
   font-size: var(--text-label, 15px);
@@ -156,18 +136,8 @@
 }
 
 .arkim-site-nav__drawer-cta {
-  font-family: var(--sans);
-  font-size: var(--text-caption, 16px);
-  font-weight: 600;
-  letter-spacing: var(--btn-letter-spacing);
-  padding: 14px 18px;
-  border-radius: 4px;
-  text-decoration: none;
-  display: inline-flex;
-  justify-content: center;
   margin-top: 8px;
-  min-height: 44px;
-  align-items: center;
+  width: 100%;
 }
 
 .arkim-site-nav__menu-btn {

@@ -258,11 +258,7 @@ function ArkimNav({ activeLabel = null, heroOverlay = false }) {
             <ThemeToggle overlay={isOverlay} />
             <a
               href="/contactus/#arkim-contact-form"
-              className="arkim-site-nav__cta"
-              style={{
-                background: 'var(--accent)',
-                color: 'var(--btn-fg)',
-              }}
+              className="arkim-btn-primary arkim-btn-primary--sm"
             >
               Request Demo
             </a>
@@ -319,11 +315,7 @@ function ArkimNav({ activeLabel = null, heroOverlay = false }) {
             })}
             <a
               href="/contactus/#arkim-contact-form"
-              className="arkim-site-nav__drawer-cta"
-              style={{
-                background: 'var(--accent)',
-                color: 'var(--btn-fg)',
-              }}
+              className="arkim-btn-primary arkim-site-nav__drawer-cta"
             >
               Request Demo
             </a>

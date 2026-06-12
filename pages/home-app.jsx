@@ -6,6 +6,7 @@ const {
   ArkimHero,
   ArkimIndustriesStrip,
   ArkimTheLever,
+  ArkimDowntimeResolve,
   ArkimPersonas,
   ArkimTimeToValue,
   ArkimComplianceTrust,
@@ -78,6 +79,7 @@ function App() {
       <ArkimHero />
       <ArkimIndustriesStrip />
       <ArkimTheLever />
+      <ArkimDowntimeResolve />
       <Divider />
       <ArkimPersonas />
       <Divider />

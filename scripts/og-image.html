@@ -7,162 +7,251 @@
 <link rel="stylesheet" href="https://use.typekit.net/now2kdo.css" />
 <link rel="stylesheet" href="https://use.typekit.net/xrx7uwg.css" />
 <style>
+  /* OG canvas — mirrors site tokens (index.html + arkim-hero.css + arkim-type.css) */
+  :root {
+    --bg: #0a0a0a;
+    --fg: #f5f2ed;
+    --fg-muted: rgba(245, 242, 237, 0.72);
+    --p-fg: rgba(245, 242, 237, 0.88);
+    --accent: #4a96c4;
+    --accent-soft: rgba(74, 150, 196, 0.14);
+    --border: rgba(245, 242, 237, 0.12);
+    --sans: "acumin-pro-extra-condensed", Helvetica, sans-serif;
+    --body: "proxima-nova", Helvetica, sans-serif;
+    --heading-weight: 800;
+    --hero-h1-size: 56px;
+    --hero-h1-line-height: 0.77;
+    --hero-h1-letter-spacing: 0.006em;
+    --text-eyebrow-size: 15px;
+    --text-eyebrow-tracking: 0.16em;
+    --text-body: 18px;
+    --btn-radius: 6px;
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
     width: 1200px;
     height: 630px;
     overflow: hidden;
-    font-family: "proxima-nova", Helvetica, sans-serif;
+    font-family: var(--body);
     -webkit-font-smoothing: antialiased;
   }
+
   .og {
     position: relative;
     width: 1200px;
     height: 630px;
-    background: #0a0a0a;
+    background: var(--bg);
     overflow: hidden;
     isolation: isolate;
   }
-  .og__texture {
+
+  /* Hero photo — same asset as homepage */
+  .og__photo {
     position: absolute;
     inset: 0;
-    background-image: url('https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/bg-og.webp');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    opacity: 0.44;
-    pointer-events: none;
-    z-index: 0;
+    background: #050505 url('https://assets.arkim.ai/arkim-banner-video-home-poster.webp') center center / cover no-repeat;
+    transform: scale(1.04);
+    transform-origin: 72% 42%;
   }
-  .og__glow {
-    position: absolute;
-    width: 920px;
-    height: 920px;
-    right: -200px;
-    top: -240px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(74, 150, 196, 0.2) 0%, rgba(74, 150, 196, 0.05) 42%, transparent 68%);
-    pointer-events: none;
-    z-index: 0;
-  }
+
+  /* Cinematic scrim — matches .hero-cinematic-scrim logic */
   .og__scrim {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(10, 10, 10, 0.72) 0%,
-      rgba(10, 10, 10, 0.42) 48%,
-      rgba(10, 10, 10, 0.58) 100%
-    );
+    background:
+      linear-gradient(105deg,
+        rgba(0, 0, 0, 0.92) 0%,
+        rgba(0, 0, 0, 0.78) 38%,
+        rgba(0, 0, 0, 0.35) 62%,
+        rgba(0, 0, 0, 0.55) 100%),
+      linear-gradient(180deg,
+        rgba(0, 0, 0, 0.55) 0%,
+        rgba(0, 0, 0, 0.18) 42%,
+        rgba(0, 0, 0, 0.62) 100%);
     pointer-events: none;
-    z-index: 0;
   }
-  .og__accent-bar {
+
+  /* Static hero texture */
+  .og__texture {
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 6px;
-    height: 100%;
-    background: linear-gradient(180deg, #4a96c4 0%, rgba(74, 150, 196, 0.12) 100%);
+    inset: 0;
+    background: url('https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/bg-og.webp') center / cover no-repeat;
+    opacity: 0.28;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  .og__glow {
+    position: absolute;
+    width: 680px;
+    height: 680px;
+    left: -120px;
+    bottom: -220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(74, 150, 196, 0.22) 0%, rgba(74, 150, 196, 0.06) 45%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .og__frame {
+    position: absolute;
+    inset: 28px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    pointer-events: none;
     z-index: 2;
   }
+
+  .og__accent {
+    position: absolute;
+    left: 28px;
+    top: 28px;
+    width: 4px;
+    height: calc(100% - 56px);
+    border-radius: 4px;
+    background: linear-gradient(180deg, var(--accent) 0%, rgba(74, 150, 196, 0.08) 100%);
+    z-index: 3;
+  }
+
   .og__content {
     position: relative;
-    z-index: 1;
+    z-index: 4;
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: 100%;
-    padding: 72px 96px;
+    max-width: 680px;
+    padding: 56px 72px 56px 80px;
   }
+
   .og__logo {
-    width: 248px;
+    width: 196px;
     height: auto;
-    margin-bottom: 44px;
+    margin-bottom: 36px;
   }
-  .og__headline {
-    font-family: "acumin-pro-extra-condensed", Helvetica, sans-serif;
-    font-size: 62px;
-    font-weight: 800;
-    font-style: normal;
-    line-height: 0.77;
-    letter-spacing: 0.018em;
+
+  .og__eyebrow {
+    font-family: var(--sans);
+    font-size: var(--text-eyebrow-size);
+    font-weight: 500;
+    letter-spacing: var(--text-eyebrow-tracking);
     text-transform: uppercase;
-    color: #f5f2ed;
-    max-width: 900px;
-    margin-bottom: 28px;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+
+  .og__headline {
+    font-family: var(--sans);
+    font-size: var(--hero-h1-size);
+    font-weight: var(--heading-weight);
+    font-style: normal;
+    line-height: var(--hero-h1-line-height);
+    letter-spacing: var(--hero-h1-letter-spacing);
+    text-transform: uppercase;
+    color: var(--fg);
+    margin-bottom: 24px;
     text-wrap: balance;
   }
+
   .og__headline-line {
     display: block;
   }
+
   .og__lead {
-    font-family: "proxima-nova", Helvetica, sans-serif;
-    font-size: 22px;
+    font-family: var(--body);
+    font-size: var(--text-body);
     font-weight: 400;
-    line-height: 1.55;
-    color: rgba(245, 242, 237, 0.88);
-    max-width: 760px;
-    margin-bottom: 0;
+    line-height: 1.45;
+    color: var(--p-fg);
+    max-width: 520px;
     text-wrap: pretty;
   }
-  .og__domain {
-    position: absolute;
-    left: 96px;
-    bottom: 56px;
-    z-index: 1;
-    font-family: "proxima-nova", Helvetica, sans-serif;
-    font-size: 18px;
+
+  .og__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 32px;
+    padding: 12px 22px;
+    border-radius: var(--btn-radius);
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 13px;
     font-weight: 600;
-    letter-spacing: 0.04em;
-    color: rgba(245, 242, 237, 0.42);
-    text-transform: lowercase;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   }
-  .og__mark {
+
+  .og__chip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    flex-shrink: 0;
+  }
+
+  .og__footer {
     position: absolute;
-    right: 72px;
-    bottom: 52px;
-    z-index: 1;
-    width: 72px;
-    height: 72px;
-    border-radius: 10px;
-    background: #090c17;
+    left: 80px;
+    right: 80px;
+    bottom: 44px;
+    z-index: 4;
     display: flex;
     align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 0 1px rgba(74, 150, 196, 0.28);
+    justify-content: space-between;
+    gap: 24px;
   }
-  .og__mark svg {
-    width: 44px;
-    height: 44px;
+
+  .og__domain {
+    font-family: var(--body);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+    text-transform: lowercase;
+  }
+
+  .og__tagline {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245, 242, 237, 0.42);
   }
 </style>
 </head>
 <body>
   <div class="og">
+    <div class="og__photo"></div>
+    <div class="og__scrim"></div>
     <div class="og__texture"></div>
     <div class="og__glow"></div>
-    <div class="og__scrim"></div>
-    <div class="og__accent-bar"></div>
+    <div class="og__frame"></div>
+    <div class="og__accent"></div>
+
     <div class="og__content">
       <img class="og__logo" src="../uploads/arkim-side-by-side-wht.svg" alt="" />
+      <div class="og__eyebrow">Industrial maintenance intelligence</div>
       <h1 class="og__headline">
         <span class="og__headline-line">Industrial maintenance,</span>
         <span class="og__headline-line">re-leveraged.</span>
       </h1>
       <p class="og__lead">
-        Arkim gives any technician senior-level knowledge from day one — using the phone in their pocket as the diagnostic sensor.
+        Senior-level knowledge for every technician — using the phone in their pocket as the diagnostic sensor.
       </p>
+      <div class="og__chip">
+        <span class="og__chip-dot" aria-hidden="true"></span>
+        Request a demo
+      </div>
     </div>
-    <div class="og__domain">arkim.ai</div>
-    <div class="og__mark">
-      <svg viewBox="0 0 88.8 88.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="88.8" height="88.8" rx="8.39" fill="#090c17"/>
-        <path fill="#fff" d="M52.08,20.72h-4.81v3.3h-4.81v-3.3H15.99l6.93,8.81h43.88l6.93-8.81h-21.65,0Z"/>
-        <polygon fill="#fff" points="49.68 73.44 55.69 67.42 49.68 61.41 40.05 61.41 40.05 61.41 40.05 55.39 34.04 61.41 40.05 67.42 49.68 67.42 49.68 67.42 49.68 73.44"/>
-        <polygon fill="#fff" points="60.5 54.79 54.49 48.77 35.24 48.77 35.24 42.76 29.22 48.77 35.24 54.79 54.49 54.79 54.49 60.8 60.5 54.79"/>
-        <polygon fill="#fff" points="56.89 48.17 62.91 42.16 56.89 36.14 32.83 36.14 32.83 36.14 32.83 30.13 26.82 36.14 32.83 42.16 56.89 42.16 56.89 42.16 56.89 48.17"/>
-      </svg>
+
+    <div class="og__footer">
+      <div class="og__domain">arkim.ai</div>
+      <div class="og__tagline">Built for regulated industries</div>
     </div>
   </div>
 </body>

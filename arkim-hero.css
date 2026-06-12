@@ -54,6 +54,11 @@
   --hero-scrim-top: 0.55;
   --hero-scrim-mid: 0.28;
   --hero-scrim-bottom: 0.62;
+  /* Subtle dividers on dark hero panels (stats, anchor nav) — all site themes */
+  --border: rgba(255, 255, 255, 0.22);
+  /* Frosted panel fill — stats + anchor nav (matched across both rows) */
+  --hero-panel-bg: rgba(10, 10, 10, 0.74);
+  --hero-panel-blur: 14px;
   /* Partner strip — fixed on dark hero in every site theme */
   --hero-trust-fg: rgba(245, 242, 237, 0.82);
   --hero-trust-fg-hover: rgba(245, 242, 237, 0.96);
@@ -93,8 +98,6 @@ html[data-theme="light"] .hero-cinematic {
   --fg: #f5f2ed;
   --fg-muted: rgba(245, 242, 237, 0.78);
   --text-muted: rgba(245, 242, 237, 0.8);
-  /* --accent inherits html[data-theme="light"] primary (#1473cc) */
-  --border: rgba(255, 255, 255, 0.22);
   --btn-fg: #ffffff;
   --outline: rgba(245, 242, 237, 0.22);
   --outline-hover: rgba(245, 242, 237, 0.42);
@@ -261,4 +264,32 @@ html[data-theme='light'] .hero-cinematic--static-texture {
 .hero-cinematic .hero-trust-link:hover .hero-trust-logo,
 .hero-cinematic .hero-trust-link:focus-visible .hero-trust-logo {
   opacity: var(--hero-trust-logo-opacity-hover);
+}
+
+/* Frosted grid panels on cinematic heroes (stats, section anchor nav) */
+.hero-panel-grid {
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--border);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-panel-cell {
+  background: var(--hero-panel-bg);
+  backdrop-filter: blur(var(--hero-panel-blur));
+  -webkit-backdrop-filter: blur(var(--hero-panel-blur));
+}
+
+a.hero-panel-cell {
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+a.hero-panel-cell:hover,
+a.hero-panel-cell:focus-visible {
+  background: var(--subnav-hover-bg);
 }

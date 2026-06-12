@@ -211,34 +211,24 @@ function Hero() {
           </>
         ))}
         {heroFade(0.35, (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: narrow ? '1fr' : 'repeat(4, 1fr)',
-            width: '100%',
-            maxWidth: narrow ? '100%' : '740px',
-            border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
-            background: 'rgba(10,10,10,0.6)', backdropFilter: 'blur(12px)', margin: '0 auto',
-          }}>
+          <div
+            className="hero-panel-grid"
+            style={{
+              gridTemplateColumns: narrow ? '1fr' : 'repeat(4, 1fr)',
+              width: '100%',
+              maxWidth: narrow ? '100%' : '740px',
+            }}
+          >
             {[
               { num: '01', label: 'Diagnose faster', id: 's01' },
               { num: '02', label: 'Capture knowledge', id: 's02' },
               { num: '03', label: 'Maintain smarter', id: 's03' },
               { num: '04', label: 'Your existing tools', id: 's04' },
             ].map((item, i) => (
-              <a key={i} href={`#${item.id}`} style={{
+              <a key={i} href={`#${item.id}`} className="hero-panel-cell" style={{
                 display: 'flex', flexDirection: 'column', gap: 4,
-                padding: narrow ? '16px 18px' : '20px 24px', textDecoration: 'none',
-                borderRight: !narrow && i < 3 ? '1px solid var(--border)' : 'none',
-                borderBottom: narrow && i < 3 ? '1px solid var(--border)' : 'none',
-                transition: 'background 0.2s',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = 'var(--subnav-hover-bg)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = 'transparent';
-              }}
-              >
+                padding: narrow ? '16px 18px' : '20px 24px',
+              }}>
                 <span style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.1em', color: 'var(--accent)', fontWeight: 500 }}>{item.num}</span>
                 <span style={{ fontFamily: 'var(--body)', fontSize: '13px', color: 'var(--fg-muted)', fontWeight: 400, lineHeight: 1.3 }}>{item.label}</span>
               </a>
@@ -406,10 +396,10 @@ function BaselineCaptureDiagram() {
         gap: narrow ? 20 : 28,
       }}>
         <div>
-          <div className="arkim-section-caption">Baseline capture</div>
+          <div className="arkim-section-caption" style={{ fontFamily: 'var(--body)', fontSize: 'calc(var(--text-eyebrow-size) + 1px)' }}>Baseline capture</div>
           <p style={{
             fontFamily: 'var(--body)',
-            fontSize: narrow ? '15px' : '17px',
+            fontSize: narrow ? '16px' : '18px',
             fontWeight: 400,
             color: 'var(--p-fg)',
             lineHeight: 1.65,
@@ -433,8 +423,8 @@ function BaselineCaptureDiagram() {
             transition: 'opacity 0.7s ease',
           }}>
             <div style={{
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-              fontSize: '10px',
+              fontFamily: 'var(--body)',
+              fontSize: '11px',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: 'var(--fg-muted)',
@@ -449,8 +439,8 @@ function BaselineCaptureDiagram() {
                 gap: 12,
                 padding: '10px 0',
                 borderTop: '1px solid var(--border)',
-                fontFamily: 'var(--sans)',
-                fontSize: '13px',
+                fontFamily: 'var(--body)',
+                fontSize: '14px',
               }}>
                 <span style={{ color: 'var(--fg-muted)' }}>{p.label}</span>
                 <span style={{ color: 'var(--fg)', fontWeight: 500, textAlign: 'right' }}>{p.value}</span>
@@ -468,8 +458,8 @@ function BaselineCaptureDiagram() {
             opacity: captured ? 1 : 0.72,
           }}>
             <div style={{
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-              fontSize: '10px',
+              fontFamily: 'var(--body)',
+              fontSize: '11px',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: captured ? 'var(--accent)' : 'var(--fg-muted)',
@@ -485,8 +475,8 @@ function BaselineCaptureDiagram() {
                 gap: 12,
                 padding: '10px 0',
                 borderTop: '1px solid var(--border)',
-                fontFamily: 'var(--sans)',
-                fontSize: '13px',
+                fontFamily: 'var(--body)',
+                fontSize: '14px',
               }}>
                 <span style={{ color: 'var(--fg-muted)' }}>{p.label}</span>
                 <span style={{ color: 'var(--accent)', fontWeight: 600, textAlign: 'right' }}>{p.value}</span>
@@ -511,8 +501,8 @@ function BaselineCaptureDiagram() {
             gap: 10,
           }}>
             <div style={{
-              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-              fontSize: '10px',
+              fontFamily: 'var(--body)',
+              fontSize: '11px',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: 'var(--fg-muted)',
@@ -529,8 +519,8 @@ function BaselineCaptureDiagram() {
                   borderRadius: line.who === 'operator' ? '10px 10px 10px 4px' : '10px 10px 4px 10px',
                   background: line.who === 'operator' ? 'var(--bg)' : 'rgba(60, 122, 172, 0.14)',
                   border: `1px solid ${line.who === 'operator' ? 'var(--border)' : 'rgba(60, 122, 172, 0.35)'}`,
-                  fontFamily: 'var(--sans)',
-                  fontSize: '12px',
+                  fontFamily: 'var(--body)',
+                  fontSize: '13px',
                   lineHeight: 1.5,
                   color: 'var(--fg)',
                   opacity: captured || i < 2 ? 1 : 0.35,
@@ -539,7 +529,7 @@ function BaselineCaptureDiagram() {
               >
                 <span style={{
                   display: 'block',
-                  fontSize: '9px',
+                  fontSize: '10px',
                   fontWeight: 600,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
@@ -566,8 +556,8 @@ function BaselineCaptureDiagram() {
               gap: 8,
             }}>
               <div style={{
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                fontSize: '10px',
+                fontFamily: 'var(--body)',
+                fontSize: '11px',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
                 color: 'var(--fg-muted)',
@@ -583,8 +573,8 @@ function BaselineCaptureDiagram() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontFamily: 'var(--sans)',
-                fontSize: 'var(--text-eyebrow-size)',
+                fontFamily: 'var(--body)',
+                fontSize: 'calc(var(--text-eyebrow-size) + 1px)',
                 fontWeight: 700,
                 color: 'var(--accent)',
                 marginBottom: 4,
@@ -593,7 +583,7 @@ function BaselineCaptureDiagram() {
               </div>
               <p style={{
                 fontFamily: 'var(--body)',
-                fontSize: '12px',
+                fontSize: '13px',
                 fontWeight: 400,
                 color: 'var(--p-fg, var(--fg-muted))',
                 lineHeight: 1.55,
@@ -615,8 +605,8 @@ function BaselineCaptureDiagram() {
                     borderRadius: 8,
                     border: '1px solid var(--border)',
                     background: captured ? 'rgba(60, 122, 172, 0.1)' : 'var(--bg-card)',
-                    fontFamily: 'var(--sans)',
-                    fontSize: 'var(--text-eyebrow-size)',
+                    fontFamily: 'var(--body)',
+                    fontSize: 'calc(var(--text-eyebrow-size) + 1px)',
                     fontWeight: 500,
                     color: captured ? 'var(--fg)' : 'var(--fg-muted)',
                     lineHeight: 1.35,
@@ -633,8 +623,8 @@ function BaselineCaptureDiagram() {
         </div>
 
         <p style={{
-          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-          fontSize: '10px',
+          fontFamily: 'var(--body)',
+          fontSize: '11px',
           color: 'var(--fg-muted)',
           lineHeight: 1.5,
           opacity: 0.9,
@@ -974,7 +964,7 @@ function DiagnoseModalitiesTable() {
                 style={{
                   padding: narrow ? '18px 14px' : '22px 20px',
                   fontFamily: 'var(--sans)',
-                  fontSize: '15px',
+                  fontSize: narrow ? '17px' : '18px',
                   fontWeight: 600,
                   color: 'var(--fg)',
                   textAlign: 'left',

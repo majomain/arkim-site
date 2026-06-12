@@ -3,11 +3,12 @@ const { ArkimFixedHeader } = window;
 const ArkimFooter = window.ArkimFooter;
 const useArkimTheme = window.useArkimTheme;
 const usePrefersReducedMotion = window.usePrefersReducedMotion;
+const HeroBgVideo = window.HeroBgVideo;
 
 const HERO_IMPACT_STATS = [
-  { value: '50%', label: 'Increase in equipment uptime', source: 'Deloitte Insights' },
+  { value: '50%', label: 'Increase in equipment\nuptime', source: 'Deloitte Insights' },
   { value: '30%', label: 'Increase in technician proficiency', source: 'Boston Consulting Group' },
-  { value: '0', label: 'Your data used to train public models', source: 'Arkim guarantee', displayValue: 'Zero' },
+  { value: '0', label: 'Data used to train public models', source: 'Arkim guarantee', displayValue: 'Zero' },
 ];
 
 function useFadeIn(threshold = 0.1) {
@@ -77,9 +78,9 @@ function SectionImg({ label, height = '55vh' }) {
 }
 
 const ANCHOR_ITEMS = [
-  { num: '01', label: 'Featured report', id: 's01' },
-  { num: '02', label: 'Comparison', id: 's02' },
-  { num: '03', label: 'Industry impact', id: 's03' },
+  { num: '01', label: 'Comparison', id: 's01' },
+  { num: '02', label: 'Industry impact', id: 's02' },
+  { num: '03', label: 'Your reality', id: 's03' },
 ];
 
 function Hero() {
@@ -91,13 +92,16 @@ function Hero() {
     </div>
   );
   return (
-    <div className="hero-cinematic hero-cinematic--static-texture" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? 'calc(120px + var(--arkim-nav-offset)) 16px 72px' : 'calc(140px + var(--arkim-nav-offset)) 48px 80px', overflow: 'hidden' }}>
+    <div className="hero-cinematic hero-cinematic--video-bg" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: narrow ? 'calc(120px + var(--arkim-nav-offset)) 16px 72px' : 'calc(140px + var(--arkim-nav-offset)) 48px 80px', overflow: 'hidden' }}>
+      <HeroBgVideo
+        src="https://assets.arkim.ai/pharmaceutical-manufacturing-canva.mp4"
+        reducedMotion={reducedMotion}
+      />
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '820px', width: '100%', textAlign: 'center' }}>
         {heroFade(0.08, (
           <>
             <h1 className="hero-h1">
-              <span style={{ color: 'var(--hero-title)', display: 'block' }}>The proof is on</span>
-              <span style={{ color: 'var(--hero-title)', display: 'block' }}>the shop floor.</span>
+              <span style={{ color: 'var(--hero-title)', display: 'block' }}>Keep your line running.</span>
             </h1>
             <p className="hero-lead arkim-subhead" style={{ maxWidth: '640px' }}>
               GenAI drives uptime, technician proficiency, and margin. Arkim is the domain-specific copilot that turns those numbers into daily wins—with your manuals, schematics, and tribal knowledge, never the public internet.
@@ -105,11 +109,11 @@ function Hero() {
           </>
         ))}
         {heroFade(0.28, (
-          <div className="resources-hero-stats" role="list" aria-label="Industry impact highlights">
+          <div className="hero-panel-grid resources-hero-stats" role="list" aria-label="Industry impact highlights">
             {HERO_IMPACT_STATS.map((stat, i) => (
               <div
                 key={i}
-                className="resources-hero-stat"
+                className="resources-hero-stat hero-panel-cell"
                 role="listitem"
               >
                 <div className="resources-hero-stat-value">{stat.displayValue || stat.value}</div>
@@ -120,25 +124,9 @@ function Hero() {
           </div>
         ))}
         {heroFade(0.38, (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: narrow ? '1fr' : `repeat(${ANCHOR_ITEMS.length}, 1fr)`,
-            width: '100%',
-            maxWidth: narrow ? '100%' : '720px',
-            border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
-            background: 'rgba(10,10,10,0.6)', backdropFilter: 'blur(12px)', margin: '0 auto',
-          }}>
+          <div className={`hero-panel-grid resources-hero-nav${narrow ? ' resources-hero-nav--stack' : ''}`}>
             {ANCHOR_ITEMS.map((item, i) => (
-              <a key={i} href={`#${item.id}`} style={{
-                display: 'flex', flexDirection: 'column', gap: 4,
-                padding: narrow ? '16px 18px' : '20px 24px', textDecoration: 'none',
-                borderRight: !narrow && i < ANCHOR_ITEMS.length - 1 ? '1px solid var(--border)' : 'none',
-                borderBottom: narrow && i < ANCHOR_ITEMS.length - 1 ? '1px solid var(--border)' : 'none',
-                transition: 'background 0.2s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = 'var(--subnav-hover-bg)'}
-              onMouseLeave={e => e.currentTarget.style.background='transparent'}
-              >
+              <a key={i} href={`#${item.id}`} className="hero-panel-cell resources-hero-nav-link">
                 <span style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.1em', color: 'var(--accent)', fontWeight: 500 }}>{item.num}</span>
                 <span style={{ fontFamily: 'var(--body)', fontSize: '13px', color: 'var(--fg-muted)', fontWeight: 400, lineHeight: 1.3 }}>{item.label}</span>
               </a>
@@ -439,30 +427,21 @@ function ComparisonTable() {
 }
 
 function S01() {
-  return (
-    <Section
-      id="s01"
-      eyebrow="Report"
-      headline="Why generic AI fails on the shop floor—and why Arkim doesn't"
-      sub="ChatGPT and Gemini weren't built for your plant. They hallucinate specs, can't read wiring diagrams, and may train on your data. Arkim is industrial AI purpose-built for maintenance: unlimited OEM manuals, schematics, tribal knowledge, and audio diagnostics—in a private copilot that keeps humans in control. This is the evidence your leadership team needs."
-      showDemoButton={true}
-    />
-  );
-}
-
-function S02() {
   const narrow = useIsNarrowLayout();
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
   return (
-    <div id="s02" style={{ borderTop: '1px solid var(--border)' }}>
+    <div id="s01" style={{ borderTop: '1px solid var(--border)' }}>
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 40px` }}>
         <FadeIn>
-          <Eyebrow accent>02 — Arkim Compared to Foundation Models</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
-            The only AI your technicians should trust with a live machine.
+          <Eyebrow accent>Report</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '900px', textWrap: 'balance' }}>
+            Why generic AI fails on the shop floor—and why Arkim doesn&apos;t
           </h2>
-          <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '40px' }}>
+          <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '16px' }}>
+            ChatGPT and Gemini weren&apos;t built for your plant. They hallucinate specs, can&apos;t read wiring diagrams, and may train on your data. Arkim is industrial AI purpose-built for maintenance: unlimited OEM manuals, schematics, tribal knowledge, and audio diagnostics—in a private copilot that keeps humans in control.
+          </p>
+          <p style={{ fontFamily: 'var(--body)', fontSize: '16px', fontWeight: 500, color: 'var(--fg-muted)', lineHeight: 1.6, maxWidth: '720px', textWrap: 'pretty', marginBottom: '40px' }}>
             Side-by-side: what foundation models can and cannot do when a line is down and every minute counts.
           </p>
         </FadeIn>
@@ -507,12 +486,12 @@ function S02() {
   );
 }
 
-function S03() {
+function S02() {
   const narrow = useIsNarrowLayout();
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
   return (
-    <div id="s03" style={{ borderTop: '1px solid var(--border)' }}>
+    <div id="s02" style={{ borderTop: '1px solid var(--border)' }}>
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 80px` }}>
         <FadeIn>
           <Eyebrow accent>Industry Impact</Eyebrow>
@@ -564,6 +543,47 @@ function S03() {
             Stop benchmarking generic AI. Put a maintenance copilot in your technicians&apos; hands that reads your plant&apos;s reality—not the internet&apos;s guess.
           </p>
           <DemoBtn label="Request a demo" />
+        </FadeIn>
+      </div>
+    </div>
+  );
+}
+
+function S03() {
+  const narrow = useIsNarrowLayout();
+  const gx = narrow ? 22 : 80;
+  const pt = narrow ? 64 : 100;
+  return (
+    <div id="s03" style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 80px` }}>
+        <FadeIn>
+          <Eyebrow accent>Your reality</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '900px', textWrap: 'balance' }}>
+            Stop trying to be perfect. Just stop losing money.
+          </h2>
+          <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '20px' }}>
+            Most manufacturing plants run to failure. You have entry-level techs, zero budget for complex upskilling, and a machine that just went down costing you thousands of dollars an hour.
+          </p>
+          <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '20px' }}>
+            Here&apos;s the thing: you don&apos;t need a massive, expensive cultural transformation. You just need to hit your numbers today.
+          </p>
+          <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '48px' }}>
+            Arkim is the practical AI copilot built for the messy reality of the shop floor. We put senior engineering intelligence in the pocket of a day-one rookie.
+          </p>
+        </FadeIn>
+        <FadeIn delay={0.06}>
+          <Eyebrow accent>Built for how you actually run</Eyebrow>
+        </FadeIn>
+        <FadeIn delay={0.08}>
+          <FeaturePills items={[
+            { title: 'Triage, not transformation', body: 'Diagnose equipment failures in minutes, not hours. No 6-month consulting contracts. No forced reorgs. No headcount changes. Just fix the machine during the scramble and move on.' },
+            { title: 'Senior answers, rookie headcount', body: 'Every schematic, OEM manual, and piece of tribal knowledge lives inside an AI assistant in your tech\'s pocket. Your newest hire instantly solves problems like a 15-year veteran.' },
+            { title: 'Close gaps, skip the fluff', body: 'Stop chasing corporate "operational excellence" buzzwords. Close your immediate maintenance gaps, stabilize your uptime, and hit your production targets first.' },
+            { title: '48-hour floor deployment', body: 'Zero learning curve. If your techs can text, they can use Arkim. We hook into your existing documentation and go live in less than 2 days.' },
+          ]} />
+        </FadeIn>
+        <FadeIn delay={0.14} style={{ marginTop: '48px' }}>
+          <DemoBtn label="Talk to us about your plant" />
         </FadeIn>
       </div>
     </div>

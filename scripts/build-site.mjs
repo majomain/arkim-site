@@ -21,6 +21,7 @@ const cssFiles = [
   'arkim-type.css',
   'arkim-theme.css',
   'arkim-hero.css',
+  'arkim-downtime-animation.css',
   'arkim-nav.css',
   'arkim-footer.css',
 ];

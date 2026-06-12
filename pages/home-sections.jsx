@@ -300,6 +300,116 @@ function TheLever() {
   );
 }
 
+// ─── DOWNTIME → DIAGNOSE → FIX (animated) ───────────────────────────────────
+
+function DowntimeResolveAnimation({ reducedMotion }) {
+  const modeClass = reducedMotion
+    ? 'arkim-downtime-anim arkim-downtime-anim--static'
+    : 'arkim-downtime-anim arkim-downtime-anim--playing';
+
+  return (
+    <div
+      className={modeClass}
+      role="img"
+      aria-label="Line down, capture on phone, Arkim diagnoses, right part and fix"
+    >
+      <div className="arkim-flow" aria-hidden="true">
+        <div className="arkim-flow-step">
+          <span className="arkim-flow-icon arkim-flow-icon--down" />
+          <span className="arkim-flow-label">Line down</span>
+        </div>
+        <div className="arkim-flow-line" />
+        <div className="arkim-flow-step">
+          <span className="arkim-flow-icon arkim-flow-icon--phone" />
+          <span className="arkim-flow-label">Capture</span>
+        </div>
+        <div className="arkim-flow-line" />
+        <div className="arkim-flow-step">
+          <span className="arkim-flow-logo-wrap" aria-hidden="true">
+            <img
+              className="arkim-flow-logo arkim-flow-logo--light"
+              src="https://assets.arkim.ai/hollow-screw-logo%404x.png"
+              alt=""
+              width={60}
+              height={60}
+              decoding="async"
+            />
+            <img
+              className="arkim-flow-logo arkim-flow-logo--dark"
+              src="https://assets.arkim.ai/hollow-screw-logo-wht%404x.png"
+              alt=""
+              width={60}
+              height={60}
+              decoding="async"
+            />
+          </span>
+          <span className="arkim-flow-label">Diagnose</span>
+        </div>
+        <div className="arkim-flow-line" />
+        <div className="arkim-flow-step arkim-flow-step--last">
+          <span className="arkim-flow-icon arkim-flow-icon--fix" />
+          <span className="arkim-flow-label">Right part + fix</span>
+        </div>
+      </div>
+      <p className="arkim-flow-caption" aria-hidden="true">
+        <span className="arkim-flow-cap-1">Something breaks on the floor.</span>
+        <span className="arkim-flow-cap-2">Symptoms captured on a phone.</span>
+        <span className="arkim-flow-cap-3">Arkim finds the fault.</span>
+        <span className="arkim-flow-cap-4">Right part in hand. Line back up.</span>
+      </p>
+    </div>
+  );
+}
+
+function DowntimeResolve() {
+  const { isMobile, isTablet } = useViewport();
+  const reducedMotion = usePrefersReducedMotion();
+  const sectionPaddingX = isMobile ? 20 : isTablet ? 40 : 80;
+
+  return (
+    <section style={{
+      padding: isMobile ? `72px ${sectionPaddingX}px` : `96px ${sectionPaddingX}px`,
+      maxWidth: '1300px',
+      margin: '0 auto',
+      borderTop: '1px solid var(--border)',
+    }}>
+      <div
+        className="arkim-downtime-resolve-grid"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.15fr) minmax(0, 1fr)',
+          gap: isMobile ? '36px' : '64px',
+          alignItems: 'stretch',
+        }}
+      >
+        <FadeIn style={{ order: isMobile ? 2 : 1, display: 'flex', minHeight: isMobile ? undefined : '100%' }}>
+          <DowntimeResolveAnimation reducedMotion={reducedMotion} />
+        </FadeIn>
+        <FadeIn delay={0.1} style={{ order: isMobile ? 1 : 2 }}>
+          <div>
+            <Eyebrow accent>How it works</Eyebrow>
+            <h2 style={{
+              fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-section)',
+              lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
+              color: 'var(--fg)', textWrap: 'balance', marginBottom: '16px',
+            }}>
+              Diagnose before you dispatch.<br />
+              <em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>Fix with the right part.</em>
+            </h2>
+            <p style={{
+              fontFamily: 'var(--body)', fontSize: 'var(--text-body)', fontWeight: 400,
+              color: 'var(--p-fg)', lineHeight: 1.75, margin: 0, textWrap: 'pretty',
+              maxWidth: isMobile ? 'none' : '480px',
+            }}>
+              When a line stops, guesswork costs hours — wrong diagnosis, wrong parts, another wait. Arkim turns what the operator sees and hears into a clear repair plan before the technician rolls a cart.
+            </p>
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  );
+}
+
 // ─── PERSONAS ───────────────────────────────────────────────────────────────
 
 const PERSONAS = [
@@ -790,6 +900,7 @@ Object.assign(window, {
   ArkimHero: Hero,
   ArkimIndustriesStrip: IndustriesStrip,
   ArkimTheLever: TheLever,
+  ArkimDowntimeResolve: DowntimeResolve,
   ArkimPersonas: Personas,
   ArkimIntegrationStrip: IntegrationStrip,
   ArkimTimeToValue: TimeToValue,

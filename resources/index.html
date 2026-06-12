@@ -92,16 +92,10 @@ body { background: var(--bg); color: var(--fg); font-family: var(--body); -webki
   to   { opacity: 1; transform: none; }
 }
 .resources-hero-stats {
-  display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
   width: 100%;
   max-width: 720px;
   margin: 0 auto 36px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--border);
 }
 @media (max-width: 640px) {
   .resources-hero-stats { grid-template-columns: 1fr; }
@@ -111,10 +105,25 @@ body { background: var(--bg); color: var(--fg); font-family: var(--body); -webki
   flex-direction: column;
   align-items: center;
   height: 100%;
-  background: rgba(10, 10, 10, 0.72);
-  backdrop-filter: blur(14px);
   padding: 22px 16px 20px;
   text-align: center;
+}
+.resources-hero-nav {
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  max-width: 720px;
+}
+.resources-hero-nav--stack {
+  grid-template-columns: 1fr;
+}
+.resources-hero-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 24px;
+}
+@media (max-width: 768px) {
+  .resources-hero-nav-link { padding: 16px 18px; }
 }
 .resources-hero-stat-value {
   font-family: var(--sans);
@@ -134,21 +143,21 @@ body { background: var(--bg); color: var(--fg); font-family: var(--body); -webki
   width: 100%;
   min-height: 2.9em;
   font-family: var(--body);
-  font-size: 12px;
+  font-size: clamp(13px, 1.15vw, 15px);
   font-weight: 500;
   color: var(--fg-muted);
   line-height: 1.45;
   margin-top: 8px;
   text-wrap: pretty;
+  white-space: pre-line;
 }
 .resources-hero-stat-source {
   font-family: var(--sans);
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  font-size: clamp(13px, 1.1vw, 14px);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
   margin-top: 12px;
-  opacity: 0.9;
   flex-shrink: 0;
 }
 .resources-proof-strip {

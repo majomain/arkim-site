@@ -209,48 +209,6 @@ body {
 }
 button:focus-visible { border-radius: 4px; }
 
-/* Homepage — interactive surfaces (CSS hover/focus replaces inline JS) */
-a.arkim-btn-outline {
-  font-family: var(--sans);
-  font-size: var(--text-label);
-  font-weight: 500;
-  color: var(--fg);
-  border: 1px solid var(--outline);
-  padding: 14px 30px;
-  border-radius: 6px;
-  text-decoration: none;
-  background: transparent;
-  text-transform: uppercase;
-  display: inline-block;
-  transition: border-color 0.2s, background 0.2s, opacity 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-a.arkim-btn-outline:hover,
-a.arkim-btn-outline:focus-visible,
-button.arkim-btn-outline:hover,
-button.arkim-btn-outline:focus-visible {
-  border-color: var(--outline-hover);
-  background: var(--outline-fill);
-  opacity: 0.95;
-  transform: translateY(-2px);
-}
-
-button.arkim-btn-outline {
-  font-family: var(--sans);
-  font-size: var(--text-label);
-  font-weight: 500;
-  color: var(--fg);
-  border: 1px solid var(--outline);
-  padding: 14px 30px;
-  border-radius: 6px;
-  background: transparent;
-  text-transform: uppercase;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  min-height: 44px;
-  transition: border-color 0.2s, background 0.2s, opacity 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
 /* Vimeo demo modal (hero “See how it works”) */
 .arkim-video-modal {
   position: fixed;
@@ -355,37 +313,6 @@ button.arkim-btn-outline {
   }
 }
 
-a.arkim-btn-primary,
-button.arkim-btn-primary {
-  font-family: var(--sans);
-  font-size: var(--text-label);
-  font-weight: 600;
-  background: var(--accent);
-  color: var(--btn-fg);
-  padding: 15px 32px;
-  border-radius: 6px;
-  border: none;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  text-transform: uppercase;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  min-height: 44px;
-  box-sizing: border-box;
-  transition: opacity 0.2s, transform 0.15s;
-}
-a.arkim-btn-primary:hover,
-a.arkim-btn-primary:focus-visible,
-button.arkim-btn-primary:hover,
-button.arkim-btn-primary:focus-visible {
-  opacity: 0.88;
-  transform: translateY(-1px);
-}
-
 .arkim-cta-photo {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -394,16 +321,6 @@ button.arkim-btn-primary:focus-visible {
   overflow: hidden;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  a.arkim-btn-outline:hover,
-  a.arkim-btn-outline:focus-visible,
-  button.arkim-btn-outline:hover,
-  button.arkim-btn-outline:focus-visible,
-  a.arkim-btn-primary:hover,
-  a.arkim-btn-primary:focus-visible {
-    transform: none;
-  }
-}
 </style>
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/logo-arkim.png" data-resource-id="logoMark" />
 <meta name="ext-resource-dependency" content="https://www.arkim.ai/arkim-text-logo.png" data-resource-id="logoText" />

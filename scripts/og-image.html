@@ -12,7 +12,7 @@
     width: 1200px;
     height: 630px;
     overflow: hidden;
-    font-family: "proxima-nova", system-ui, sans-serif;
+    font-family: "proxima-nova", Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
   .og {
@@ -21,26 +21,41 @@
     height: 630px;
     background: #0a0a0a;
     overflow: hidden;
+    isolation: isolate;
+  }
+  .og__texture {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/bg-og.webp');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    opacity: 0.44;
+    pointer-events: none;
+    z-index: 0;
   }
   .og__glow {
     position: absolute;
-    width: 900px;
-    height: 900px;
-    right: -180px;
-    top: -220px;
+    width: 920px;
+    height: 920px;
+    right: -200px;
+    top: -240px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(60, 122, 172, 0.22) 0%, rgba(60, 122, 172, 0.06) 42%, transparent 68%);
+    background: radial-gradient(circle, rgba(74, 150, 196, 0.2) 0%, rgba(74, 150, 196, 0.05) 42%, transparent 68%);
     pointer-events: none;
+    z-index: 0;
   }
-  .og__grid {
+  .og__scrim {
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(245, 242, 237, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(245, 242, 237, 0.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, transparent 70%);
+    background: linear-gradient(
+      135deg,
+      rgba(10, 10, 10, 0.72) 0%,
+      rgba(10, 10, 10, 0.42) 48%,
+      rgba(10, 10, 10, 0.58) 100%
+    );
     pointer-events: none;
+    z-index: 0;
   }
   .og__accent-bar {
     position: absolute;
@@ -48,7 +63,8 @@
     top: 0;
     width: 6px;
     height: 100%;
-    background: linear-gradient(180deg, #3c7aac 0%, rgba(60, 122, 172, 0.15) 100%);
+    background: linear-gradient(180deg, #4a96c4 0%, rgba(74, 150, 196, 0.12) 100%);
+    z-index: 2;
   }
   .og__content {
     position: relative;
@@ -62,38 +78,42 @@
   .og__logo {
     width: 248px;
     height: auto;
-    margin-bottom: 48px;
+    margin-bottom: 44px;
   }
   .og__headline {
-    font-family: "acumin-pro-extra-condensed", system-ui, sans-serif;
-    font-size: clamp(48px, 5vw, 72px);
+    font-family: "acumin-pro-extra-condensed", Helvetica, sans-serif;
+    font-size: 62px;
     font-weight: 700;
     line-height: 0.9;
-    letter-spacing: 0.025em;
+    letter-spacing: 0.018em;
     text-transform: uppercase;
     color: #f5f2ed;
     max-width: 900px;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
+    text-wrap: balance;
   }
-  .og__headline em {
-    font-style: normal;
-    color: #3c7aac;
+  .og__headline-line {
+    display: block;
   }
   .og__lead {
-    font-size: 24px;
+    font-family: "proxima-nova", Helvetica, sans-serif;
+    font-size: 22px;
     font-weight: 400;
     line-height: 1.55;
-    color: rgba(245, 242, 237, 0.72);
-    max-width: 780px;
+    color: rgba(245, 242, 237, 0.88);
+    max-width: 760px;
     margin-bottom: 0;
+    text-wrap: pretty;
   }
   .og__domain {
     position: absolute;
     left: 96px;
     bottom: 56px;
-    font-size: 20px;
+    z-index: 1;
+    font-family: "proxima-nova", Helvetica, sans-serif;
+    font-size: 18px;
     font-weight: 600;
-    letter-spacing: 0.025em;
+    letter-spacing: 0.04em;
     color: rgba(245, 242, 237, 0.42);
     text-transform: lowercase;
   }
@@ -101,6 +121,7 @@
     position: absolute;
     right: 72px;
     bottom: 52px;
+    z-index: 1;
     width: 72px;
     height: 72px;
     border-radius: 10px;
@@ -108,7 +129,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 0 1px rgba(60, 122, 172, 0.25);
+    box-shadow: 0 0 0 1px rgba(74, 150, 196, 0.28);
   }
   .og__mark svg {
     width: 44px;
@@ -118,17 +139,18 @@
 </head>
 <body>
   <div class="og">
+    <div class="og__texture"></div>
     <div class="og__glow"></div>
-    <div class="og__grid"></div>
+    <div class="og__scrim"></div>
     <div class="og__accent-bar"></div>
     <div class="og__content">
       <img class="og__logo" src="../uploads/arkim-side-by-side-wht.svg" alt="" />
       <h1 class="og__headline">
-        Industrial maintenance,<br />
-        <em>re-leveraged.</em>
+        <span class="og__headline-line">Industrial maintenance,</span>
+        <span class="og__headline-line">re-leveraged.</span>
       </h1>
       <p class="og__lead">
-        Senior-level knowledge for every technician — using the phone in their pocket as the diagnostic sensor.
+        Arkim gives any technician senior-level knowledge from day one — using the phone in their pocket as the diagnostic sensor.
       </p>
     </div>
     <div class="og__domain">arkim.ai</div>

@@ -1,12 +1,12 @@
 /**
  * Hero + section headline tokens — shared by index and subpages (arkim-hero.css).
- * h1: .hero-h1 / --hero-h1-size. h2: --title-h2-md|lg|xl. h3/card/stat tokens below.
+ * h1: .hero-h1 — same scale as section h2 (--title-h2-lg). h2: --title-h2-md|lg|xl. h3/card/stat tokens below.
  */
 :root {
-  --hero-h1-size: clamp(29px, 3.84vw, 53px);
+  --hero-h1-size: var(--title-h2-lg);
   --hero-h1-line-height: 0.9;
   --heading-line-height: 0.9;
-  --hero-h1-letter-spacing: 0.018em;
+  --hero-h1-letter-spacing: var(--title-h2-letter-spacing);
   --title-h2-letter-spacing: 0.006em;
   --title-h3-letter-spacing: 0.012em;
   --title-card-letter-spacing: 0.012em;

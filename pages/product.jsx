@@ -53,19 +53,9 @@ function Eyebrow({ children, accent = false }) {
     </div>
   );
 }
-function DemoBtn({ label = 'Request a Demo', style = {} }) {
+function DemoBtn({ label = 'Request a Demo' }) {
   return (
-    <a href="/contactus/" className="arkim-cta-btn" style={{
-      display: 'inline-flex', alignItems: 'center', gap: 8,
-      fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600,
-      background: 'var(--accent)', color: 'var(--btn-fg)',
-      padding: '13px 28px', borderRadius: '6px', textDecoration: 'none',
-      transition: 'opacity 0.2s, transform 0.2s cubic-bezier(0.16,1,0.3,1)',
-      ...style,
-    }}
-    onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-2px)'; }}
-    onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
-    >{label} →</a>
+    <a href="/contactus/" className="arkim-btn-primary">{label} →</a>
   );
 }
 function SectionImg({ label, height = '55vh', src = null, videoSrc = null, alt = '', objectFit = 'cover' }) {
@@ -1361,7 +1351,7 @@ function FinalCTA() {
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
             A 30-minute conversation. We'll show you exactly what Arkim would look like for your equipment and your team.
           </p>
-          <DemoBtn label="Request a Demo" style={{ fontSize: '16px', padding: '15px 36px' }} />
+          <DemoBtn label="Request a Demo" />
           <p style={{ fontFamily: 'var(--body)', fontSize: '14px', color: 'var(--p-fg-soft)', marginTop: '20px' }}>No pitch deck. No commitment.</p>
         </FadeIn>
       </div>

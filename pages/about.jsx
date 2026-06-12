@@ -318,10 +318,7 @@ function CTA() {
             Come see it in action.
           </h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>A 30-minute conversation. No pitch deck.</p>
-          <a href="/contactus/" className="arkim-cta-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, background: 'var(--accent)', color: 'var(--btn-fg)', padding: '15px 36px', borderRadius: '6px', textDecoration: 'none', transition: 'opacity 0.2s, transform 0.15s', minHeight: 44, boxSizing: 'border-box' }}
-          onMouseEnter={e => { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
-          onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
-          >Request a Demo →</a>
+          <a href="/contactus/" className="arkim-btn-primary">Request a Demo →</a>
         </FadeIn>
       </div>
     </div>

@@ -190,10 +190,7 @@ function ContactSection() {
                   <span data-fs-error="message" />
                 </div>
                 <div>
-                  <button type="submit" data-fs-submit-btn className="arkim-cta-btn" style={{ fontFamily: 'var(--sans)', fontSize: '16px', fontWeight: 600, background: 'var(--accent)', color: 'var(--btn-fg)', padding: '15px 36px', borderRadius: '6px', border: 'none', cursor: 'pointer', transition: 'opacity 0.2s, transform 0.15s', display: 'inline-flex', alignItems: 'center', gap: 8, minHeight: 44, boxSizing: 'border-box' }}
-                  onMouseEnter={e => { if (!e.currentTarget.disabled) { e.currentTarget.style.opacity='0.88'; e.currentTarget.style.transform='translateY(-1px)'; } }}
-                  onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
-                  >Send →</button>
+                  <button type="submit" data-fs-submit-btn className="arkim-btn-primary">Send →</button>
                 </div>
               </form>
             </div>

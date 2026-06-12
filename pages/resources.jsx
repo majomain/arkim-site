@@ -52,19 +52,9 @@ function Eyebrow({ children, accent = false }) {
     </div>
   );
 }
-function DemoBtn({ label = 'Request a Demo', style = {} }) {
+function DemoBtn({ label = 'Request a Demo' }) {
   return (
-    <a href="/contactus/" className="arkim-cta-btn" style={{
-      display: 'inline-flex', alignItems: 'center', gap: 8,
-      fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600,
-      background: 'var(--accent)', color: 'var(--btn-fg)',
-      padding: '13px 28px', borderRadius: '6px', textDecoration: 'none',
-      transition: 'opacity 0.2s, transform 0.15s',
-      ...style,
-    }}
-    onMouseEnter={e => { e.currentTarget.style.opacity='0.85'; e.currentTarget.style.transform='translateY(-1px)'; }}
-    onMouseLeave={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.transform='none'; }}
-    >{label} →</a>
+    <a href="/contactus/" className="arkim-btn-primary">{label} →</a>
   );
 }
 function SectionImg({ label, height = '55vh' }) {
@@ -504,17 +494,8 @@ function S02() {
             href="https://www.arkim.ai/documents/arkim-vs-foundation-models.pdf"
             target="_blank"
             rel="noopener"
-            className="arkim-cta-btn"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              fontFamily: 'var(--sans)', fontSize: '15px', fontWeight: 600,
-              border: '1px solid var(--accent)', color: 'var(--accent)',
-              background: 'transparent',
-              padding: '13px 28px', borderRadius: '6px', textDecoration: 'none',
-              transition: 'background 0.2s, color 0.2s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background='rgba(60,122,172,0.12)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background='transparent'; }}
+            className="arkim-btn-outline"
+            style={{ borderColor: 'var(--accent)', color: 'var(--accent)' }}
           >Download Full Report (PDF) →</a>
         </FadeIn>
       </div>
@@ -612,7 +593,7 @@ function FinalCTA() {
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
             You have the benchmarks. See how Arkim puts 30% more proficiency and 50% more uptime within reach for your team—starting with one demo on your equipment.
           </p>
-          <DemoBtn label="Book your demo" style={{ fontSize: '16px', padding: '15px 36px' }} />
+          <DemoBtn label="Book your demo" />
         </FadeIn>
       </div>
     </div>

@@ -3,9 +3,11 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build-site.mjs",
-    "dev": "npm run build && npx --yes serve -l 9292"
+    "dev": "npm run build && npx --yes serve -l 9292",
+    "og:image": "node scripts/generate-og-image.mjs"
   },
   "devDependencies": {
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "puppeteer": "^24.43.1"
   }
 }

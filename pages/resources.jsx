@@ -408,7 +408,7 @@ function ComparisonTable() {
               style={{
                 background: i === 0 ? 'rgba(60,122,172,0.1)' : 'var(--bg-card)',
                 padding: '16px 18px',
-                fontFamily: 'var(--sans)',
+                fontFamily: 'var(--body)',
                 fontSize: i === 0 ? 12 : 14,
                 fontWeight: i === 0 ? 600 : (j === 0 ? 500 : 400),
                 letterSpacing: i === 0 ? '0.06em' : 'normal',
@@ -592,24 +592,22 @@ function S03() {
 
 function FinalCTA() {
   const narrow = useIsNarrowLayout();
+  const reducedMotion = usePrefersReducedMotion ? usePrefersReducedMotion() : false;
   return (
-    <div style={{
+    <div className="hero-cinematic hero-cinematic--video-bg resources-final-cta" style={{
       borderTop: '1px solid var(--border)',
-      background: 'linear-gradient(to bottom, var(--final-cta-1), var(--final-cta-2))',
       position: 'relative',
       overflow: 'hidden',
     }}>
-      <div style={{
-        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
-        width: '700px', height: '400px',
-        background: 'radial-gradient(ellipse, var(--radial-accent-glow) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', color: 'var(--fg)' }}>
+      <HeroBgVideo
+        src="https://assets.arkim.ai/factory-video-arkim_1.mp4"
+        reducedMotion={reducedMotion}
+      />
+      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', zIndex: 2 }}>
         <FadeIn>
-          <Eyebrow>Ready when you are</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--fg)' }}>
-            Turn industry proof into<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your plant&apos;s performance.</em>
+          <Eyebrow center>Ready when you are</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--hero-title)' }}>
+            Turn industry proof into<br /><em style={{ fontStyle: 'normal', color: 'var(--headline-accent, var(--accent))' }}>your plant&apos;s performance.</em>
           </h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
             You have the benchmarks. See how Arkim puts 30% more proficiency and 50% more uptime within reach for your team—starting with one demo on your equipment.

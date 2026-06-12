@@ -99,13 +99,18 @@
   width: 60px;
   height: 60px;
   flex-shrink: 0;
-  display: block;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1.5px solid var(--flow-icon-border);
+  border-radius: 10px;
+  background: var(--flow-icon-bg);
 }
 
 .arkim-flow-logo {
-  width: 60px;
-  height: 60px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
   display: block;
 }
@@ -238,10 +243,10 @@ html:not([data-theme="light"]) .arkim-flow-icon--fix::after {
 
 /* Node 3 — Diagnose (logo) */
 @keyframes arkim-flow-node-3 {
-  0%, 42% { opacity: var(--flow-icon-idle); }
-  43%, 56% { opacity: var(--flow-icon-active); }
-  57%, 82% { opacity: var(--flow-icon-active); }
-  88%, 100% { opacity: var(--flow-icon-idle); }
+  0%, 42% { opacity: var(--flow-icon-idle); border-color: var(--flow-icon-border); box-shadow: none; }
+  43%, 56% { opacity: var(--flow-icon-active); border-color: var(--flow-accent); box-shadow: 0 0 0 1px var(--flow-accent-glow); }
+  57%, 82% { opacity: var(--flow-icon-active); border-color: var(--flow-accent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--flow-accent) 25%, transparent); }
+  88%, 100% { opacity: var(--flow-icon-idle); border-color: var(--flow-icon-border); box-shadow: none; }
 }
 
 /* Node 4 — Right part + fix */
@@ -363,10 +368,14 @@ html:not([data-theme="light"]) .arkim-flow-icon--fix::after {
     height: 34px;
   }
 
-  .arkim-flow-logo-wrap,
-  .arkim-flow-logo {
+  .arkim-flow-logo-wrap {
     width: clamp(48px, 15vw, 56px);
     height: clamp(48px, 15vw, 56px);
+  }
+
+  .arkim-flow-logo {
+    width: clamp(34px, 11vw, 40px);
+    height: clamp(34px, 11vw, 40px);
   }
 
   .arkim-flow-label {

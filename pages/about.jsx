@@ -33,8 +33,13 @@ function FadeIn({ children, delay = 0, style = {} }) {
     <div ref={ref} style={{ opacity: vis ? 1 : 0, transform: vis ? 'none' : 'translateY(28px)', transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s`, ...style }}>{children}</div>
   );
 }
-function Eyebrow({ children }) {
-  return <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 500, letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '20px' }}>{children}</div>;
+function Eyebrow({ children, accent = true, center = false }) {
+  const className = [
+    'arkim-section-caption',
+    !accent && 'arkim-section-caption--muted',
+    center && 'arkim-section-caption--center',
+  ].filter(Boolean).join(' ');
+  return <div className={className}>{children}</div>;
 }
 
 function Hero() {
@@ -133,7 +138,7 @@ function TheProblem() {
         <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '1fr 2fr', gap: narrow ? '32px' : '80px', alignItems: 'start' }}>
           <FadeIn>
             <Eyebrow>The Problem We Saw</Eyebrow>
-            <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
+            <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
               Why we built it.
             </h2>
           </FadeIn>
@@ -162,7 +167,7 @@ function WhatWeBuilt() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: narrow ? '72px 22px' : '100px 80px' }}>
         <FadeIn style={{ marginBottom: '60px' }}>
           <Eyebrow>What We Built</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', maxWidth: '640px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', maxWidth: '640px', textWrap: 'balance' }}>
             Three layers. Each valuable alone.<br />
             <em style={{ fontFamily: 'var(--sans)', fontStyle: 'normal', color: 'var(--accent)', fontWeight: 600 }}>Transformative together.</em>
           </h2>
@@ -173,7 +178,7 @@ function WhatWeBuilt() {
               <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '80px 1fr', gap: narrow ? '12px' : '40px', padding: narrow ? '28px 0' : '40px 0', borderTop: '1px solid var(--border)', alignItems: 'start' }}>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 500, letterSpacing: '0.12em', color: 'var(--accent)', paddingTop: '4px' }}>{l.num}</div>
                 <div>
-                  <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-md)', fontWeight: 600, marginBottom: '12px', letterSpacing: 'var(--title-h3-letter-spacing)' }}>{l.title}</div>
+                  <h3 className="arkim-card-heading" style={{ fontSize: 'var(--title-h3-md)', fontWeight: 600, marginBottom: '12px' }}>{l.title}</h3>
                   <p style={{ fontFamily: 'var(--body)', fontSize: '17px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, textWrap: 'pretty', maxWidth: '680px' }}>{l.body}</p>
                 </div>
               </div>
@@ -210,7 +215,7 @@ function Team() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: narrow ? '72px 22px' : '100px 80px' }}>
         <FadeIn style={{ marginBottom: '60px' }}>
           <Eyebrow>The Team</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)' }}>Built by people who care about the problem.</h2>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)' }}>Built by people who care about the problem.</h2>
         </FadeIn>
         <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '1fr 1fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
           {people.map((p, i) => {
@@ -279,7 +284,7 @@ function Partners() {
   return (
     <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-card)' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: narrow ? '48px 22px' : '80px 80px', display: 'flex', alignItems: 'center', gap: narrow ? '28px' : '60px', flexWrap: 'wrap' }}>
-        <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--fg-muted)', flexShrink: 0 }}>Backed & supported by</div>
+        <div className="arkim-section-caption arkim-section-caption--muted" style={{ flexShrink: 0, marginBottom: 0 }}>Backed & supported by</div>
         {[
           { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png', alt: 'NVIDIA Inception', href: 'https://www.nvidia.com/en-us/startups/' },
           { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg', alt: 'Databricks', href: 'https://www.databricks.com/product/startups' },
@@ -314,7 +319,7 @@ function CTA() {
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center' }}>
         <FadeIn>
           <Eyebrow>See It in Action</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance' }}>
             Come see it in action.
           </h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>A 30-minute conversation. No pitch deck.</p>

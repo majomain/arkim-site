@@ -46,12 +46,13 @@ function FadeIn({ children, delay = 0, y = 28, style = {} }) {
     }}>{children}</div>
   );
 }
-function Eyebrow({ children, accent = false }) {
-  return (
-    <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 500, letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: accent ? 'var(--accent)' : 'var(--fg-muted)', marginBottom: '20px' }}>
-      {children}
-    </div>
-  );
+function Eyebrow({ children, accent = false, center = false }) {
+  const className = [
+    'arkim-section-caption',
+    !accent && 'arkim-section-caption--muted',
+    center && 'arkim-section-caption--center',
+  ].filter(Boolean).join(' ');
+  return <div className={className}>{children}</div>;
 }
 function DemoBtn({ label = 'Request a Demo' }) {
   return (
@@ -201,8 +202,8 @@ function Hero() {
         {heroFade(0.1, (
           <>
             <h1 className="hero-h1">
-              <span style={{ fontWeight: 700, color: 'var(--hero-title)', display: 'block' }}>Maintenance solutions</span>
-              <span style={{ fontWeight: 700, color: 'var(--hero-title)', display: 'block' }}>for any facility</span>
+              <span style={{ color: 'var(--hero-title)', display: 'block' }}>Maintenance solutions</span>
+              <span style={{ color: 'var(--hero-title)', display: 'block' }}>for any facility</span>
             </h1>
             <p className="hero-lead arkim-subhead">
               Capture knowledge automatically. Diagnose faster. Stop downtime before it starts.
@@ -232,7 +233,7 @@ function Hero() {
                 transition: 'background 0.2s',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.background = 'rgba(60,122,172,0.08)';
+                e.currentTarget.style.background = 'var(--subnav-hover-bg)';
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.background = 'transparent';
@@ -301,7 +302,7 @@ function StickyAnchorNav() {
           transition: 'background 0.2s',
         }}
         onMouseEnter={e => {
-          e.currentTarget.style.background = 'rgba(60,122,172,0.06)';
+          e.currentTarget.style.background = 'var(--subnav-hover-bg)';
         }}
         onMouseLeave={e => {
           e.currentTarget.style.background = 'transparent';
@@ -338,7 +339,7 @@ function FeaturePills({ items }) {
           e.currentTarget.style.boxShadow = 'none';
         }}
         >
-          <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{item.title}</div>
+          <h3 style={{ fontSize: 'var(--title-h3-sm)', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{item.title}</h3>
           <div style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>{item.body}</div>
         </div>
       ))}
@@ -405,17 +406,7 @@ function BaselineCaptureDiagram() {
         gap: narrow ? 20 : 28,
       }}>
         <div>
-          <div style={{
-            fontFamily: 'var(--sans)',
-            fontSize: 'var(--text-eyebrow-size)',
-            fontWeight: 600,
-            letterSpacing: '0.16em',
-            textTransform: 'uppercase',
-            color: 'var(--accent)',
-            marginBottom: 10,
-          }}>
-            Baseline capture
-          </div>
+          <div className="arkim-section-caption">Baseline capture</div>
           <p style={{
             fontFamily: 'var(--body)',
             fontSize: narrow ? '15px' : '17px',
@@ -697,9 +688,7 @@ function ZeroDayTechnicianDiagram() {
         alignItems: narrow ? 'flex-start' : 'center',
       }}>
         <div>
-          <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 10 }}>
-            How it works
-          </div>
+          <div className="arkim-section-caption">How it works</div>
           <h3 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h3-letter-spacing)', color: 'var(--fg)', textWrap: 'balance' }}>
             From tribal knowledge to first-day expertise.
           </h3>
@@ -774,7 +763,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
   const introBlock = (
     <>
       <Eyebrow accent>{eyebrow}</Eyebrow>
-      <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>{headline}</h2>
+      <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>{headline}</h2>
       <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>{sub}</p>
     </>
   );
@@ -782,7 +771,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
   const introBlockSplit = (
     <div style={{ textAlign: introSplitCentered ? 'center' : 'left', marginBottom: narrow ? 32 : 44 }}>
       <Eyebrow accent>{eyebrow}</Eyebrow>
-      <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', margin: introSplitCentered ? '0 auto 24px' : '0 0 24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
+      <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', margin: introSplitCentered ? '0 auto 24px' : '0 0 24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
       <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '680px', margin: introSplitCentered ? '0 auto' : '0', textWrap: 'pretty' }}>{sub}</p>
     </div>
   );
@@ -1105,7 +1094,7 @@ function S04() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 60px` }}>
         <FadeIn>
           <Eyebrow accent>04 — Works With What You Already Have</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
             No rip and replace. Arkim works alongside the systems your team already uses.
           </h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '640px', textWrap: 'pretty', marginBottom: '60px' }}>
@@ -1198,7 +1187,7 @@ function EnterpriseReady() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px` }}>
         <FadeIn style={{ marginBottom: '60px' }}>
           <Eyebrow accent>Enterprise Ready</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
             Built for regulated industries.
           </h2>
         </FadeIn>
@@ -1252,7 +1241,7 @@ function HowItWorks() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px` }}>
         <FadeIn style={{ marginBottom: narrow ? '48px' : '80px' }}>
           <Eyebrow>From Kickoff to Live</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
             Up and running in days.<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>Not months.</em>
           </h2>
         </FadeIn>
@@ -1274,7 +1263,7 @@ function HowItWorks() {
               }}
               >
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.12em', color: 'var(--accent)', fontWeight: 500, marginBottom: '20px' }}>{s.num}</div>
-                <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 600, marginBottom: '16px', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h3-letter-spacing)', color: 'var(--step-card-title)' }}>{s.title}</div>
+                <h3 style={{ fontSize: 'var(--title-h3-sm)', fontWeight: 600, marginBottom: '16px', color: 'var(--step-card-title)' }}>{s.title}</h3>
                 <div style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--step-card-body)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.body}</div>
               </div>
             </FadeIn>
@@ -1300,7 +1289,7 @@ function Results() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px` }}>
         <FadeIn style={{ marginBottom: '64px' }}>
           <Eyebrow accent>What You Get</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, letterSpacing: 'var(--title-h2-letter-spacing)', lineHeight: 'var(--heading-line-height)', textWrap: 'balance' }}>Results from week one.</h2>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', letterSpacing: 'var(--title-h2-letter-spacing)', lineHeight: 'var(--heading-line-height)', textWrap: 'balance' }}>Results from week one.</h2>
         </FadeIn>
         <div style={{
           display: 'grid',
@@ -1315,7 +1304,7 @@ function Results() {
               }}
               >
                 <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-stat-md)', fontWeight: 700, color: 'var(--accent)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-stat-letter-spacing)', marginBottom: '16px' }}>{s.num}</div>
-                <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{s.label}</div>
+                <h3 style={{ fontSize: 'var(--title-h3-sm)', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{s.label}</h3>
                 <div style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.sub}</div>
               </div>
             </FadeIn>
@@ -1345,7 +1334,7 @@ function FinalCTA() {
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', color: 'var(--fg)' }}>
         <FadeIn>
           <Eyebrow>Let's Talk</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--fg)' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--fg)' }}>
             Let's talk about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your facility.</em>
           </h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>

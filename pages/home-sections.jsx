@@ -40,19 +40,13 @@ function FadeIn({ children, delay = 0, y = 28, style = {} }) {
   );
 }
 
-function Eyebrow({ children, center = false }) {
-  return (
-    <div style={{
-      fontFamily: 'var(--sans)',
-      fontSize: 'var(--text-eyebrow-size)',
-      fontWeight: 500,
-      letterSpacing: 'var(--text-eyebrow-tracking)',
-      textTransform: 'uppercase',
-      color: 'var(--accent)',
-      marginBottom: '20px',
-      textAlign: center ? 'center' : 'left',
-    }}>{children}</div>
-  );
+function Eyebrow({ children, accent = true, center = false }) {
+  const className = [
+    'arkim-section-caption',
+    !accent && 'arkim-section-caption--muted',
+    center && 'arkim-section-caption--center',
+  ].filter(Boolean).join(' ');
+  return <div className={className}>{children}</div>;
 }
 
 function ListCheckIcon({ color = 'currentColor', size = 20 }) {
@@ -156,8 +150,8 @@ function Hero() {
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '760px', width: '100%', textAlign: 'center' }}>
         <FadeIn delay={0.1}>
           <h1 className="hero-h1">
-            <span style={{ fontWeight: 700, color: 'var(--hero-title)', display: 'block' }}>Industrial maintenance,</span>
-            <span style={{ fontWeight: 700, color: 'var(--hero-title)', display: 'block' }}>re-leveraged.</span>
+            <span style={{ color: 'var(--hero-title)', display: 'block' }}>Industrial maintenance,</span>
+            <span style={{ color: 'var(--hero-title)', display: 'block' }}>re-leveraged.</span>
           </h1>
         </FadeIn>
         <FadeIn delay={0.25}>
@@ -207,7 +201,7 @@ function IndustriesStrip() {
   const all = [...items, ...items, ...items];
   return (
     <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '40px 0', overflow: 'hidden' }}>
-      <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--accent)', textAlign: 'center', marginBottom: '24px' }}>Built For</div>
+      <Eyebrow center>Built For</Eyebrow>
       {reducedMotion ? (
         <div style={{
           display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
@@ -247,7 +241,7 @@ function TheLever() {
             <Eyebrow>Why Arkim</Eyebrow>
             <h2 style={{
               fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-display)',
-              fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
+              lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
               color: 'var(--fg)', textWrap: 'balance',
             }}>
               The maintenance<br />workforce is shrinking.<br />
@@ -355,7 +349,7 @@ function Personas() {
         <Eyebrow>Who Uses Arkim</Eyebrow>
         <h2 style={{
           fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-section)',
-          fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
+          lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
           marginBottom: isMobile ? '40px' : '56px', textWrap: 'balance', maxWidth: '720px',
         }}>
           Operators. Technicians.<br />
@@ -502,7 +496,7 @@ function IntegrationStrip() {
           <Eyebrow>Coexists With Your Stack</Eyebrow>
           <h2 style={{
             fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-section)',
-            fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
+            lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
             marginBottom: '16px', textWrap: 'balance',
           }}>No rip and replace.</h2>
           <p style={{
@@ -550,7 +544,7 @@ function TimeToValue() {
         <Eyebrow>Why Not Sensors</Eyebrow>
         <h2 style={{
           fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-section)',
-          fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
+          lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
           marginBottom: '64px', textWrap: 'balance',
         }}>ROI in week one.<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>Not month six.</em></h2>
       </FadeIn>
@@ -646,7 +640,7 @@ function ComplianceTrust() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: `0 ${sectionPaddingX}px` }}>
         <FadeIn style={{ textAlign: 'center', marginBottom: '60px' }}>
           <Eyebrow center>Enterprise Ready</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-section)', fontWeight: 700, letterSpacing: 'var(--title-h2-letter-spacing)', lineHeight: 'var(--heading-line-height)', textWrap: 'balance' }}>Built for regulated industries.</h2>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-section)', letterSpacing: 'var(--title-h2-letter-spacing)', lineHeight: 'var(--heading-line-height)', textWrap: 'balance' }}>Built for regulated industries.</h2>
         </FadeIn>
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.6fr', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '16px', overflow: 'hidden' }}>
           <div style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
@@ -697,7 +691,7 @@ function RoadmapTease() {
           <Eyebrow>What's Next</Eyebrow>
           <h2 style={{
             fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-section)',
-            fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', textWrap: 'balance',
+            lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', textWrap: 'balance',
           }}>Coming next:<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>agentic procurement.</em></h2>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -768,7 +762,7 @@ function FinalCTA() {
           <Eyebrow>Let's Talk</Eyebrow>
           <h2 style={{
             fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-display)',
-            fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
+            lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
             marginBottom: '24px', textWrap: 'balance',
           }}>Tell us about<br />your facility.</h2>
           <p style={{

@@ -45,12 +45,13 @@ function FadeIn({ children, delay = 0, style = {} }) {
     }}>{children}</div>
   );
 }
-function Eyebrow({ children, accent = false }) {
-  return (
-    <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 500, letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: accent ? 'var(--accent)' : 'var(--fg-muted)', marginBottom: '20px' }}>
-      {children}
-    </div>
-  );
+function Eyebrow({ children, accent = false, center = false }) {
+  const className = [
+    'arkim-section-caption',
+    !accent && 'arkim-section-caption--muted',
+    center && 'arkim-section-caption--center',
+  ].filter(Boolean).join(' ');
+  return <div className={className}>{children}</div>;
 }
 function DemoBtn({ label = 'Request a Demo' }) {
   return (
@@ -95,8 +96,8 @@ function Hero() {
         {heroFade(0.08, (
           <>
             <h1 className="hero-h1">
-              <span style={{ fontWeight: 700, color: 'var(--hero-title)', display: 'block' }}>The proof is on</span>
-              <span style={{ fontWeight: 700, color: 'var(--hero-title)', display: 'block' }}>the shop floor.</span>
+              <span style={{ color: 'var(--hero-title)', display: 'block' }}>The proof is on</span>
+              <span style={{ color: 'var(--hero-title)', display: 'block' }}>the shop floor.</span>
             </h1>
             <p className="hero-lead arkim-subhead" style={{ maxWidth: '640px' }}>
               GenAI drives uptime, technician proficiency, and margin. Arkim is the domain-specific copilot that turns those numbers into daily wins—with your manuals, schematics, and tribal knowledge, never the public internet.
@@ -135,7 +136,7 @@ function Hero() {
                 borderBottom: narrow && i < ANCHOR_ITEMS.length - 1 ? '1px solid var(--border)' : 'none',
                 transition: 'background 0.2s',
               }}
-              onMouseEnter={e => e.currentTarget.style.background='rgba(60,122,172,0.08)'}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--subnav-hover-bg)'}
               onMouseLeave={e => e.currentTarget.style.background='transparent'}
               >
                 <span style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.1em', color: 'var(--accent)', fontWeight: 500 }}>{item.num}</span>
@@ -161,7 +162,7 @@ function ValueProofStrip() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: narrow ? '48px 22px' : '64px 80px' }}>
         <FadeIn>
           <Eyebrow accent>The Arkim difference</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-md)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '36px', maxWidth: '720px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-md)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '36px', maxWidth: '720px', textWrap: 'balance' }}>
             Research proves the upside. Arkim is how you capture it.
           </h2>
         </FadeIn>
@@ -224,7 +225,7 @@ function StickyAnchorNav() {
           borderBottom: active === item.id ? `2px solid var(--accent)` : '2px solid transparent',
           transition: 'all 0.2s',
         }}
-        onMouseEnter={e => e.currentTarget.style.background='rgba(60,122,172,0.06)'}
+        onMouseEnter={e => e.currentTarget.style.background = 'var(--subnav-hover-bg)'}
         onMouseLeave={e => e.currentTarget.style.background='transparent'}
         >
           <span style={{ fontFamily: 'var(--body)', fontSize: 'var(--text-eyebrow-size)', lineHeight: 1, color: active === item.id ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, letterSpacing: '0.08em' }}>{item.num}</span>
@@ -247,7 +248,7 @@ function FeaturePills({ items }) {
         <div key={i} style={{
           background: 'var(--bg-card)', padding: narrow ? '22px 20px' : '32px 36px',
         }}>
-          <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{item.title}</div>
+          <h3 style={{ fontSize: 'var(--title-h3-sm)', fontWeight: 600, color: 'var(--fg)', marginBottom: '10px' }}>{item.title}</h3>
           <div style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.65, textWrap: 'pretty' }}>{item.body}</div>
         </div>
       ))}
@@ -264,7 +265,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel = null, imageHeight = 
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px ${imageLabel || showDemoButton ? '60px' : '80px'}` }}>
         <FadeIn>
           <Eyebrow accent>{eyebrow}</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '900px', textWrap: 'balance' }}>{headline}</h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: children ? '60px' : '0' }}>{sub}</p>
         </FadeIn>
         {children && <FadeIn delay={0.1}>{children}</FadeIn>}
@@ -342,7 +343,7 @@ function ResearchArticleCard({ article, narrow }) {
       <div style={{ padding: narrow ? '28px 22px' : '36px 40px' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: '20px 28px', marginBottom: '20px' }}>
           <div>
-            <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 500, marginBottom: '10px' }}>{article.tag}</div>
+            <div className="arkim-section-caption">{article.tag}</div>
             <h3 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h3-sm)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', marginBottom: '8px', letterSpacing: 'var(--title-h3-letter-spacing)', maxWidth: '520px' }}>{article.title}</h3>
             <div style={{ fontFamily: 'var(--body)', fontSize: '14px', color: 'var(--fg-muted)' }}>{article.source}</div>
           </div>
@@ -458,7 +459,7 @@ function S02() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 40px` }}>
         <FadeIn>
           <Eyebrow accent>02 — Arkim Compared to Foundation Models</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
             The only AI your technicians should trust with a live machine.
           </h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '40px' }}>
@@ -515,7 +516,7 @@ function S03() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 80px` }}>
         <FadeIn>
           <Eyebrow accent>Industry Impact</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '16px', maxWidth: '900px', textWrap: 'balance' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '16px', maxWidth: '900px', textWrap: 'balance' }}>
             What leading research says about AI in maintenance
           </h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.75, maxWidth: '720px', textWrap: 'pretty', marginBottom: '32px' }}>
@@ -587,7 +588,7 @@ function FinalCTA() {
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', color: 'var(--fg)' }}>
         <FadeIn>
           <Eyebrow>Ready when you are</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', fontWeight: 700, lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--fg)' }}>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--fg)' }}>
             Turn industry proof into<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your plant&apos;s performance.</em>
           </h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>

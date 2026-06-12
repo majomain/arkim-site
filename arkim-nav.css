@@ -7,6 +7,7 @@
   --arkim-nav-blur: 28px;
   --arkim-nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --arkim-nav-duration: 0.5s;
+  --arkim-nav-control-height: 36px;
   --nav-overlay-fg: #f5f2ed;
   --nav-overlay-muted: rgba(245, 242, 237, 0.72);
   --nav-overlay-border: rgba(255, 255, 255, 0.22);
@@ -147,8 +148,17 @@
 .arkim-site-nav__theme {
   border-radius: 4px;
   box-sizing: border-box;
-  width: 36px;
-  height: 36px;
+  width: var(--arkim-nav-control-height);
+  height: var(--arkim-nav-control-height);
+}
+
+/* Nav toolbar CTA — same height as theme toggle */
+.arkim-site-nav__tools .arkim-btn-primary--sm {
+  height: var(--arkim-nav-control-height);
+  min-height: var(--arkim-nav-control-height);
+  padding: 0 14px;
+  line-height: 1;
+  border-radius: 4px;
 }
 
 .arkim-site-nav__theme svg {
@@ -159,9 +169,8 @@
 }
 
 @media (max-width: 768px) {
-  .arkim-site-nav__theme {
-    width: 44px;
-    height: 44px;
+  :root {
+    --arkim-nav-control-height: 44px;
   }
 
   .arkim-site-nav__theme svg {

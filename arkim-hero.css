@@ -3,9 +3,11 @@
  * h1: .hero-h1 — same scale as section h2 (--title-h2-lg). h2: --title-h2-md|lg|xl. h3/card/stat tokens below.
  */
 :root {
+  /* Typekit Acumin Pro Extra Condensed — Extra Bold (n8); must match @font-face weight */
+  --heading-weight: 800;
   --hero-h1-size: var(--title-h2-lg);
-  --hero-h1-line-height: 0.9;
-  --heading-line-height: 0.9;
+  --hero-h1-line-height: 0.77;
+  --heading-line-height: 0.77;
   --hero-h1-letter-spacing: var(--title-h2-letter-spacing);
   --title-h2-letter-spacing: 0.006em;
   --title-h3-letter-spacing: 0.012em;
@@ -28,7 +30,6 @@
 .hero-h1 {
   font-family: var(--sans);
   font-size: var(--hero-h1-size);
-  font-weight: 700;
   line-height: var(--hero-h1-line-height);
   letter-spacing: var(--hero-h1-letter-spacing);
   text-transform: uppercase;
@@ -38,8 +39,6 @@
 
 .hero-h1-accent {
   font-family: var(--sans);
-  font-style: normal;
-  font-weight: 700;
   text-transform: uppercase;
   color: var(--hero-title);
 }

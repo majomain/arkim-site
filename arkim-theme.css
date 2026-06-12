@@ -17,6 +17,7 @@
   --p-fg-soft: rgba(245, 242, 237, 0.68);
   --text-body: 17px;
   --accent-soft: rgba(60, 122, 172, 0.06);
+  --subnav-hover-bg: color-mix(in srgb, var(--accent) 16%, transparent);
   --text-body-weight: 400;
   /* How-it-works step grid (dark default) */
   --step-card-bg: #111111;

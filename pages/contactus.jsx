@@ -34,7 +34,7 @@ function FadeIn({ children, delay = 0, style = {} }) {
   );
 }
 function Label({ children }) {
-  return <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 500, letterSpacing: 'var(--text-eyebrow-tracking)', color: 'var(--fg-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>{children}</div>;
+  return <div className="arkim-section-caption arkim-section-caption--muted">{children}</div>;
 }
 
 function HubSpotMeetingsEmbed() {
@@ -63,7 +63,7 @@ function ScheduleSection() {
   return (
     <div style={{ borderTop: '1px solid var(--border)', marginTop: narrow ? '56px' : '80px', paddingTop: narrow ? '48px' : '64px' }}>
       <FadeIn>
-        <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-md)', fontWeight: 700, letterSpacing: 'var(--title-h3-letter-spacing)', color: 'var(--fg)', marginBottom: narrow ? '24px' : '32px', textAlign: 'center' }}>
+        <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-md)', letterSpacing: 'var(--title-h3-letter-spacing)', color: 'var(--fg)', marginBottom: narrow ? '24px' : '32px', textAlign: 'center' }}>
           Schedule a meeting with us
         </h2>
         <HubSpotMeetingsEmbed />

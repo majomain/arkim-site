@@ -6,7 +6,7 @@
   --sans: "acumin-pro-extra-condensed", Helvetica, sans-serif;
   --body: "proxima-nova", Helvetica, sans-serif;
   --text-eyebrow-size: clamp(14px, 1.1vw, 17px);
-  --text-eyebrow-tracking: 0.12em;
+  --text-eyebrow-tracking: 0.16em;
   --text-caption: 16px;
   --text-label: 15px;
   --btn-letter-spacing: 0.12em;
@@ -49,10 +49,43 @@ h5,
 h6,
 .hero-h1,
 .hero-h1-accent,
-.arkim-heading {
+.arkim-heading,
+.arkim-card-heading {
   font-family: var(--sans);
   text-transform: uppercase;
-  line-height: var(--heading-line-height, 0.9);
+  line-height: var(--heading-line-height, 0.77);
+}
+
+h1,
+h2,
+.hero-h1,
+.hero-h1-accent {
+  font-style: normal;
+  font-weight: var(--heading-weight, 800);
+  font-synthesis: none;
+}
+
+.hero-h1 span {
+  font-weight: inherit;
+}
+
+/* Section badge/caption — product "How it works" reference */
+.arkim-section-caption {
+  font-family: var(--sans);
+  font-size: var(--text-eyebrow-size);
+  font-weight: 600;
+  letter-spacing: var(--text-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.arkim-section-caption--muted {
+  color: var(--fg-muted);
+}
+
+.arkim-section-caption--center {
+  text-align: center;
 }
 
 h1,
@@ -68,7 +101,8 @@ h2 {
 h3,
 h4,
 h5,
-h6 {
+h6,
+.arkim-card-heading {
   letter-spacing: var(--title-h3-letter-spacing);
 }
 

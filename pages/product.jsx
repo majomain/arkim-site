@@ -1214,48 +1214,140 @@ function EnterpriseReady() {
 }
 
 // ── HOW IT WORKS ──────────────────────────────────────────────────────────────
+const KICKOFF_STEPS = [
+  {
+    num: '01',
+    title: 'Connect your systems',
+    body: 'We integrate with your existing maintenance software. No hardware to install. No IT project.',
+    flowLabel: 'Connect',
+    caption: 'Plug into your CMMS — no hardware, no IT project.',
+  },
+  {
+    num: '02',
+    title: 'Load your equipment',
+    body: 'Upload your equipment manuals or point us at your asset list. Arkim builds the baseline schedule and knowledge base automatically.',
+    flowLabel: 'Load',
+    caption: 'Manuals and assets become a living knowledge base.',
+  },
+  {
+    num: '03',
+    title: 'Put the phone to work',
+    body: 'Operators and technicians start capturing on day one — compliance checks, symptoms, repairs. Every interaction builds the knowledge base.',
+    flowLabel: 'Capture',
+    caption: 'Operators capture on day one from the floor.',
+  },
+  {
+    num: '04',
+    title: 'Arkim gets smarter',
+    body: 'Every event, every repair, every captured symptom feeds back into the system. The diagnostic accuracy and maintenance schedule improve automatically over time.',
+    flowLabel: 'Smarter',
+    caption: 'Every repair makes the next diagnosis sharper.',
+  },
+];
+
+function KickoffStepsAnimation({ reducedMotion }) {
+  const modeClass = reducedMotion
+    ? 'arkim-kickoff-anim arkim-kickoff-anim--static'
+    : 'arkim-kickoff-anim arkim-kickoff-anim--playing';
+
+  return (
+    <div
+      className={modeClass}
+      role="img"
+      aria-label="Connect systems, load equipment, capture on phone, Arkim gets smarter"
+    >
+      <div className="arkim-kickoff-flow" aria-hidden="true">
+        <div className="arkim-kickoff-step">
+          <span className="arkim-kickoff-icon arkim-kickoff-icon--connect"><span /></span>
+          <span className="arkim-kickoff-label">Connect</span>
+        </div>
+        <div className="arkim-kickoff-line" />
+        <div className="arkim-kickoff-step">
+          <span className="arkim-kickoff-icon arkim-kickoff-icon--load" />
+          <span className="arkim-kickoff-label">Load</span>
+        </div>
+        <div className="arkim-kickoff-line" />
+        <div className="arkim-kickoff-step">
+          <span className="arkim-kickoff-icon arkim-kickoff-icon--phone" />
+          <span className="arkim-kickoff-label">Capture</span>
+        </div>
+        <div className="arkim-kickoff-line" />
+        <div className="arkim-kickoff-step arkim-kickoff-step--last">
+          <span className="arkim-kickoff-logo-wrap" aria-hidden="true">
+            <img
+              className="arkim-kickoff-logo arkim-kickoff-logo--light"
+              src="https://assets.arkim.ai/hollow-screw-logo%404x.png"
+              alt=""
+              width={36}
+              height={36}
+              decoding="async"
+            />
+            <img
+              className="arkim-kickoff-logo arkim-kickoff-logo--dark"
+              src="https://assets.arkim.ai/hollow-screw-logo-wht%404x.png"
+              alt=""
+              width={36}
+              height={36}
+              decoding="async"
+            />
+          </span>
+          <span className="arkim-kickoff-label">Smarter</span>
+        </div>
+      </div>
+      <p className="arkim-kickoff-caption" aria-hidden="true">
+        {KICKOFF_STEPS.map((s, i) => (
+          <span key={s.num} className={`arkim-kickoff-cap-${i + 1}`}>{s.caption}</span>
+        ))}
+      </p>
+    </div>
+  );
+}
+
 function HowItWorks() {
   const narrow = useIsNarrowLayout();
+  const reducedMotion = usePrefersReducedMotion();
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
-  const steps = [
-    { num: '01', title: 'Connect your systems', body: 'We integrate with your existing maintenance software. No hardware to install. No IT project.' },
-    { num: '02', title: 'Load your equipment', body: 'Upload your equipment manuals or point us at your asset list. Arkim builds the baseline schedule and knowledge base automatically.' },
-    { num: '03', title: 'Put the phone to work', body: 'Operators and technicians start capturing on day one — compliance checks, symptoms, repairs. Every interaction builds the knowledge base.' },
-    { num: '04', title: 'Arkim gets smarter', body: 'Every event, every repair, every captured symptom feeds back into the system. The diagnostic accuracy and maintenance schedule improve automatically over time.' },
-  ];
   return (
     <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-card)' }}>
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px` }}>
-        <FadeIn style={{ marginBottom: narrow ? '48px' : '80px' }}>
+        <FadeIn style={{ marginBottom: narrow ? '40px' : '56px' }}>
           <Eyebrow>From Kickoff to Live</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', textWrap: 'balance' }}>
             Up and running in days.<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>Not months.</em>
           </h2>
         </FadeIn>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: narrow ? '1fr' : 'repeat(4, minmax(0, 1fr))',
-          gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden',
-        }}>
-          {steps.map((s, i) => (
-            <FadeIn key={i} delay={i * 0.1}>
-              <div style={{ background: 'var(--step-card-bg)', padding: narrow ? '28px 22px' : '40px 36px', height: '100%', transition: 'background 0.25s, box-shadow 0.4s cubic-bezier(0.16,1,0.3,1)' }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = 'var(--step-card-hover)';
-                e.currentTarget.style.boxShadow = '0 18px 40px var(--step-card-shadow)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = 'var(--step-card-bg)';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
+        <div className="arkim-kickoff-section">
+          <FadeIn delay={0.08}>
+            <KickoffStepsAnimation reducedMotion={reducedMotion} />
+          </FadeIn>
+          <div
+            className="arkim-kickoff-grid"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: narrow ? '1fr' : 'repeat(4, minmax(0, 1fr))',
+              gap: '1px',
+              background: 'var(--border)',
+              border: '1px solid var(--border)',
+              borderRadius: '12px',
+              overflow: 'hidden',
+            }}
+          >
+            {KICKOFF_STEPS.map((s, i) => (
+              <div
+                key={i}
+                className="arkim-kickoff-card"
+                style={{
+                  padding: narrow ? '28px 22px' : '40px 36px',
+                  height: '100%',
+                }}
               >
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', letterSpacing: '0.12em', color: 'var(--accent)', fontWeight: 500, marginBottom: '20px' }}>{s.num}</div>
                 <h3 style={{ fontSize: 'var(--title-h3-sm)', fontWeight: 600, marginBottom: '16px', color: 'var(--step-card-title)' }}>{s.title}</h3>
                 <div style={{ fontFamily: 'var(--body)', fontSize: '14px', fontWeight: 400, color: 'var(--step-card-body)', lineHeight: 1.65, textWrap: 'pretty' }}>{s.body}</div>
               </div>
-            </FadeIn>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

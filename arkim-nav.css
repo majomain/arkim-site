@@ -86,7 +86,7 @@
 
 .arkim-site-nav__link {
   font-family: var(--sans);
-  font-size: var(--text-caption, 16px);
+  font-size: var(--text-caption, 15px);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;

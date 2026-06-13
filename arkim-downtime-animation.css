@@ -159,7 +159,7 @@ html:not([data-theme="light"]) .arkim-flow-logo--light {
   margin: 0;
   text-align: center;
   font-family: var(--body), system-ui, sans-serif;
-  font-size: 15px;
+  font-size: var(--text-caption);
   font-weight: 400;
   color: var(--p-fg);
   line-height: 1.5;
@@ -390,7 +390,7 @@ html:not([data-theme="light"]) .arkim-flow-icon--fix::after {
   }
 
   .arkim-flow-caption {
-    font-size: 14px;
+    font-size: calc(var(--text-caption) - 1px);
     max-width: none;
     padding: 0 4px;
   }

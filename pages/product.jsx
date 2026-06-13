@@ -298,7 +298,7 @@ function StickyAnchorNav() {
           e.currentTarget.style.background = 'transparent';
         }}
         >
-          <span style={{ fontFamily: 'var(--body)', fontSize: 'var(--text-eyebrow-size)', lineHeight: 1, color: active === item.id ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 500, letterSpacing: '0.08em' }}>{item.num}</span>
+          <span style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', lineHeight: 1, color: active === item.id ? 'var(--accent)' : 'var(--fg-muted)', fontWeight: 600, letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase' }}>{item.num}</span>
           <span style={{ fontFamily: 'var(--body)', fontSize: '13px', lineHeight: 1, color: active === item.id ? 'var(--fg)' : 'var(--fg-muted)', fontWeight: 400 }}>{item.label}</span>
         </a>
       ))}
@@ -396,7 +396,7 @@ function BaselineCaptureDiagram() {
         gap: narrow ? 20 : 28,
       }}>
         <div>
-          <div className="arkim-section-caption" style={{ fontFamily: 'var(--body)' }}>Baseline capture</div>
+          <div className="arkim-section-caption">Baseline capture</div>
           <p style={{
             fontFamily: 'var(--body)',
             fontSize: narrow ? '16px' : '18px',
@@ -422,14 +422,7 @@ function BaselineCaptureDiagram() {
             opacity: captured ? 0.55 : 1,
             transition: 'opacity 0.7s ease',
           }}>
-            <div style={{
-              fontFamily: 'var(--body)',
-              fontSize: 'var(--text-eyebrow-size)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--fg-muted)',
-              marginBottom: 14,
-            }}>
+            <div className="arkim-section-caption arkim-section-caption--muted" style={{ marginBottom: 14 }}>
               Asset class on paper
             </div>
             {paperParams.map((p) => (
@@ -457,15 +450,7 @@ function BaselineCaptureDiagram() {
             transition: 'border-color 0.7s, background 0.7s, box-shadow 0.7s, opacity 0.7s',
             opacity: captured ? 1 : 0.72,
           }}>
-            <div style={{
-              fontFamily: 'var(--body)',
-              fontSize: 'var(--text-eyebrow-size)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: captured ? 'var(--accent)' : 'var(--fg-muted)',
-              marginBottom: 14,
-              transition: 'color 0.7s',
-            }}>
+            <div className="arkim-section-caption" style={{ marginBottom: 14, color: captured ? 'var(--accent)' : 'var(--fg-muted)', transition: 'color 0.7s' }}>
               This asset&apos;s baseline
             </div>
             {assetParams.map((p) => (
@@ -500,13 +485,7 @@ function BaselineCaptureDiagram() {
             flexDirection: 'column',
             gap: 10,
           }}>
-            <div style={{
-              fontFamily: 'var(--body)',
-              fontSize: 'var(--text-eyebrow-size)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--fg-muted)',
-            }}>
+            <div className="arkim-section-caption arkim-section-caption--muted" style={{ marginBottom: 0 }}>
               Floor conversation → captured knowledge
             </div>
             {chatLines.map((line, i) => (
@@ -529,9 +508,10 @@ function BaselineCaptureDiagram() {
               >
                 <span style={{
                   display: 'block',
-                  fontSize: '10px',
+                  fontFamily: 'var(--sans)',
+                  fontSize: 'var(--text-eyebrow-size)',
                   fontWeight: 600,
-                  letterSpacing: '0.1em',
+                  letterSpacing: 'var(--text-eyebrow-tracking)',
                   textTransform: 'uppercase',
                   color: line.who === 'operator' ? 'var(--fg-muted)' : 'var(--accent)',
                   marginBottom: 4,
@@ -555,13 +535,7 @@ function BaselineCaptureDiagram() {
               justifyContent: 'center',
               gap: 8,
             }}>
-              <div style={{
-                fontFamily: 'var(--body)',
-                fontSize: 'var(--text-eyebrow-size)',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: 'var(--fg-muted)',
-              }}>
+              <div className="arkim-section-caption arkim-section-caption--muted" style={{ marginBottom: 0 }}>
                 Baseline anchors
               </div>
               <div style={{
@@ -574,9 +548,11 @@ function BaselineCaptureDiagram() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontFamily: 'var(--body)',
+                fontFamily: 'var(--sans)',
                 fontSize: 'var(--text-eyebrow-size)',
                 fontWeight: 700,
+                letterSpacing: 'var(--text-eyebrow-tracking)',
+                textTransform: 'uppercase',
                 color: 'var(--accent)',
                 marginBottom: 4,
                 boxSizing: 'border-box',
@@ -608,9 +584,11 @@ function BaselineCaptureDiagram() {
                     borderRadius: 8,
                     border: '1px solid var(--border)',
                     background: captured ? 'rgba(60, 122, 172, 0.1)' : 'var(--bg-card)',
-                    fontFamily: 'var(--body)',
+                    fontFamily: 'var(--sans)',
                     fontSize: 'var(--text-eyebrow-size)',
-                    fontWeight: 500,
+                    fontWeight: 600,
+                    letterSpacing: 'var(--text-eyebrow-tracking)',
+                    textTransform: 'uppercase',
                     color: captured ? 'var(--fg)' : 'var(--fg-muted)',
                     lineHeight: 1.35,
                     textAlign: 'center',
@@ -1076,7 +1054,57 @@ function S03() {
 }
 
 // ── SECTION 04 — EXISTING TOOLS ───────────────────────────────────────────────
-const INTEGRATIONS = ['eMaint','Fiix','UpKeep','Limble CMMS','IBM Maximo','SAP PM','MaintainX','Oracle EAM','Fleetio','Brightly'];
+const ASSETS = 'https://assets.arkim.ai/integrations';
+const INTEGRATION_LOGOS = [
+  { name: 'IBM Maximo', src: `${ASSETS}/IBMmaximo-logo.png`, treatment: 'mono' },
+  { name: 'Oracle EAM', src: `${ASSETS}/Oracle-Logo.png`, treatment: 'mono' },
+  { name: 'Salesforce', src: `${ASSETS}/Salesforce.com_logo.svg`, treatment: 'brand' },
+  { name: 'Brightly', src: `${ASSETS}/brightly-logo.png`, treatment: 'mono' },
+  { name: 'Fiix', src: `${ASSETS}/fiix-logo.png`, treatment: 'mono' },
+  { name: 'Fleetio', src: `${ASSETS}/fleetio-edit-logo.svg`, treatment: 'mono' },
+  { name: 'Limble CMMS', src: `${ASSETS}/limble-logo.svg`, treatment: 'mono' },
+  {
+    name: 'MaintainX',
+    lightSrc: `${ASSETS}/maintainx-logo%402x.png`,
+    darkSrc: `${ASSETS}/maintainx-wht%402x.png`,
+    treatment: 'swap',
+  },
+  { name: 'UpKeep', src: `${ASSETS}/upkeep-logo.png`, treatment: 'mono' },
+];
+
+function IntegrationLogo({ name, src, lightSrc, darkSrc, treatment }) {
+  const isLight = useArkimTheme();
+  const imgSrc = treatment === 'swap'
+    ? (isLight ? lightSrc : darkSrc)
+    : src;
+  const className = [
+    'arkim-int-carousel__logo',
+    treatment === 'mono' && 'arkim-int-carousel__logo--mono',
+  ].filter(Boolean).join(' ');
+  return (
+    <div className="arkim-int-carousel__item" title={name}>
+      <img className={className} src={imgSrc} alt={name} loading="lazy" decoding="async" />
+    </div>
+  );
+}
+
+function IntegrationLogoCarousel() {
+  const reducedMotion = usePrefersReducedMotion();
+  const track = reducedMotion ? INTEGRATION_LOGOS : [...INTEGRATION_LOGOS, ...INTEGRATION_LOGOS];
+  return (
+    <div className="arkim-int-carousel" role="region" aria-label="Integration partners">
+      <div className="arkim-int-carousel__fade arkim-int-carousel__fade--left" aria-hidden="true" />
+      <div className="arkim-int-carousel__fade arkim-int-carousel__fade--right" aria-hidden="true" />
+      <div className="arkim-int-carousel__viewport">
+        <div className={`arkim-int-carousel__track${reducedMotion ? ' arkim-int-carousel__track--static' : ''}`}>
+          {track.map((logo, i) => (
+            <IntegrationLogo key={`${logo.name}-${i}`} {...logo} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function S04() {
   const narrow = useIsNarrowLayout();
@@ -1094,35 +1122,8 @@ function S04() {
             We connect directly to your existing maintenance software. Your data stays where it is. Your team doesn't have to change how they work.
           </p>
         </FadeIn>
-        {/* Integration logos */}
         <FadeIn delay={0.1}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: narrow ? 'repeat(2, minmax(0, 1fr))' : 'repeat(5, minmax(0, 1fr))',
-            gap: '1px', background: 'var(--border)', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', marginBottom: '40px',
-          }}>
-            {INTEGRATIONS.map((name, i) => (
-              <div key={i} style={{
-                background: 'var(--bg-card)', padding: narrow ? '18px 14px' : '28px 24px',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--sans)', fontSize: narrow ? '17px' : '19px', fontWeight: 500,
-                textTransform: 'uppercase', color: 'var(--fg-muted)', textAlign: 'center',
-                transition: 'color 0.25s, background 0.25s, box-shadow 0.35s cubic-bezier(0.16,1,0.3,1)',
-                cursor: 'default',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.color = 'var(--accent)';
-                e.currentTarget.style.background = 'var(--card-hover)';
-                e.currentTarget.style.boxShadow = '0 14px 32px rgba(0,0,0,0.12)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.color = 'var(--fg-muted)';
-                e.currentTarget.style.background = 'var(--bg-card)';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-              >{name}</div>
-            ))}
-          </div>
+          <IntegrationLogoCarousel />
         </FadeIn>
         <FadeIn delay={0.2}>
           <FeaturePills items={[

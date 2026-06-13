@@ -396,7 +396,7 @@ function BaselineCaptureDiagram() {
         gap: narrow ? 20 : 28,
       }}>
         <div>
-          <div className="arkim-section-caption" style={{ fontFamily: 'var(--body)', fontSize: 'calc(var(--text-eyebrow-size) + 1px)' }}>Baseline capture</div>
+          <div className="arkim-section-caption" style={{ fontFamily: 'var(--body)' }}>Baseline capture</div>
           <p style={{
             fontFamily: 'var(--body)',
             fontSize: narrow ? '16px' : '18px',
@@ -424,7 +424,7 @@ function BaselineCaptureDiagram() {
           }}>
             <div style={{
               fontFamily: 'var(--body)',
-              fontSize: '11px',
+              fontSize: 'var(--text-eyebrow-size)',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: 'var(--fg-muted)',
@@ -459,7 +459,7 @@ function BaselineCaptureDiagram() {
           }}>
             <div style={{
               fontFamily: 'var(--body)',
-              fontSize: '11px',
+              fontSize: 'var(--text-eyebrow-size)',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: captured ? 'var(--accent)' : 'var(--fg-muted)',
@@ -502,7 +502,7 @@ function BaselineCaptureDiagram() {
           }}>
             <div style={{
               fontFamily: 'var(--body)',
-              fontSize: '11px',
+              fontSize: 'var(--text-eyebrow-size)',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: 'var(--fg-muted)',
@@ -557,7 +557,7 @@ function BaselineCaptureDiagram() {
             }}>
               <div style={{
                 fontFamily: 'var(--body)',
-                fontSize: '11px',
+                fontSize: 'var(--text-eyebrow-size)',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
                 color: 'var(--fg-muted)',
@@ -565,19 +565,22 @@ function BaselineCaptureDiagram() {
                 Baseline anchors
               </div>
               <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
+                alignSelf: 'flex-start',
+                height: 32,
+                padding: '0 12px',
+                borderRadius: 999,
                 border: '2px solid var(--accent)',
                 background: 'rgba(60, 122, 172, 0.12)',
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontFamily: 'var(--body)',
-                fontSize: 'calc(var(--text-eyebrow-size) + 1px)',
+                fontSize: 'var(--text-eyebrow-size)',
                 fontWeight: 700,
                 color: 'var(--accent)',
                 marginBottom: 4,
+                boxSizing: 'border-box',
+                whiteSpace: 'nowrap',
               }}>
                 #247
               </div>
@@ -606,7 +609,7 @@ function BaselineCaptureDiagram() {
                     border: '1px solid var(--border)',
                     background: captured ? 'rgba(60, 122, 172, 0.1)' : 'var(--bg-card)',
                     fontFamily: 'var(--body)',
-                    fontSize: 'calc(var(--text-eyebrow-size) + 1px)',
+                    fontSize: 'var(--text-eyebrow-size)',
                     fontWeight: 500,
                     color: captured ? 'var(--fg)' : 'var(--fg-muted)',
                     lineHeight: 1.35,
@@ -1136,33 +1139,27 @@ function S04() {
 const ENTERPRISE_CARDS = [
   {
     id: '21cfr',
-    badge: '21 CFR Part 11',
+    badge: '21 CFR Part 11 Ready',
     title: 'Pharma Ready',
     detail: 'Validation documentation, IQ/OQ/PQ templates, and audit-trail logging built for regulated pharmaceutical environments. Every action is timestamped, attributed, and exportable for inspection.',
   },
   {
-    id: 'nvidia',
-    badge: 'NVIDIA Inception',
-    title: 'AI Infrastructure',
-    detail: "Member of NVIDIA's Inception program — built on the same AI infrastructure powering the world's leading industrial platforms. GPU-accelerated inference for real-time multimodal diagnostics.",
+    id: 'food',
+    badge: 'FSMA & HACCP',
+    title: 'Food & Beverage',
+    detail: 'Sanitary equipment checks, corrective actions, and maintenance records structured for FDA food safety audits — not buried in binders on the plant floor.',
   },
   {
-    id: 'databricks',
-    badge: 'Databricks Program',
-    title: 'Enterprise Data',
-    detail: 'Part of the Databricks program — enterprise-grade data infrastructure for scalable ingestion, model training, and real-time analytics across your entire asset base.',
-  },
-  {
-    id: 'aws',
-    badge: 'AWS Activate',
-    title: 'Cloud Infrastructure',
-    detail: 'Deployed on enterprise AWS infrastructure with global availability, multi-region redundancy, and the security posture your IT team requires. SOC 2 aligned by design.',
+    id: 'chemical',
+    badge: 'OSHA / EPA Aligned',
+    title: 'Chemical & Process',
+    detail: 'PSM-covered assets demand documented inspections and traceable repairs. Arkim logs every diagnostic, work order, and compliance check for safety and environmental review.',
   },
   {
     id: 'audit',
     badge: 'Audit-Ready Documentation',
     title: 'Full Traceability',
-    detail: 'Every repair, every compliance check, every diagnostic event — fully logged, attributed, and exportable. Nothing falls through the cracks. Arkim is your paper trail.',
+    detail: 'Every repair, every check, every diagnostic event — fully logged, attributed, and exportable. Nothing falls through the cracks when regulators or customers ask for proof.',
   },
 ];
 
@@ -1308,27 +1305,25 @@ function Results() {
 // ── FINAL CTA ─────────────────────────────────────────────────────────────────
 function FinalCTA() {
   const narrow = useIsNarrowLayout();
+  const reducedMotion = usePrefersReducedMotion();
   return (
-    <div style={{
+    <div className="hero-cinematic hero-cinematic--video-bg product-final-cta" style={{
       borderTop: '1px solid var(--border)',
-      background: 'linear-gradient(to bottom, var(--final-cta-1), var(--final-cta-2))',
       position: 'relative',
       overflow: 'hidden',
     }}>
-      <div style={{
-        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
-        width: '700px', height: '400px',
-        background: 'radial-gradient(ellipse, var(--radial-accent-glow) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', color: 'var(--fg)' }}>
+      <HeroBgVideo
+        src="https://assets.arkim.ai/factory-video-arkim_1.mp4"
+        reducedMotion={reducedMotion}
+      />
+      <div style={{ maxWidth: '860px', margin: '0 auto', padding: narrow ? '72px 22px' : '120px 48px', textAlign: 'center', position: 'relative', zIndex: 2 }}>
         <FadeIn>
-          <Eyebrow>Let's Talk</Eyebrow>
-          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--fg)' }}>
-            Let's talk about<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>your facility.</em>
+          <Eyebrow center>Let&apos;s Talk</Eyebrow>
+          <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--hero-title)' }}>
+            Let&apos;s talk about<br />your facility.
           </h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
-            A 30-minute conversation. We'll show you exactly what Arkim would look like for your equipment and your team.
+            A 30-minute conversation. We&apos;ll show you exactly what Arkim would look like for your equipment and your team.
           </p>
           <DemoBtn label="Request a Demo" />
           <p style={{ fontFamily: 'var(--body)', fontSize: '14px', color: 'var(--p-fg-soft)', marginTop: '20px' }}>No pitch deck. No commitment.</p>

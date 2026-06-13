@@ -719,11 +719,26 @@ function TimeToValue() {
 // ─── COMPLIANCE & TRUST ──────────────────────────────────────────────────────
 
 const TRUST_CARDS = [
-  { badge: '21 CFR Part 11 Ready', title: 'Pharma Ready', body: 'Validation documentation, IQ/OQ/PQ templates, and audit-trail logging built for regulated pharmaceutical environments.' },
-  { badge: 'NVIDIA Inception', title: 'AI Infrastructure', body: "Member of NVIDIA's Inception program — built on the same AI infrastructure powering the world's leading industrial platforms." },
-  { badge: 'Databricks Program', title: 'Enterprise Data', body: 'Part of the Databricks program — enterprise-grade data infrastructure for scalable ingestion, model training, and real-time analytics.' },
-  { badge: 'AWS Activate', title: 'Cloud Infrastructure', body: 'Deployed on enterprise AWS infrastructure with global availability, security, and the flexibility your operations demand.' },
-  { badge: 'Audit-Ready Documentation', title: 'Full Traceability', body: 'Every repair, every check, every diagnostic event — fully logged, attributed, and exportable for inspection.' },
+  {
+    badge: '21 CFR Part 11 Ready',
+    title: 'Pharma Ready',
+    body: 'Validation documentation, IQ/OQ/PQ templates, and audit-trail logging built for regulated pharmaceutical environments. Every action is timestamped, attributed, and exportable for inspection.',
+  },
+  {
+    badge: 'FSMA & HACCP',
+    title: 'Food & Beverage',
+    body: 'Sanitary equipment checks, corrective actions, and maintenance records structured for FDA food safety audits — not buried in binders on the plant floor.',
+  },
+  {
+    badge: 'OSHA / EPA Aligned',
+    title: 'Chemical & Process',
+    body: 'PSM-covered assets demand documented inspections and traceable repairs. Arkim logs every diagnostic, work order, and compliance check for safety and environmental review.',
+  },
+  {
+    badge: 'Audit-Ready Documentation',
+    title: 'Full Traceability',
+    body: 'Every repair, every check, every diagnostic event — fully logged, attributed, and exportable. Nothing falls through the cracks when regulators or customers ask for proof.',
+  },
 ];
 
 function ComplianceTrust() {
@@ -836,13 +851,6 @@ function FinalCTA() {
       borderTop: '1px solid var(--border)', position: 'relative', overflow: 'hidden',
       background: 'linear-gradient(to bottom, var(--final-cta-1), var(--final-cta-2))',
     }}>
-      <div style={{
-        position: 'absolute', top: '50%', left: '50%',
-        transform: 'translate(-50%,-50%)',
-        width: '700px', height: '400px',
-        background: 'radial-gradient(ellipse, var(--radial-accent) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
       <div style={{
         maxWidth: '1300px', margin: '0 auto', padding: `96px ${sectionPaddingX}px`,
         display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '42px' : '100px', alignItems: 'center',

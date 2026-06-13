@@ -5,7 +5,8 @@
 :root {
   --sans: "acumin-pro-extra-condensed", Helvetica, sans-serif;
   --body: "proxima-nova", Helvetica, sans-serif;
-  --text-eyebrow-size: clamp(14px, 1.1vw, 17px);
+  /* Universal section caption / eyebrow size (blue uppercase labels site-wide) */
+  --text-eyebrow-size: clamp(17.5px, 1.375vw, 21.25px);
   --text-eyebrow-tracking: 0.16em;
   --text-caption: 16px;
   --text-label: 15px;

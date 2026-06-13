@@ -64,8 +64,11 @@ function ArkimFooter() {
     (window.__resources && window.__resources.logoSideBySideWht) || '/uploads/arkim-side-by-side-wht.svg';
   const footerLogoSrc = isLightTheme ? logoLightSurface : logoDarkSurface;
 
+  const innerPadding = narrow ? '48px 22px 0' : '64px 80px 0';
+
   return (
-    <footer style={{ borderTop: '1px solid var(--border)', padding: narrow ? '48px 22px 32px' : '64px 80px 40px', maxWidth: '1300px', margin: '0 auto' }}>
+    <footer style={{ borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: '1300px', margin: '0 auto', padding: innerPadding }}>
       <div style={{ display: 'grid', gridTemplateColumns: narrow ? '1fr' : '2fr 1fr 1fr 1fr', gap: narrow ? '40px' : '60px', marginBottom: '60px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -101,14 +104,17 @@ function ArkimFooter() {
           </div>
         ))}
       </div>
-      <div style={{ borderTop: '1px solid var(--border)', paddingTop: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-        <span style={{ fontFamily: 'var(--body)', fontSize: '13px', color: 'var(--fg-muted)' }}>© 2026 Arkim AI. All rights reserved.</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          {PARTNER_MARKS.map((p, i) => (
-            <a key={i} href={p.href} target="_blank" rel="noopener noreferrer" className="arkim-footer-partner-link">
-              <img src={partnerLogoSrc(p.resourceKey, p.fallback)} alt={p.alt} width={54} height={20} loading="lazy" decoding="async" />
-            </a>
-          ))}
+      </div>
+      <div style={{ borderTop: '1px solid var(--border)' }}>
+        <div style={{ maxWidth: '1300px', margin: '0 auto', padding: narrow ? '28px 22px 32px' : '28px 80px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+          <span style={{ fontFamily: 'var(--body)', fontSize: '13px', color: 'var(--fg-muted)' }}>© 2026 Arkim AI. All rights reserved.</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+            {PARTNER_MARKS.map((p, i) => (
+              <a key={i} href={p.href} target="_blank" rel="noopener noreferrer" className="arkim-footer-partner-link">
+                <img src={partnerLogoSrc(p.resourceKey, p.fallback)} alt={p.alt} width={54} height={20} loading="lazy" decoding="async" />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

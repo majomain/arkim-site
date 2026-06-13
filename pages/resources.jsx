@@ -607,7 +607,7 @@ function FinalCTA() {
         <FadeIn>
           <Eyebrow center>Ready when you are</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-xl)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '20px', textWrap: 'balance', color: 'var(--hero-title)' }}>
-            Turn industry proof into<br /><em style={{ fontStyle: 'normal', color: 'var(--headline-accent, var(--accent))' }}>your plant&apos;s performance.</em>
+            Turn industry proof into<br />your plant&apos;s performance.
           </h2>
           <p style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.7, marginBottom: '40px' }}>
             You have the benchmarks. See how Arkim puts 30% more proficiency and 50% more uptime within reach for your team—starting with one demo on your equipment.

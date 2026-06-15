@@ -202,7 +202,7 @@ function Hero() {
         {heroFade(0.1, (
           <>
             <h1 className="hero-h1">
-              <span style={{ color: 'var(--hero-title)', display: 'block' }}>Maintenance solutions</span>
+              <span style={{ color: 'var(--hero-title)', display: 'block' }}>Smarter maintenance solutions</span>
               <span style={{ color: 'var(--hero-title)', display: 'block' }}>for any facility</span>
             </h1>
             <p className="hero-lead arkim-subhead">

@@ -90,11 +90,18 @@ html[data-theme="light"] .arkim-ingestion-frame {
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-html:not([data-theme="light"]) .arkim-ingestion-frame {
+html:not([data-theme="light"]) .arkim-ingestion-frame,
+html:not([data-theme="light"]) .arkim-ingestion-media {
   background: transparent;
-  border-radius: 0;
+  border-radius: 12px;
   padding: 0;
   box-shadow: none;
+}
+
+html:not([data-theme="light"]) .arkim-ingestion-frame > video,
+html:not([data-theme="light"]) .arkim-ingestion-media > video {
+  border-radius: 12px;
+  display: block;
 }
 
 /* iPhone mockup clips in split section — fix square-edge clipping on mobile */

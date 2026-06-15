@@ -452,6 +452,7 @@ function ZeroDayTechnicianDiagram() {
 // ── SECTION WRAPPER ───────────────────────────────────────────────────────────
 function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', imageSlot = null, sideBySideGifs = null, imageBelowSplit = false, stretchSplitMediaHeight = false, splitMediaMatchTable = false, splitIntroAlign = 'center', mobileMediaFirst = false, children, statNum, statLabel, statSub, afterStatContent = null, showDemoButton = true }) {
   const narrow = useIsNarrowLayout();
+  const isLightTheme = useArkimTheme();
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
   const hasSplit = Array.isArray(sideBySideGifs) && sideBySideGifs.length > 0;
@@ -499,15 +500,16 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
           ? (narrow ? 'clamp(22px, 5.5vw, 28px)' : 'clamp(16px, 2.2vw, 26px)')
           : 'clamp(16px, 2.2vw, 26px)';
         const fillMediaItem = stretchDesktop || (matchTableHeight && g.ingestLightFrame);
+        const ingestRadius = '12px';
         const imgStyle = fillMediaItem ? {
           display: 'block',
+          width: '100%',
+          height: '100%',
           maxWidth: '100%',
           maxHeight: '100%',
-          width: 'auto',
-          height: 'auto',
           objectFit: 'contain',
           objectPosition: 'center',
-          borderRadius: g.phoneMockup ? phoneClipRadius : undefined,
+          borderRadius: g.phoneMockup ? phoneClipRadius : (g.ingestLightFrame ? ingestRadius : undefined),
         } : phonePairMobile ? {
           display: 'block',
           width: 'auto',
@@ -527,7 +529,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
           objectFit: 'contain',
           objectPosition: 'center top',
           display: 'block',
-          borderRadius: g.phoneMockup ? phoneClipRadius : undefined,
+          borderRadius: g.phoneMockup ? phoneClipRadius : (g.ingestLightFrame ? ingestRadius : undefined),
         };
         const mediaSrc = g.videoSrc || g.src;
         const isVideo = Boolean(g.videoSrc || (mediaSrc && /\.(mp4|webm)(\?|$)/i.test(mediaSrc)));
@@ -552,22 +554,23 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
           />
         );
         if (g.ingestLightFrame) {
+          const frameStyle = {
+            flex: narrow ? '1 1 auto' : (fillMediaItem ? '1 1 0%' : '0 1 auto'),
+            minWidth: 0,
+            minHeight: fillMediaItem ? 0 : undefined,
+            height: fillMediaItem ? '100%' : undefined,
+            maxWidth: narrow ? '100%' : (fillMediaItem ? 'none' : 380),
+            width: fillMediaItem ? '100%' : undefined,
+            alignSelf: fillMediaItem ? 'stretch' : undefined,
+            display: 'flex',
+            alignItems: fillMediaItem ? 'stretch' : 'center',
+            justifyContent: fillMediaItem ? 'stretch' : 'center',
+          };
           return (
             <div
               key={i}
-              className="arkim-ingestion-frame"
-              style={{
-                flex: narrow ? '1 1 auto' : (fillMediaItem ? '1 1 0%' : '0 1 auto'),
-                minWidth: 0,
-                minHeight: fillMediaItem ? 0 : undefined,
-                height: fillMediaItem ? '100%' : undefined,
-                maxWidth: narrow ? '100%' : (fillMediaItem ? 460 : 380),
-                width: fillMediaItem ? '100%' : undefined,
-                alignSelf: fillMediaItem ? 'stretch' : undefined,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              className={isLightTheme ? 'arkim-ingestion-frame' : 'arkim-ingestion-media'}
+              style={frameStyle}
             >
               {media}
             </div>
@@ -601,7 +604,13 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
             <FadeIn>{introBlockSplit}</FadeIn>
             <FadeIn delay={0.1}>
               <div
-                style={{
+                style={matchTableHeight && !narrow ? {
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: 48,
+                  width: '100%',
+                  alignItems: 'stretch',
+                } : {
                   display: 'flex',
                   flexDirection: narrow ? 'column' : 'row',
                   justifyContent: 'center',
@@ -611,26 +620,30 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
                 }}
               >
                 <div style={{
-                  flex: narrow ? 'none' : (stretchDesktop ? '1 1 58%' : '0 1 520px'),
+                  flex: narrow ? 'none' : (matchTableHeight ? undefined : (stretchDesktop ? '1 1 58%' : '0 1 520px')),
                   minWidth: 0,
                   minHeight: narrow ? undefined : (matchTableHeight ? 0 : undefined),
-                  maxWidth: narrow ? '100%' : (stretchDesktop ? 'none' : 560),
-                  width: narrow ? '100%' : 'auto',
+                  maxWidth: narrow ? '100%' : (matchTableHeight ? 'none' : (stretchDesktop ? 'none' : 560)),
+                  width: narrow ? '100%' : (matchTableHeight ? '100%' : 'auto'),
+                  height: matchTableHeight && !narrow ? '100%' : undefined,
+                  display: matchTableHeight && !narrow ? 'flex' : undefined,
+                  flexDirection: matchTableHeight && !narrow ? 'column' : undefined,
                   order: mediaFirstOnMobile ? 2 : 1,
                 }}
                 >
                   {children}
                 </div>
                 <div style={{
-                  flex: narrow ? 'none' : (stretchDesktop ? '1 1 34%' : (matchTableHeight ? '1 1 0%' : '0 1 auto')),
+                  flex: narrow ? 'none' : (matchTableHeight ? undefined : (stretchDesktop ? '1 1 34%' : '0 1 auto')),
                   minWidth: narrow ? undefined : (stretchDesktop ? 240 : (matchTableHeight ? 0 : 0)),
                   minHeight: narrow ? undefined : (gifsFillRow ? 0 : undefined),
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                   alignItems: narrow ? (phonePairMobile ? 'center' : 'stretch') : (gifsFillRow ? 'stretch' : 'center'),
-                  width: narrow ? '100%' : 'auto',
-                  maxWidth: narrow ? '100%' : (matchTableHeight ? 'min(40vw, 380px)' : undefined),
+                  width: narrow ? '100%' : (matchTableHeight ? '100%' : 'auto'),
+                  maxWidth: narrow ? '100%' : (matchTableHeight ? 'none' : undefined),
+                  height: matchTableHeight && !narrow ? '100%' : undefined,
                   alignSelf: narrow ? 'stretch' : (gifsFillRow ? 'stretch' : 'flex-start'),
                   order: mediaFirstOnMobile ? 1 : 2,
                   marginBottom: mediaFirstOnMobile ? 4 : undefined,
@@ -692,8 +705,8 @@ function DiagnoseModalitiesTable() {
     { title: 'Pre-diagnosed repair summary', body: "Before a technician touches the machine, they already know what's wrong, what part is needed, and what the manual says to do." },
   ];
   return (
-    <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-      <div style={{ border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', background: 'var(--bg-card)' }}>
+    <div style={{ width: '100%', height: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', background: 'var(--bg-card)', flex: 1, display: 'flex', flexDirection: 'column' }}>
       <table
         style={{
           width: '100%',

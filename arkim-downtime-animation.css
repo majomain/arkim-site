@@ -10,17 +10,12 @@
   --flow-line-track: var(--border);
   --flow-cycle: 8s;
   width: 100%;
-  height: 100%;
   box-sizing: border-box;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--bg-card);
-  padding: clamp(28px, 5vw, 40px) clamp(24px, 5vw, 40px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 28px;
 }
 
 .arkim-flow {
@@ -184,8 +179,6 @@ html:not([data-theme="light"]) .arkim-downtime-anim {
   --flow-icon-bg: #1a1a1a;
   --flow-icon-border: rgba(245, 242, 237, 0.2);
   --flow-line-track: rgba(245, 242, 237, 0.16);
-  background: #161616;
-  border-color: #333333;
 }
 
 html:not([data-theme="light"]) .arkim-flow-icon--down::after {
@@ -337,7 +330,7 @@ html:not([data-theme="light"]) .arkim-flow-icon--fix::after {
 /* Mobile — stacked section, full-width diagram */
 @media (max-width: 768px) {
   .arkim-downtime-anim {
-    padding: 32px 20px 36px;
+    gap: 22px;
   }
 
   .arkim-flow {

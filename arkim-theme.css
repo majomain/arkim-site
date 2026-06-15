@@ -96,3 +96,18 @@ html:not([data-theme="light"]) .arkim-ingestion-frame {
   padding: 0;
   box-shadow: none;
 }
+
+/* iPhone mockup clips in split section — fix square-edge clipping on mobile */
+.arkim-phone-mockup {
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
+  line-height: 0;
+}
+
+.arkim-phone-mockup > img,
+.arkim-phone-mockup > video {
+  border-radius: inherit;
+  display: block;
+  vertical-align: top;
+}

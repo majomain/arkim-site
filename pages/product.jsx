@@ -214,7 +214,7 @@ function Hero() {
           <div
             className="hero-panel-grid"
             style={{
-              gridTemplateColumns: narrow ? '1fr' : 'repeat(4, 1fr)',
+              gridTemplateColumns: narrow ? '1fr' : 'repeat(3, 1fr)',
               width: '100%',
               maxWidth: narrow ? '100%' : '740px',
             }}
@@ -222,8 +222,7 @@ function Hero() {
             {[
               { num: '01', label: 'Diagnose faster', id: 's01' },
               { num: '02', label: 'Capture knowledge', id: 's02' },
-              { num: '03', label: 'Maintain smarter', id: 's03' },
-              { num: '04', label: 'Your existing tools', id: 's04' },
+              { num: '03', label: 'Your existing tools', id: 's03' },
             ].map((item, i) => (
               <a key={i} href={`#${item.id}`} className="hero-panel-cell" style={{
                 display: 'flex', flexDirection: 'column', gap: 4,
@@ -246,7 +245,7 @@ function StickyAnchorNav() {
   const [active, setActive] = useState(null);
   const narrow = useIsNarrowLayout();
   useEffect(() => {
-    const sectionIds = ['s01','s02','s03','s04'];
+    const sectionIds = ['s01','s02','s03'];
     const fn = () => {
       setShow(window.scrollY > window.innerHeight * 0.7);
       const found = sectionIds.slice().reverse().find(id => {
@@ -262,8 +261,7 @@ function StickyAnchorNav() {
   const items = [
     { num: '01', label: 'Diagnose faster', id: 's01' },
     { num: '02', label: 'Capture knowledge', id: 's02' },
-    { num: '03', label: 'Maintain smarter', id: 's03' },
-    { num: '04', label: 'Your existing tools', id: 's04' },
+    { num: '03', label: 'Your existing tools', id: 's03' },
   ];
   return (
     <div style={{
@@ -287,7 +285,7 @@ function StickyAnchorNav() {
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
           flexShrink: 0,
           padding: narrow ? '0 14px' : '0 28px', alignSelf: 'stretch', textDecoration: 'none',
-          borderRight: i < 3 ? '1px solid var(--border)' : 'none',
+          borderRight: i < 2 ? '1px solid var(--border)' : 'none',
           borderBottom: active === item.id ? `2px solid var(--accent)` : '2px solid transparent',
           transition: 'background 0.2s',
         }}
@@ -344,275 +342,6 @@ function StatBlock({ num, label, sub }) {
       <div style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-stat-md)', fontWeight: 700, color: 'var(--accent)', lineHeight: 1, letterSpacing: 'var(--title-stat-letter-spacing)', marginBottom: '12px' }}>{num}</div>
       <div style={{ fontFamily: 'var(--body)', fontSize: '18px', fontWeight: 500, color: 'var(--fg)', marginBottom: '8px' }}>{label}</div>
       {sub && <div style={{ fontFamily: 'var(--body)', fontSize: '15px', fontWeight: 400, color: 'var(--p-fg)', lineHeight: 1.6, maxWidth: '560px', textWrap: 'pretty' }}>{sub}</div>}
-    </div>
-  );
-}
-
-/** Per-asset baseline diagram — width matches Section (1300px + page gutters) */
-function BaselineCaptureDiagram() {
-  const narrow = useIsNarrowLayout();
-  const gx = narrow ? 22 : 80;
-  const [captured, setCaptured] = useState(false);
-  useEffect(() => {
-    const t = setInterval(() => setCaptured((v) => !v), 5000);
-    return () => clearInterval(t);
-  }, []);
-
-  const paperParams = [
-    { label: 'Operating temp', value: '180–220 °F' },
-    { label: 'Service interval', value: 'Every 6 months' },
-    { label: 'Vibration limit', value: 'Per ISO class' },
-  ];
-  const assetParams = [
-    { label: 'Operating temp', value: '195 °F steady' },
-    { label: 'Oil change rhythm', value: 'Every 11 weeks' },
-    { label: 'Startup quirk', value: '2 min purge before load' },
-  ];
-  const chatLines = [
-    { who: 'operator', text: 'Compressor 7 always runs about 195 — never hits manual max.' },
-    { who: 'arkim', text: 'Logged as normal operating temp for asset #247.' },
-    { who: 'operator', text: 'We change oil every 11 weeks, not quarterly like the book says.' },
-  ];
-  const downstream = ['Drift detection', 'Diagnostic agent', 'Predictive maintenance', 'Agentic prioritization'];
-
-  return (
-    <div
-      role="img"
-      aria-label="Diagram: operator conversation builds a per-asset baseline that anchors drift detection and maintenance intelligence"
-      style={{
-        width: '100%',
-        background: 'var(--bg)',
-        borderTop: '1px solid var(--border)',
-        borderBottom: '1px solid var(--border)',
-      }}
-    >
-      <div style={{
-        maxWidth: '1300px',
-        margin: '0 auto',
-        width: '100%',
-        padding: narrow ? `28px ${gx}px 32px` : `40px ${gx}px 44px`,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: narrow ? 20 : 28,
-      }}>
-        <div>
-          <div className="arkim-section-caption">Baseline capture</div>
-          <p style={{
-            fontFamily: 'var(--body)',
-            fontSize: narrow ? '16px' : '18px',
-            fontWeight: 400,
-            color: 'var(--p-fg)',
-            lineHeight: 1.65,
-            textWrap: 'pretty',
-          }}>
-            Natural-language conversations with the people who run your equipment define what normal looks like for each asset — not just what the manual says for the class.
-          </p>
-        </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: narrow ? '1fr' : '1fr 1fr',
-          gap: narrow ? 12 : 16,
-        }}>
-          <div style={{
-            border: '1px solid var(--border)',
-            borderRadius: 12,
-            background: 'var(--bg-card)',
-            padding: narrow ? '16px 14px' : '20px 18px',
-            opacity: captured ? 0.55 : 1,
-            transition: 'opacity 0.7s ease',
-          }}>
-            <div className="arkim-section-caption arkim-section-caption--muted" style={{ marginBottom: 14 }}>
-              Asset class on paper
-            </div>
-            {paperParams.map((p) => (
-              <div key={p.label} style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                gap: 12,
-                padding: '10px 0',
-                borderTop: '1px solid var(--border)',
-                fontFamily: 'var(--body)',
-                fontSize: '14px',
-              }}>
-                <span style={{ color: 'var(--fg-muted)' }}>{p.label}</span>
-                <span style={{ color: 'var(--fg)', fontWeight: 500, textAlign: 'right' }}>{p.value}</span>
-              </div>
-            ))}
-          </div>
-
-          <div style={{
-            border: `1px solid ${captured ? 'var(--accent)' : 'var(--border)'}`,
-            borderRadius: 12,
-            background: captured ? 'rgba(60, 122, 172, 0.08)' : 'var(--bg-card)',
-            padding: narrow ? '16px 14px' : '20px 18px',
-            boxShadow: captured ? '0 0 0 1px rgba(60, 122, 172, 0.2)' : 'none',
-            transition: 'border-color 0.7s, background 0.7s, box-shadow 0.7s, opacity 0.7s',
-            opacity: captured ? 1 : 0.72,
-          }}>
-            <div className="arkim-section-caption" style={{ marginBottom: 14, color: captured ? 'var(--accent)' : 'var(--fg-muted)', transition: 'color 0.7s' }}>
-              This asset&apos;s baseline
-            </div>
-            {assetParams.map((p) => (
-              <div key={p.label} style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                gap: 12,
-                padding: '10px 0',
-                borderTop: '1px solid var(--border)',
-                fontFamily: 'var(--body)',
-                fontSize: '14px',
-              }}>
-                <span style={{ color: 'var(--fg-muted)' }}>{p.label}</span>
-                <span style={{ color: 'var(--accent)', fontWeight: 600, textAlign: 'right' }}>{p.value}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: narrow ? '1fr' : 'minmax(0, 1.1fr) minmax(0, 0.9fr)',
-          gap: narrow ? 16 : 20,
-          alignItems: 'stretch',
-        }}>
-          <div style={{
-            border: '1px solid var(--border)',
-            borderRadius: 12,
-            background: 'var(--bg-card)',
-            padding: narrow ? '14px 12px' : '16px 16px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 10,
-          }}>
-            <div className="arkim-section-caption arkim-section-caption--muted" style={{ marginBottom: 0 }}>
-              Floor conversation → captured knowledge
-            </div>
-            {chatLines.map((line, i) => (
-              <div
-                key={i}
-                style={{
-                  alignSelf: line.who === 'operator' ? 'flex-start' : 'flex-end',
-                  maxWidth: '92%',
-                  padding: '10px 12px',
-                  borderRadius: line.who === 'operator' ? '10px 10px 10px 4px' : '10px 10px 4px 10px',
-                  background: line.who === 'operator' ? 'var(--bg)' : 'rgba(60, 122, 172, 0.14)',
-                  border: `1px solid ${line.who === 'operator' ? 'var(--border)' : 'rgba(60, 122, 172, 0.35)'}`,
-                  fontFamily: 'var(--body)',
-                  fontSize: '13px',
-                  lineHeight: 1.5,
-                  color: 'var(--fg)',
-                  opacity: captured || i < 2 ? 1 : 0.35,
-                  transition: 'opacity 0.6s ease',
-                }}
-              >
-                <span style={{
-                  display: 'block',
-                  fontFamily: 'var(--sans)',
-                  fontSize: 'var(--text-eyebrow-size)',
-                  fontWeight: 600,
-                  letterSpacing: 'var(--text-eyebrow-tracking)',
-                  textTransform: 'uppercase',
-                  color: line.who === 'operator' ? 'var(--fg-muted)' : 'var(--accent)',
-                  marginBottom: 4,
-                }}>
-                  {line.who === 'operator' ? 'Operator' : 'Arkim'}
-                </span>
-                {line.text}
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <div style={{
-              flex: 1,
-              border: '1px solid var(--border)',
-              borderRadius: 12,
-              background: 'var(--bg-card)',
-              padding: narrow ? '14px 12px' : '16px 16px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              gap: 8,
-            }}>
-              <div className="arkim-section-caption arkim-section-caption--muted" style={{ marginBottom: 0 }}>
-                Baseline anchors
-              </div>
-              <div style={{
-                alignSelf: 'flex-start',
-                height: 32,
-                padding: '0 12px',
-                borderRadius: 999,
-                border: '2px solid var(--accent)',
-                background: 'rgba(60, 122, 172, 0.12)',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'var(--sans)',
-                fontSize: 'var(--text-eyebrow-size)',
-                fontWeight: 700,
-                letterSpacing: 'var(--text-eyebrow-tracking)',
-                textTransform: 'uppercase',
-                color: 'var(--accent)',
-                marginBottom: 4,
-                boxSizing: 'border-box',
-                whiteSpace: 'nowrap',
-              }}>
-                #247
-              </div>
-              <p style={{
-                fontFamily: 'var(--body)',
-                fontSize: '13px',
-                fontWeight: 400,
-                color: 'var(--p-fg, var(--fg-muted))',
-                lineHeight: 1.55,
-                textWrap: 'pretty',
-              }}>
-                Per-asset operating parameters, rhythms, and tribal knowledge — the reference point for every future deviation.
-              </p>
-            </div>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: 8,
-            }}>
-              {downstream.map((name, i) => (
-                <div
-                  key={name}
-                  style={{
-                    padding: '10px 10px',
-                    borderRadius: 8,
-                    border: '1px solid var(--border)',
-                    background: captured ? 'rgba(60, 122, 172, 0.1)' : 'var(--bg-card)',
-                    fontFamily: 'var(--sans)',
-                    fontSize: 'var(--text-eyebrow-size)',
-                    fontWeight: 600,
-                    letterSpacing: 'var(--text-eyebrow-tracking)',
-                    textTransform: 'uppercase',
-                    color: captured ? 'var(--fg)' : 'var(--fg-muted)',
-                    lineHeight: 1.35,
-                    textAlign: 'center',
-                    opacity: captured ? 1 : 0.5 + i * 0.08,
-                    transition: 'opacity 0.6s, background 0.6s, color 0.6s',
-                  }}
-                >
-                  {name}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <p style={{
-          fontFamily: 'var(--body)',
-          fontSize: '11px',
-          color: 'var(--fg-muted)',
-          lineHeight: 1.5,
-          opacity: 0.9,
-        }}>
-          Initial data collection event for deviation detection · continuous capture of knowledge that never made it into OEM documentation
-        </p>
-      </div>
     </div>
   );
 }
@@ -721,7 +450,7 @@ function ZeroDayTechnicianDiagram() {
 }
 
 // ── SECTION WRAPPER ───────────────────────────────────────────────────────────
-function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', imageSlot = null, sideBySideGifs = null, imageBelowSplit = false, stretchSplitMediaHeight = false, splitMediaMatchTable = false, splitIntroAlign = 'center', children, statNum, statLabel, statSub, afterStatContent = null, showDemoButton = true }) {
+function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imageAlt = '', imageHeight = '55vh', imageObjectFit = 'cover', imageSlot = null, sideBySideGifs = null, imageBelowSplit = false, stretchSplitMediaHeight = false, splitMediaMatchTable = false, splitIntroAlign = 'center', mobileMediaFirst = false, children, statNum, statLabel, statSub, afterStatContent = null, showDemoButton = true }) {
   const narrow = useIsNarrowLayout();
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
@@ -730,6 +459,8 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
   const matchTableHeight = splitMediaMatchTable && !narrow && hasSplit;
   const gifsFillRow = stretchDesktop || matchTableHeight;
   const introSplitCentered = splitIntroAlign !== 'left';
+  const phonePairMobile = narrow && hasSplit && sideBySideGifs.length > 1 && sideBySideGifs.every((g) => g.phoneMockup);
+  const mediaFirstOnMobile = narrow && mobileMediaFirst;
 
   const introBlock = (
     <>
@@ -749,20 +480,24 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
 
   const gifsInner = hasSplit ? (
     <div
+      className={phonePairMobile ? 'arkim-phone-mockup-row' : undefined}
       style={{
         display: 'flex',
         flexDirection: 'row',
-        gap: narrow ? 10 : 14,
+        gap: phonePairMobile ? 14 : (narrow ? 10 : 14),
         justifyContent: 'center',
         alignItems: gifsFillRow ? 'stretch' : 'center',
         width: '100%',
         flex: gifsFillRow ? 1 : undefined,
         minHeight: gifsFillRow ? 0 : undefined,
         height: gifsFillRow ? '100%' : undefined,
+        padding: phonePairMobile ? '4px 0 8px' : undefined,
       }}
     >
       {sideBySideGifs.map((g, i) => {
-        const phoneClipRadius = 'clamp(16px, 2.2vw, 26px)';
+        const phoneClipRadius = g.phoneMockup
+          ? (narrow ? 'clamp(22px, 5.5vw, 28px)' : 'clamp(16px, 2.2vw, 26px)')
+          : 'clamp(16px, 2.2vw, 26px)';
         const fillMediaItem = stretchDesktop || (matchTableHeight && g.ingestLightFrame);
         const imgStyle = fillMediaItem ? {
           display: 'block',
@@ -772,6 +507,16 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
           height: 'auto',
           objectFit: 'contain',
           objectPosition: 'center',
+          borderRadius: g.phoneMockup ? phoneClipRadius : undefined,
+        } : phonePairMobile ? {
+          display: 'block',
+          width: 'auto',
+          height: 'auto',
+          maxWidth: 'min(47vw, 220px)',
+          maxHeight: 'min(60vh, 500px)',
+          objectFit: 'contain',
+          objectPosition: 'center',
+          borderRadius: phoneClipRadius,
         } : {
           width: narrow ? '100%' : 'auto',
           maxWidth: narrow ? (sideBySideGifs.length > 1 ? '50%' : '100%') : 'none',
@@ -782,8 +527,22 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
           objectFit: 'contain',
           objectPosition: 'center top',
           display: 'block',
+          borderRadius: g.phoneMockup ? phoneClipRadius : undefined,
         };
-        const img = (
+        const mediaSrc = g.videoSrc || g.src;
+        const isVideo = Boolean(g.videoSrc || (mediaSrc && /\.(mp4|webm)(\?|$)/i.test(mediaSrc)));
+        const media = isVideo ? (
+          <video
+            src={mediaSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-label={g.alt || ''}
+            style={imgStyle}
+          />
+        ) : (
           <img
             src={g.src}
             alt={g.alt || ''}
@@ -810,22 +569,24 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
                 justifyContent: 'center',
               }}
             >
-              {img}
+              {media}
             </div>
           );
         }
         return (
           <div
             key={i}
+            className={g.phoneMockup ? 'arkim-phone-mockup' : undefined}
             style={{
-              flex: narrow ? '1 1 0' : '0 1 auto',
+              flex: phonePairMobile ? '0 0 auto' : (narrow ? '1 1 0' : '0 1 auto'),
               minWidth: 0,
+              width: phonePairMobile ? 'auto' : undefined,
               borderRadius: phoneClipRadius,
               overflow: 'hidden',
               lineHeight: 0,
             }}
           >
-            {img}
+            {media}
           </div>
         );
       })}
@@ -855,6 +616,7 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
                   minHeight: narrow ? undefined : (matchTableHeight ? 0 : undefined),
                   maxWidth: narrow ? '100%' : (stretchDesktop ? 'none' : 560),
                   width: narrow ? '100%' : 'auto',
+                  order: mediaFirstOnMobile ? 2 : 1,
                 }}
                 >
                   {children}
@@ -866,10 +628,12 @@ function Section({ id, eyebrow, headline, sub, imageLabel, imageSrc = null, imag
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
-                  alignItems: narrow ? 'stretch' : (gifsFillRow ? 'stretch' : 'center'),
+                  alignItems: narrow ? (phonePairMobile ? 'center' : 'stretch') : (gifsFillRow ? 'stretch' : 'center'),
                   width: narrow ? '100%' : 'auto',
                   maxWidth: narrow ? '100%' : (matchTableHeight ? 'min(40vw, 380px)' : undefined),
                   alignSelf: narrow ? 'stretch' : (gifsFillRow ? 'stretch' : 'flex-start'),
+                  order: mediaFirstOnMobile ? 1 : 2,
+                  marginBottom: mediaFirstOnMobile ? 4 : undefined,
                 }}
                 >
                   {gifsInner}
@@ -991,7 +755,7 @@ function S01() {
       showDemoButton={false}
       sideBySideGifs={[
         {
-          src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/funnel-updated.png',
+          videoSrc: 'https://assets.arkim.ai/how-it-works-funnel-blk.mp4',
           alt: 'Diagram: video, audio, and chat inputs converging into Arkim data ingestion',
           ingestLightFrame: true,
         },
@@ -1008,12 +772,13 @@ function S02() {
     <Section
       id="s02"
       splitIntroAlign="left"
+      mobileMediaFirst
       eyebrow="02 — Capture Knowledge Automatically"
       headline="Every repair your team does is a permanent company asset. Right now, most of it disappears when they clock out."
       sub="Arkim captures every repair, every inspection, every compliance check — automatically. When your most experienced technician retires, their knowledge stays."
       sideBySideGifs={[
-        { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile-2.gif', alt: 'Arkim mobile capture workflow' },
-        { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile-1.gif', alt: 'Arkim mobile app on the plant floor' },
+        { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile-2.gif', alt: 'Arkim mobile capture workflow', phoneMockup: true },
+        { src: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/mobile-1.gif', alt: 'Arkim mobile app on the plant floor', phoneMockup: true },
       ]}
       statNum="The 0-day technician."
       statLabel="Any technician, from day one."
@@ -1031,29 +796,7 @@ function S02() {
   );
 }
 
-// ── SECTION 03 — BASELINE CAPTURE ────────────────────────────────────────────
-function S03() {
-  return (
-    <Section
-      id="s03"
-      eyebrow="03 — Baseline Capture"
-      headline="Drift detection only works when you know what normal is — for this machine, not just this model."
-      sub="Arkim captures per-asset operating parameters, operational rhythms, and institutional knowledge through natural-language conversation with the people who actually run and maintain the equipment. That baseline anchors diagnostic agents, drift detection, predictive maintenance, and agentic prioritization — and keeps growing as tribal knowledge surfaces on the floor."
-      imageLabel="infographic: OEM asset-class specs versus per-asset baseline from operator conversation, feeding drift detection and maintenance intelligence"
-      imageSlot={<BaselineCaptureDiagram />}
-      showDemoButton={false}
-    >
-      <FeaturePills items={[
-        { title: 'Per-asset operating parameters', body: 'Temperature bands, pressure ranges, cycle times, and load profiles are captured as they actually run on your floor — not as a generic spec sheet describes the class.' },
-        { title: 'Operational rhythms', body: 'Oil changes, inspections, startups, and seasonal patterns are recorded in the cadence your team already follows, so schedules and alerts match reality.' },
-        { title: 'Tribal knowledge, continuously', body: 'Quirks, shortcuts, sounds, and fixes that never made it into OEM documentation are captured in conversation and stay with the asset when people rotate or retire.' },
-        { title: 'Anchor for everything downstream', body: 'Diagnostic agents, drift detection, predictive maintenance, and prioritization all compare against this baseline — the reference for what counts as a deviation on asset #247.' },
-      ]} />
-    </Section>
-  );
-}
-
-// ── SECTION 04 — EXISTING TOOLS ───────────────────────────────────────────────
+// ── SECTION 03 — EXISTING TOOLS ───────────────────────────────────────────────
 const ASSETS = 'https://assets.arkim.ai/integrations';
 const INTEGRATION_LOGOS = [
   { name: 'IBM Maximo', src: `${ASSETS}/IBMmaximo-logo.png`, treatment: 'mono' },
@@ -1111,10 +854,10 @@ function S04() {
   const gx = narrow ? 22 : 80;
   const pt = narrow ? 64 : 100;
   return (
-    <div id="s04" style={{ borderTop: '1px solid var(--border)' }}>
+    <div id="s03" style={{ borderTop: '1px solid var(--border)' }}>
       <div style={{ maxWidth: '1300px', margin: '0 auto', padding: `${pt}px ${gx}px 60px` }}>
         <FadeIn>
-          <Eyebrow accent>04 — Works With What You Already Have</Eyebrow>
+          <Eyebrow accent>03 — Works With What You Already Have</Eyebrow>
           <h2 style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-h2-lg)', lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)', marginBottom: '24px', maxWidth: '800px', textWrap: 'balance' }}>
             No rip and replace. Arkim works alongside the systems your team already uses.
           </h2>
@@ -1278,16 +1021,16 @@ function KickoffStepsAnimation({ reducedMotion }) {
               className="arkim-kickoff-logo arkim-kickoff-logo--light"
               src="https://assets.arkim.ai/hollow-screw-logo%404x.png"
               alt=""
-              width={36}
-              height={36}
+              width={50}
+              height={50}
               decoding="async"
             />
             <img
               className="arkim-kickoff-logo arkim-kickoff-logo--dark"
               src="https://assets.arkim.ai/hollow-screw-logo-wht%404x.png"
               alt=""
-              width={36}
-              height={36}
+              width={50}
+              height={50}
               decoding="async"
             />
           </span>
@@ -1436,7 +1179,6 @@ function App() {
       <StickyAnchorNav />
       <S01 />
       <S02 />
-      <S03 />
       <S04 />
       <HowItWorks />
       <Results />

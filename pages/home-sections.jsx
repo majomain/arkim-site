@@ -123,6 +123,14 @@ function DemoVideoModal({ open, onClose }) {
   );
 }
 
+// ─── PARTNERS ───────────────────────────────────────────────────────────────
+
+const BACKED_BY_PARTNERS = [
+  { href: 'https://www.nvidia.com/en-us/startups/', label: 'NVIDIA Inception', logo: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png' },
+  { href: 'https://www.databricks.com/build-and-launch/startups', label: 'Databricks for Startups', logo: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg' },
+  { href: 'https://aws.amazon.com/activate/', label: 'AWS Activate', logo: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg' },
+];
+
 // ─── HERO ───────────────────────────────────────────────────────────────────
 
 function Hero() {
@@ -130,10 +138,10 @@ function Hero() {
   const reducedMotion = usePrefersReducedMotion();
   const [demoOpen, setDemoOpen] = useState(false);
   const heroPad = isMobile
-    ? 'calc(120px + var(--arkim-nav-offset)) 20px 88px'
+    ? 'calc(120px + var(--arkim-nav-offset)) 20px 72px'
     : isTablet
-      ? 'calc(132px + var(--arkim-nav-offset)) 40px 96px'
-      : 'calc(140px + var(--arkim-nav-offset)) 48px 100px';
+      ? 'calc(132px + var(--arkim-nav-offset)) 40px 80px'
+      : 'calc(140px + var(--arkim-nav-offset)) 48px 84px';
   return (
     <div className="hero-cinematic hero-cinematic--video-bg" style={{
       position: 'relative', minHeight: '100vh',
@@ -164,32 +172,47 @@ function Hero() {
             <button type="button" className="arkim-btn-primary" onClick={() => setDemoOpen(true)}>
               PLAY VIDEO
             </button>
+            <a
+              href="https://show.arkim.ai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="arkim-btn-outline arkim-btn-outline--pill"
+            >
+              Product Deck
+            </a>
           </div>
-        </FadeIn>
-        <FadeIn delay={0.55}>
-          <ul className="hero-trust-row">
-            {[
-              { href: 'https://www.nvidia.com/en-us/startups/', label: 'NVIDIA Inception', logo: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/nvidia-inception.png' },
-              { href: 'https://www.databricks.com/build-and-launch/startups', label: 'Databricks for Startups', logo: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/databricks-logo.svg' },
-              { href: 'https://aws.amazon.com/activate/', label: 'AWS Activate', logo: 'https://pub-21bffe7c211448d7818625366c788ae6.r2.dev/aws-activate.svg' },
-            ].map((p) => (
-              <li key={p.label}>
-                <a
-                  href={p.href}
-                  className="hero-trust-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img className="hero-trust-logo" src={p.logo} alt="" width={112} height={22} loading="lazy" decoding="async" />
-                  <span>{p.label}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
         </FadeIn>
       </div>
       <DemoVideoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
+  );
+}
+
+// ─── BACKED BY ──────────────────────────────────────────────────────────────
+
+function BackedByStrip() {
+  return (
+    <section className="arkim-backed-by" aria-label="Backed by">
+      <div className="arkim-backed-by__inner">
+        <p className="arkim-backed-by__label">Backed by</p>
+        <ul className="arkim-backed-by__logos">
+          {BACKED_BY_PARTNERS.map((p) => (
+            <li key={p.label}>
+              <a
+                href={p.href}
+                className="arkim-backed-by__link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={p.label}
+              >
+                <img src={p.logo} alt="" width={112} height={22} loading="lazy" decoding="async" />
+                <span className="arkim-backed-by__name">{p.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 }
 
@@ -656,7 +679,7 @@ function TimeToValue() {
           fontFamily: 'var(--sans)', textTransform: 'uppercase', fontSize: 'var(--title-section)',
           lineHeight: 'var(--heading-line-height)', letterSpacing: 'var(--title-h2-letter-spacing)',
           marginBottom: '64px', textWrap: 'balance',
-        }}>ROI in week one.<br /><em style={{ fontStyle: 'normal', color: 'var(--accent)' }}>Not month six.</em></h2>
+        }}>ROI in week one.<br />Not month six.</h2>
       </FadeIn>
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '24px', alignItems: 'stretch' }}>
         {[
@@ -906,6 +929,7 @@ function FinalCTA() {
 
 Object.assign(window, {
   ArkimHero: Hero,
+  ArkimBackedByStrip: BackedByStrip,
   ArkimIndustriesStrip: IndustriesStrip,
   ArkimTheLever: TheLever,
   ArkimDowntimeResolve: DowntimeResolve,

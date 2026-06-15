@@ -54,18 +54,24 @@
   --hero-scrim-top: 0.55;
   --hero-scrim-mid: 0.28;
   --hero-scrim-bottom: 0.62;
+  /* Copy + controls on darkened footage — high contrast in every site theme */
+  --fg: #ffffff;
+  --p-fg: rgba(255, 255, 255, 0.94);
+  --outline: rgba(255, 255, 255, 0.58);
+  --outline-hover: rgba(255, 255, 255, 0.82);
+  --outline-fill: rgba(255, 255, 255, 0.1);
   /* Subtle dividers on dark hero panels (stats, anchor nav) — all site themes */
   --border: rgba(255, 255, 255, 0.22);
   /* Frosted panel fill — stats + anchor nav (matched across both rows) */
   --hero-panel-bg: rgba(10, 10, 10, 0.74);
   --hero-panel-blur: 14px;
   /* Partner strip — fixed on dark hero in every site theme */
-  --hero-trust-fg: rgba(245, 242, 237, 0.82);
-  --hero-trust-fg-hover: rgba(245, 242, 237, 0.96);
-  --hero-trust-logo-opacity: 0.56;
-  --hero-trust-logo-opacity-hover: 0.82;
+  --hero-trust-fg: rgba(255, 255, 255, 0.9);
+  --hero-trust-fg-hover: #ffffff;
+  --hero-trust-logo-opacity: 0.72;
+  --hero-trust-logo-opacity-hover: 0.92;
   --hero-trust-logo-filter: brightness(10);
-  --hero-trust-dot: rgba(245, 242, 237, 0.42);
+  --hero-trust-dot: rgba(255, 255, 255, 0.5);
 }
 
 .hero-cinematic .hero-h1 {
@@ -76,7 +82,7 @@
 .hero-cinematic p.hero-lead,
 .hero-cinematic .arkim-subhead {
   font-size: var(--hero-lead-size);
-  font-weight: 400;
+  font-weight: 500;
   color: var(--p-fg);
   line-height: var(--hero-lead-line-height);
   max-width: 580px;
@@ -86,25 +92,28 @@
 
 /* Dark site theme: hero sits on video/photo — lift body copy off default page muted grey */
 html:not([data-theme='light']) .hero-cinematic {
-  --fg-muted: rgba(245, 242, 237, 0.82);
-  --p-fg: rgba(245, 242, 237, 0.88);
-  --fg-ghost: rgba(245, 242, 237, 0.62);
-  --text-muted: rgba(245, 242, 237, 0.82);
+  --fg-muted: rgba(255, 255, 255, 0.86);
+  --p-fg: rgba(255, 255, 255, 0.96);
+  --fg-ghost: rgba(255, 255, 255, 0.68);
+  --text-muted: rgba(255, 255, 255, 0.86);
 }
 
 html[data-theme="light"] .hero-cinematic {
   --hero-bg: #000000;
   --hero-title: #ffffff;
-  --fg: #f5f2ed;
-  --fg-muted: rgba(245, 242, 237, 0.78);
-  --text-muted: rgba(245, 242, 237, 0.8);
+  --fg: #ffffff;
+  --fg-muted: rgba(255, 255, 255, 0.84);
+  --text-muted: rgba(255, 255, 255, 0.86);
   --btn-fg: #ffffff;
-  --outline: rgba(245, 242, 237, 0.22);
-  --outline-hover: rgba(245, 242, 237, 0.42);
-  --outline-fill: rgba(245, 242, 237, 0.06);
-  --fg-ghost: rgba(245, 242, 237, 0.35);
-  --p-fg: rgba(245, 242, 237, 0.78);
-  /* Lighter scrim — let the loop read brighter while keeping copy legible */
+  --outline: rgba(255, 255, 255, 0.58);
+  --outline-hover: rgba(255, 255, 255, 0.82);
+  --outline-fill: rgba(255, 255, 255, 0.1);
+  --fg-ghost: rgba(255, 255, 255, 0.45);
+  --p-fg: rgba(255, 255, 255, 0.94);
+}
+
+/* Static / texture heroes only — lighter scrim so texture reads in light site theme */
+html[data-theme="light"] .hero-cinematic:not(.hero-cinematic--video-bg) {
   --hero-scrim-top: 0.38;
   --hero-scrim-mid: 0.14;
   --hero-scrim-bottom: 0.42;
@@ -160,12 +169,45 @@ html[data-theme='light'] .hero-cinematic--static-texture {
 .hero-cinematic--video-bg {
   background: #000;
   isolation: isolate;
+  /* Darken on moving footage — balanced for legibility without over-darkening */
+  --hero-scrim-top: 0.58;
+  --hero-scrim-mid: 0.4;
+  --hero-scrim-bottom: 0.66;
+  --hero-scrim-radial: 0.3;
+  --p-fg: #ffffff;
+  --outline: rgba(255, 255, 255, 0.68);
+  --outline-hover: rgba(255, 255, 255, 0.9);
+  --outline-fill: rgba(255, 255, 255, 0.14);
 }
 
 .hero-cinematic--video-bg::before,
 .hero-cinematic--video-bg::after {
   content: none !important;
   display: none !important;
+}
+
+/* Lift headlines + dek off bright highlights in the footage */
+.hero-cinematic--video-bg .hero-h1,
+.hero-cinematic--video-bg .hero-h1 span,
+.hero-cinematic--video-bg p.hero-lead,
+.hero-cinematic--video-bg .arkim-subhead,
+.hero-cinematic--video-bg h2 {
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 2px 20px rgba(0, 0, 0, 0.4);
+}
+
+.hero-cinematic--video-bg .arkim-btn-outline {
+  color: #ffffff;
+  border-color: var(--outline);
+  font-weight: 600;
+}
+
+.hero-cinematic--video-bg .arkim-btn-outline:hover,
+.hero-cinematic--video-bg .arkim-btn-outline:focus-visible {
+  color: #ffffff;
+  border-color: var(--outline-hover);
+  background: var(--outline-fill);
 }
 
 .hero-bg-video-wrap {
@@ -194,12 +236,18 @@ html[data-theme='light'] .hero-cinematic--static-texture {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, var(--hero-scrim-top, 0.55)) 0%,
-    rgba(0, 0, 0, var(--hero-scrim-mid, 0.28)) 45%,
-    rgba(0, 0, 0, var(--hero-scrim-bottom, 0.62)) 100%
-  );
+  background:
+    radial-gradient(
+      ellipse 88% 72% at 50% 42%,
+      rgba(0, 0, 0, var(--hero-scrim-radial, 0)) 0%,
+      transparent 72%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, var(--hero-scrim-top, 0.55)) 0%,
+      rgba(0, 0, 0, var(--hero-scrim-mid, 0.28)) 45%,
+      rgba(0, 0, 0, var(--hero-scrim-bottom, 0.62)) 100%
+    );
 }
 
 .hero-trust-row {
@@ -292,4 +340,110 @@ a.hero-panel-cell {
 a.hero-panel-cell:hover,
 a.hero-panel-cell:focus-visible {
   background: var(--subnav-hover-bg);
+}
+
+/* Homepage — partner strip directly below hero */
+.arkim-backed-by {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.arkim-backed-by__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 22px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px 40px;
+  flex-wrap: wrap;
+}
+
+.arkim-backed-by__label {
+  font-family: var(--sans);
+  font-size: var(--text-eyebrow-size);
+  font-weight: 600;
+  letter-spacing: var(--text-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.arkim-backed-by__logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.arkim-backed-by__logos > li {
+  display: flex;
+  align-items: center;
+}
+
+.arkim-backed-by__logos > li + li::before {
+  content: '';
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--border);
+  margin-right: 24px;
+  flex-shrink: 0;
+}
+
+.arkim-backed-by__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--fg-muted);
+  font-family: var(--body);
+  font-size: var(--text-micro);
+  transition: color 0.2s;
+}
+
+.arkim-backed-by__link:hover,
+.arkim-backed-by__link:focus-visible {
+  color: var(--fg);
+}
+
+.arkim-backed-by__link img {
+  height: 22px;
+  width: auto;
+  max-width: 112px;
+  object-fit: contain;
+  display: block;
+  opacity: var(--partner-logo-opacity);
+  filter: var(--partner-logo-filter);
+  transition: opacity 0.2s;
+}
+
+.arkim-backed-by__link:hover img,
+.arkim-backed-by__link:focus-visible img {
+  opacity: var(--partner-logo-hover-opacity);
+}
+
+@media (max-width: 768px) {
+  .arkim-backed-by__inner {
+    padding: 18px 22px;
+    gap: 14px 20px;
+  }
+
+  .arkim-backed-by__name {
+    display: none;
+  }
+
+  .arkim-backed-by__logos {
+    gap: 8px 20px;
+  }
+
+  .arkim-backed-by__logos > li + li::before {
+    margin-right: 20px;
+  }
 }

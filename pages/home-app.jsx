@@ -4,6 +4,7 @@ const {
   ArkimNav,
   ArkimFooter,
   ArkimHero,
+  ArkimBackedByStrip,
   ArkimIndustriesStrip,
   ArkimTheLever,
   ArkimDowntimeResolve,
@@ -77,6 +78,7 @@ function App() {
         <div style={{ height: announceHeight }} aria-hidden="true" />
       )}
       <ArkimHero />
+      <ArkimBackedByStrip />
       <ArkimIndustriesStrip />
       <ArkimTheLever />
       <ArkimDowntimeResolve />

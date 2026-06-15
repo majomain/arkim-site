@@ -10,6 +10,7 @@ const FOOTER_COLUMNS = [
     title: 'Product',
     links: [
       { label: 'Product Overview', href: '/product/' },
+      { label: 'Product Deck', href: 'https://show.arkim.ai/', external: true },
       { label: 'Request a Demo', href: '/contactus/' },
     ],
   },
@@ -98,7 +99,12 @@ function ArkimFooter() {
             <div style={{ fontFamily: 'var(--sans)', fontSize: 'var(--text-eyebrow-size)', fontWeight: 600, letterSpacing: 'var(--text-eyebrow-tracking)', textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: '20px' }}>{col.title}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {col.links.map((l, j) => (
-                <a key={j} href={l.href} className="arkim-footer-col-link">{l.label}</a>
+                <a
+                  key={j}
+                  href={l.href}
+                  className="arkim-footer-col-link"
+                  {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >{l.label}</a>
               ))}
             </div>
           </div>

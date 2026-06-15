@@ -203,6 +203,10 @@ button.arkim-btn-outline:focus-visible {
   transform: translateY(-2px);
 }
 
+.arkim-btn-outline--pill {
+  border-radius: 9999px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .arkim-btn-primary:hover,
   .arkim-btn-primary:focus-visible,
